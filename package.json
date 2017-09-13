@@ -1,0 +1,30 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "dojoHack",
+  "description": "dojoHack server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sharfy17/CampusCoatCheck.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sharfy17/CampusCoatCheck/issues"
+  },
+  "homepage": "https://github.com/Sharfy17/CampusCoatCheck#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "express-flash": "0.0.2",
+    "mysql": "^2.13.0",
+    "swig": "^1.4.2"
+  }
+}
