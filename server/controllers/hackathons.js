@@ -2,6 +2,11 @@ const db = require('../config/mysql.js');
 const GIT_REGEX = new RegExp('((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)([\w\.@\:/\-~]+)(\.git)?(/)?');
 const YT_REGEX = new RegExp('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*');
 
+function sendServerError(error, res){
+	console.log('[SQL error]', error);
+	res.json({'error': 'Server Error'});
+}
+
 module.exports = {
 
     joined: (req, res) => {
@@ -12,7 +17,8 @@ module.exports = {
             AND ha.teamId = ?
         `;
         db.query(query, req.session.userId, (err, hackathons) => {
-            res.json({'hackathons': hackathons});
+            if (err) sendServerError(err, res);
+            else res.json({'hackathons': hackathons});
         });
     },
     
@@ -27,14 +33,16 @@ module.exports = {
         `;
         let data = [req.session.userId, req.session.userId];
         db.query(query, data, (err, hackathons) => {
-            res.json({'hackathons': hackathons});
+            if (err) sendServerError(err, res);
+            else res.json({'hackathons': hackathons});
         });
     },
     
     past: (req, res) => {
         let query = 'SELECT * FROM hackathons WHERE deadline < NOW()';
         db.query(query, (err, hackathons) => {
-            res.json({'hackathons': hackathons});
+            if (err) sendServerError(err, res);
+            else res.json({'hackathons': hackathons});
         });
     },
     
@@ -50,7 +58,8 @@ module.exports = {
             `;
             let data = [name, deadline];
             db.query(query, data, (err, packet) => {
-                res.json({'status': true, 'hackathonId': packet.insertId});
+                if (err) sendServerError(err, res);
+                else res.json({'status': true, 'hackathonId': packet.insertId});
             });
         }
     },
@@ -59,7 +68,8 @@ module.exports = {
         let query = 'INSERT INTO submitions (teamId, hackathonId) VALUES (?, ?)';
         let data = [req.session.userId, req.params.hackId]
         db.query(query, data, (err, packet) => {
-            res.json({'status': true});
+            if (err) sendServerError(err, res);
+            else res.json({'status': true});
         });
     },
 
@@ -82,15 +92,19 @@ module.exports = {
             let query = "INSERT INTO projects (title, gitUrl, vidUrl, description, teamId, hackathonId) VALUES (?, ?, ?, ?, ?, ?)";
             let data = [title, gitUrl, vidUrl, description, team, hackathon];
             db.query(query, data, (err, packet) => {
-                let data = [packet.insertId, team, hackathon];
-                updateSubmition(data);
+                if (err) sendServerError(err, res);
+                else {
+                    let data = [packet.insertId, team, hackathon];
+                    updateSubmition(data);
+                }
             });
         } else res.json({'status': false, errors: errors});
         
         function updateSubmition(data){
             let query = "UPDATE submissions SET projectId = ? WHERE (teamId = ? AND hackathonId = ?)";
             db.query(query, data, (err, packet) => {
-                res.json({'status': true, 'projectId': data[0]});
+                if (err) sendServerError(err, res);
+                else res.json({'status': true, 'projectId': data[0]});
             });
         }
     },
@@ -104,7 +118,52 @@ module.exports = {
             WHERE sub.hackathonId = ?;
         `;
         db.query(query, req.params.hackId, (err, submissions) => {
-            res.json({'submissions': submissions});
+            if (err) sendServerError(err, res);
+            else res.json({'submissions': submissions});
         });
+    },
+
+    score: (req, res) => {
+        let userId = req.session.userId;
+        let projectId = req.body.projectId;
+        let uiux = req.body.uiux;
+        let pres = req.body.pres;
+        let idea = req.body.idea;
+        let impl = req.body.impl;
+        let extra = req.body.extra;
+        let comment = req.body.comment;
+    
+        let query = 'SELECT id FROM scores WHERE userId = ? AND projectId = ?'
+        let data = [userId, projectId];
+        db.query(query, data, (err, scores) => {
+            if (err) sendServerError(err, res);
+            else if (scores.length) updateScore()
+            else addScore()
+        });
+
+        function addScore(){
+            let query = `
+                INSERT INTO scores (userId, projectId, uiux, pres, idea, impl, extra, comment)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `;
+            let data = [userId, projectId, uiux, pres, idea, impl, extra, comment];
+            db.query(query, data, (err, packet) => {
+                if (err) sendServerError(err, res);
+                else res.json({'status': true})
+            });
+        }
+
+        function updateScore(){
+            let query = `
+                UPDATE scores SET uiux = ?, pres = ?, idea = ?, impl = ?, extra = ?, comment = ?
+                WHERE userId = ? AND projectId = ?
+            `;
+            let data = [uiux, pres, idea, impl, extra, comment, userId, projectId];
+            db.query(query, data, (err, packet) => {
+                if (err) sendServerError(err, res);
+                else res.json({'status': true})
+            });
+        }
+        
     }
 }

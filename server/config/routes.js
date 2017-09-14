@@ -20,12 +20,8 @@ var hackathons = require('../controllers/hackathons.js');
 // If session is not found, {status: false} will be returned
 
 const safeForTeams = [
-    '/hackathons/:hackId/join'
-]
-
-const safeForAdmin = [
-    '/hackathons',
-    '/scores'
+    '/hackathons/:hackId/join',
+    '/hackathons/:hackId/addproject',
 ]
 
 // =============================================================
@@ -46,19 +42,19 @@ module.exports = function(app) {
             console.log('user '+req.session.userId+' is logged in');
             next();
         } else {
-            console.log('no user logged in');
+            console.log('user '+req.session.userId+' is not admin');
             res.redirect('/');
         }
     }),
 
     // admin check
-    app.all(safeForAdmin, (req, res, next) => {
+    app.all(/^\/admin(\/.*)?/, (req, res, next) => {
         console.log(req.originalUrl);
         if (req.session.admin) {
             console.log('user '+req.session.userId+' is admin');
             next();
         } else {
-            console.log('user is not admin');
+            console.log('user '+req.session.userId+' is not admin');
             res.json({"status": false});
         }
     }),
@@ -84,11 +80,13 @@ module.exports = function(app) {
     // =============================================================
     //                          Admin
     // =============================================================
-    app.post('/login/admin',    (req, res) => { users.login(req, res); }),
+    app.post('/login/admin',      (req, res) => { users.login(req, res); }),
     
-    app.post('/register/admin', (req, res) => { users.register(req, res); }),
+    app.post('/register/admin',   (req, res) => { users.register(req, res); }),
     
-    app.post('/hackathons',     (req, res) => { hackathons.create(req, res); }),
+    app.post('/admin/hackathons', (req, res) => { hackathons.create(req, res); }),
+
+    app.post('/admin/score/:hackId',      (req, res) => { hackathons.score(req, res); }),
 
     // =============================================================
     //                          Teams
@@ -101,7 +99,7 @@ module.exports = function(app) {
     
     app.post('/teams/addmember', (req, res) => { teams.addMember(req, res); }),
 
-    app.get('/teams/members', (req, res) => { teams.members(req, res); }),
+    app.get('/teams/members',    (req, res) => { teams.members(req, res); }),
 
     
     // =============================================================
