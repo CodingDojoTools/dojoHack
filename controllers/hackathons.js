@@ -5,35 +5,40 @@ const YT_REGEX = new RegExp('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*
 module.exports = {
 
     joined: (req, res) => {
+        console.log("joined");
         let query = `
             SELECT * FROM hackathons AS h 
-            JOIN hackathon_attendees AS ha ON h.id = ha.hackathonId
+            JOIN submissions AS ha ON h.id = ha.hackathonId
             WHERE deadline > NOW()
             AND ha.teamId = ?
         `;
         db.query(query, req.session.userId, (err, hackathons) => {
+            console.log(hackathons);
             res.json({'hackathons': hackathons});
         });
     },
     
     current: (req, res) => {
+        console.log("current");
         let query = `
             SELECT h.id, h.name, h.deadline FROM hackathons AS h 
-            LEFT JOIN hackathon_attendees AS ha 
-            ON (h.id = ha.hackathonId and ha.teamId = ?)
+            LEFT JOIN submissions AS s 
+            ON (h.id = s.hackathonId and s.teamId = ?)
             WHERE deadline > NOW()
-            AND (ha.teamId <> ? OR ha.teamId is null)
+            AND (s.teamId <> ? OR s.teamId is null)
             GROUP BY h.id
         `;
         let data = [req.session.userId, req.session.userId];
         db.query(query, data, (err, hackathons) => {
+            console.log(hackathons);
             res.json({'hackathons': hackathons});
         });
     },
     
     past: (req, res) => {
+        console.log("past");        
         let query = 'SELECT * FROM hackathons WHERE deadline < NOW()';
-        db.query(query, req.body.name, (err, hackathons) => {
+        db.query(query, (err, hackathons) => {
             res.json({'hackathons': hackathons});
         });
     },
