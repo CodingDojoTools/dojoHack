@@ -16,7 +16,7 @@ module.exports = {
     
     current: (req, res) => {
         let query = `
-            SELECT h.id, h.name, h.deadline,ha.teamId FROM hackathons AS h 
+            SELECT h.id, h.name, h.deadline FROM hackathons AS h 
             LEFT JOIN hackathon_attendees AS ha 
             ON (h.id = ha.hackathonId and ha.teamId = ?)
             WHERE deadline > NOW()
@@ -35,7 +35,29 @@ module.exports = {
             res.json({'hackathons': hackathons});
         });
     },
+    
+    create: (req, res) => {
+        let name = req.body.name;
+        let deadline = new Date(req.body.deadline);
 
-    
-    
+        if (deadline < new Date()) res.json({'status': false, 'error': 'Deadline must be in the future'});
+        else {
+            let query = `
+                INSERT INTO hackathons (name, deadline)
+                VALUES (?, ?)
+            `;
+            let data = [name, deadline];
+            db.query(query, data, (err, packet) => {
+                res.json({'status': true, 'hackathonId': packet.insertId});
+            });
+        }  
+    },
+
+    join: (req, res) => {
+        let query = 'INSERT INTO hackathon_attendees (teamId, hackathonId) VALUES (?, ?)';
+        let data = [req.session.userId, req.params.hackId]
+        db.query(query, data, (err, packet) => {
+            res.json({'status': true});
+        });
+    },
 }
