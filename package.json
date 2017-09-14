@@ -8,14 +8,14 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sharfy17/CampusCoatCheck.git"
+    "url": "git+https://github.com/eli-byers/dojoHack.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Sharfy17/CampusCoatCheck/issues"
+    "url": "https://github.com/eli-byers/dojoHack/issues"
   },
-  "homepage": "https://github.com/Sharfy17/CampusCoatCheck#readme",
+  "homepage": "https://github.com/eli-byers/dojoHack#readme",
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",

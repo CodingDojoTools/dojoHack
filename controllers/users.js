@@ -71,5 +71,12 @@ module.exports = {
         req.session.team = null;
         res.json({'status': true});
     },
+
+    locations: (req, res) => {
+        let query = 'SELECT * FROM locations';
+		db.query(query, (err, locations) => {
+            res.json({'locations': locations});
+        });
+    }
     
 }

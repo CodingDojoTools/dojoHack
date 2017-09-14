@@ -82,12 +82,13 @@ module.exports = function(app) {
     app.get('/', (req, res) => { res.send("index"); });
     
     // =============================================================
-    //                          Users
+    //                          Admin
     // =============================================================
     app.post('/login/admin',    (req, res) => { users.login(req, res); }),
     
     app.post('/register/admin', (req, res) => { users.register(req, res); }),
     
+    app.post('/hackathons',     (req, res) => { hackathons.create(req, res); }),
 
     // =============================================================
     //                          Teams
@@ -98,18 +99,28 @@ module.exports = function(app) {
     
     app.get('/logout',      (req, res) => { users.logout(req, res); }),
     
+    app.post('/teams/addmember', (req, res) => { teams.addMember(req, res); }),
 
+    app.get('/teams/members', (req, res) => { teams.members(req, res); }),
+
+    
+    // =============================================================
+    //                          Locations
+    // =============================================================
+    app.get('/locations', (req, res) => { users.locations(req, res); }),
+    
+    
     // =============================================================
     //                       Hackathons
     // =============================================================
-    app.post('/hackathons',         (req, res) => { hackathons.create(req, res); }),
-
+    
     app.get('/hackathons/joined',   (req, res) => { hackathons.joined(req, res); }),
-
+    
     app.get('/hackathons/current',  (req, res) => { hackathons.current(req, res); }),
-
+    
     app.get('/hackathons/past',     (req, res) => { hackathons.past(req, res); }),
-
-    app.get('/hackathons/:hackId/join', (req, res) => { hackathons.join(req, res); })
-
+    
+    app.get('/hackathons/:hackId/join',         (req, res) => { hackathons.join(req, res); })
+    
+    app.post('/hackathons/:hackId/addproject',   (req, res) => { hackathons.addProject(req, res); })
 }
