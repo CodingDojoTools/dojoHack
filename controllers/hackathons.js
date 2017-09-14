@@ -89,9 +89,7 @@ module.exports = {
         
         function updateSubmition(data){
             let query = "UPDATE submissions SET projectId = ? WHERE (teamId = ? AND hackathonId = ?)";
-            console.log(data);
             db.query(query, data, (err, packet) => {
-                console.log("here");
                 res.json({'status': true, 'projectId': data[0]});
             });
         }
