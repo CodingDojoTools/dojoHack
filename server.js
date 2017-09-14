@@ -31,7 +31,7 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 
 // *** routes *** /
-var routes = require('./config/routes.js')(app);
+var routes = require('./server/config/routes.js')(app);
 
 var port = 8000;
 var server = app.listen(port, () => {
