@@ -59,8 +59,12 @@ module.exports = {
 
         function validateUser(req, user){
             bcrypt.compare(req.body.password, user.password, (err, status) => {
-                setSessionRole(req, role, user.id);
-                res.json({'status': status});
+                let data = {'status': status}
+                if (status) {
+                    data.userId = user.id;
+                    setSessionRole(req, role, user.id);
+                }
+                res.json(data);
             });
         }
     },

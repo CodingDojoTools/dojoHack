@@ -5,7 +5,6 @@ const YT_REGEX = new RegExp('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*
 module.exports = {
 
     joined: (req, res) => {
-        console.log("joined");
         let query = `
             SELECT * FROM hackathons AS h 
             JOIN submissions AS ha ON h.id = ha.hackathonId
@@ -13,13 +12,11 @@ module.exports = {
             AND ha.teamId = ?
         `;
         db.query(query, req.session.userId, (err, hackathons) => {
-            console.log(hackathons);
             res.json({'hackathons': hackathons});
         });
     },
     
     current: (req, res) => {
-        console.log("current");
         let query = `
             SELECT h.id, h.name, h.deadline FROM hackathons AS h 
             LEFT JOIN submissions AS s 
@@ -30,13 +27,11 @@ module.exports = {
         `;
         let data = [req.session.userId, req.session.userId];
         db.query(query, data, (err, hackathons) => {
-            console.log(hackathons);
             res.json({'hackathons': hackathons});
         });
     },
     
     past: (req, res) => {
-        console.log("past");        
         let query = 'SELECT * FROM hackathons WHERE deadline < NOW()';
         db.query(query, (err, hackathons) => {
             res.json({'hackathons': hackathons});
@@ -98,5 +93,18 @@ module.exports = {
                 res.json({'status': true, 'projectId': data[0]});
             });
         }
+    },
+
+    submissions: (req, res) => {
+        let query = `
+            SELECT sub.teamId, teams.name as teamName, projectId, projects.title AS projectTitle 
+            FROM submissions AS sub 
+            LEFT JOIN teams ON sub.teamId = teams.id
+            LEFT JOIN projects ON sub.projectId = projects.id
+            WHERE sub.hackathonId = ?;
+        `;
+        db.query(query, req.params.hackId, (err, submissions) => {
+            res.json({'submissions': submissions});
+        });
     }
 }
