@@ -26,7 +26,7 @@
   </div>
 </section>
 
-<section class="container">
+<section class="container bottom">
   <div class="columns">
     <div class="column">
 
@@ -38,15 +38,16 @@
       <form [formGroup] = "regForm" (submit)="register(regForm)">
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input class="input is-success" type="text" formControlName="teamName" placeholder="Team Name">
+          <input class="input" [class]="teamValid" type="text" formControlName="teamName" placeholder="Team Name">
           <span class="icon is-small is-left">
             <i class="fa fa-users"></i>
           </span>
-          <span class="icon is-small is-right">
+          <div *ngIf = "teamName.invalid"><p>Invalid!!!!!</p></div>
+          <!-- <span class="icon is-small is-right">
             <i class="fa fa-check"></i>
-          </span>
+          </span> -->
         </div>
-        <p class="help is-success">This team name is available</p>
+        <!-- <p class="help is-success">This team name is available</p> -->
       </div>
       
       <div class="field">
@@ -95,7 +96,7 @@
           </span>
         </div>
       </div>
-      <button type="button" class="button is-link is-medium" (click)="addMember()">Add a member to the team</button>
+      
       <!-- list of members -->
       <div formArrayName="members">
         <div class="field">
@@ -110,13 +111,18 @@
           </div>
         </div>
       </div>
+      <div class="addMember" (click)="addMember()">
+          <i class="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
+          <small>Add a member</small>
+      </div>
+      
 
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-medium" id="submitBtn">Next</button>
+          <button class="button is-medium is-dark" [disabled]="!regForm.valid">Register team</button>
         </div>
         <div class="control">
-          <button class="button is-link is-medium" type="button" (click)="cancel()">Cancel</button>
+          <button class="button is-medium" type="button" (click)="cancel()">Cancel</button>
         </div>
       </div>
       

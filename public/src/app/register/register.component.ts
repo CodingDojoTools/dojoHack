@@ -14,6 +14,8 @@ export class RegisterComponent implements OnInit {
 
   regForm: FormGroup;
 
+  teamValid: String;
+
   loggingIn() {
     console.log("We're logging in!")
   }
@@ -27,7 +29,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.regForm = this.fb.group({
-      teamName: ['', [Validators.required, Validators.minLength(5)]],
+      teamName: ['', [Validators.required, Validators.minLength(2)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
       location: [''],
@@ -47,6 +49,15 @@ export class RegisterComponent implements OnInit {
   addMember(){
     let control = <FormArray>this.regForm.controls['members'];
     control.push(this.initMember());
+  }
+
+  get teamName() {
+    console.log(this.regForm.get('teamName'))
+    if(!this.regForm.get('teamName').valid && this.regForm.get('teamName').touched){
+      console.log("not valid")
+      this.teamValid = "is-danger"
+    }
+    return this.regForm.get('teamName')
   }
 
 

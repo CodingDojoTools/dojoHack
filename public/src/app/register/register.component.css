@@ -1,4 +1,10 @@
-.hero-body, #submitBtn{
+.hero-body{
     background-color: #06AAE2;
 }
 
+.bottom {
+    margin-top: 4em;
+}
+.addMember {
+    text-align: right;
+}
