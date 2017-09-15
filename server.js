@@ -10,7 +10,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 var path = require('path');
-app.use(express.static(path.join(__dirname)+"/static"));
+// app.use(express.static(path.join(__dirname)+"/static"));
+app.use(express.static(__dirname + '/public/dist'));
 
 // *** flash *** //
 var flash = require('express-flash');
@@ -24,11 +25,6 @@ app.use(cookieSession({
 }));
 app.use(flash());
 
-// *** view engine *** //
-var swig = require('swig');
-var swig = new swig.Swig();
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
 
 // *** routes *** /
 var routes = require('./config/routes.js')(app);
