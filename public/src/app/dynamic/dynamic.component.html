@@ -1,0 +1,36 @@
+<form [formGroup]="myForm" (submit)="save(myForm)">
+  <div>
+    <label>Name</label>
+    <input type="text" formControlName="name">
+    <small *ngIf="!myForm.controls.name.valid">
+      Name is required, min 5 characters
+    </small>
+    </div>
+    <!-- list of addresses -->
+    <div formArrayName="addresses">
+      <button type="button" (click)="addAddress()">Add an address</button>
+      <div *ngFor = "let address of myForm.controls.addresses.controls; let i=index">
+        <div>
+          <span>Address {{i + 1}}</span>
+          <span *ngIf="myForm.controls.addresses.controls.length > 1" (click) = "removeAddress(i)">To remove</span>
+        </div>
+        <div [formGroupName] = "i">
+          <app-address [group] = "myForm.controls.addresses.controls[i]"></app-address>
+          <!-- <div>
+            <label>street</label>
+            <input type="text" formControlName="street">
+            <small [hidden]="myForm.controls.addresses.controls[i].controls.street.valid">
+              Street is required
+            </small>
+          </div>
+          <div>
+            <label>postcode</label>
+            <input type="text" formControlName="postcode">
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- <label>First name:</label><input formControlName="firstName">
+    <label>Last name:</label><input formControlName="lastName"> -->
+    <button type="submit" [disabled]="!myForm.valid">Submit</button>
+</form>

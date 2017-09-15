@@ -6,13 +6,19 @@ import { routing } from './app.routes';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { RegisterMembersComponent } from './register-members/register-members.component';
+import { DynamicComponent } from './dynamic/dynamic.component';
+import { PhoneComponent } from './phone/phone.component';
+import { AddressComponent } from './dynamic/address/address.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    RegisterMembersComponent
+    RegisterMembersComponent,
+    DynamicComponent,
+    PhoneComponent,
+    AddressComponent
   ],
   imports: [
     BrowserModule,
