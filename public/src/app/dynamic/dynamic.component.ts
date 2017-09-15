@@ -26,7 +26,6 @@ export class DynamicComponent implements OnInit {
     this.myForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       addresses: this.fb.array([
-        this.initAddress(),
         this.initAddress()
       ])
     })

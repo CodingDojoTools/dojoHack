@@ -1,3 +1,8 @@
-<p>
-  register-members works!
-</p>
+<div [formGroup]="memberForm">
+    <div>
+        <input type="text" formControlName="firstName" placeholder="First Name">
+    </div>
+    <div>
+        <input type="text" formControlName="lastName" placeholder="Last Name">
+    </div>
+</div>
