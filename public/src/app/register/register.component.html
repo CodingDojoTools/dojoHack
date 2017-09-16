@@ -1,31 +1,5 @@
-<section class="hero is-primary">
-  <div class="hero-body">
-    <div class="container">
-      <div class="columns">
-        <div class="column">
-          <h1 class="title">Coding Dojo Hackathons</h1>
-          <h2 class="subtitle">Dojo vs. Dojo</h2>
-        </div>
-        <div class="column">
-          <form (submit)="loggingIn()" class="field is-horizontal">
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text" placeholder="Team name">
-              </div>
-              <div class="field"> 
-                <input class="input" type="text" placeholder="Password">
-              </div>
-              <div class="field">
-                <button class="button is-dark">Login</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
+<app-login></app-login>
 <section class="container bottom">
   <div class="columns">
     <div class="column">
@@ -34,10 +8,8 @@
 
     </div>
     <div class="column">
-      {{regForm.value | json}}
-      {{regForm.status | json}}
       <h2 class="title">Register here</h2>
-      <form [formGroup] = "regForm" (submit)="register(regForm)"> 
+      <form [formGroup] = "regForm" (submit)="register()"> 
       <div class="field">
         <div class="control has-icons-left has-icons-right">
           <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger':((TError.minlength || TError.required)&& teamName.touched) || TError.maxlength }" type="text" formControlName="teamName" placeholder="Team Name" id="teamName">

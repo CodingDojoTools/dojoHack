@@ -9,6 +9,7 @@ import { RegisterMembersComponent } from './register-members/register-members.co
 import { DynamicComponent } from './dynamic/dynamic.component';
 import { AddressComponent } from './dynamic/address/address.component';
 import { HttpService } from './http.service';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { HttpService } from './http.service';
     RegisterComponent,
     RegisterMembersComponent,
     DynamicComponent,
-    AddressComponent
+    AddressComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

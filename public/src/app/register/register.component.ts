@@ -19,7 +19,10 @@ export class RegisterComponent implements OnInit {
   constructor(private fb: FormBuilder, private httpService: HttpService) { }
 
   newTeam = new Team();
+
   regForm: FormGroup;
+  
+
   locations = [];
 
   TError: Object;
@@ -32,9 +35,7 @@ export class RegisterComponent implements OnInit {
 
   teamValid: Boolean = false;
 
-  loggingIn() {
-    console.log("We're logging in!")
-  }
+ 
   register(){
     const model = this.regForm.value;
     if(this.regForm.status=="VALID"){
@@ -52,6 +53,7 @@ export class RegisterComponent implements OnInit {
 
   }
   cancel(){
+    this.regForm.reset();
     console.log("We're canceling")
   }
 
@@ -67,8 +69,8 @@ export class RegisterComponent implements OnInit {
       members: this.fb.array([
         this.initMember()
       ])
-
     })
+
     // this.httpService.retrieveLocations((locs)=> {
     //   this.locations = locs;
     //   console.log("We got the locations", locs)

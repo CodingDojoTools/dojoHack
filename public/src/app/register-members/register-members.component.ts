@@ -33,7 +33,6 @@ export class RegisterMembersComponent implements OnInit {
     let FNError = fn.errors ? fn.errors : {};
     this.firstReq = FNError['required'] && fn.touched;
     this.firstLen = FNError['minlength'] && fn.touched;
-    
     return fn;  
   }
   get lastName(){

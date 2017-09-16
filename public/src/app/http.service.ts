@@ -4,9 +4,24 @@ import 'rxjs';
 
 @Injectable()
 export class HttpService {
+  loggedInId: Number;
 
   locations = [];
   constructor(private _http: Http) { }
+
+  loginTeam(team, callback){
+    console.log("in the service about to login a team", team)
+    this._http.post('/login', team).subscribe(
+      (response) => {
+        let res = response.json();
+        callback(res);
+      },
+      (err) => {
+        console.log("Got an error trying to login", err);
+        callback({status: false, message: "catch"})
+      }
+    )
+  }
 
   registerTeam(team){
     console.log("in service about to register a team", team);
