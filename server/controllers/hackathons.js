@@ -65,12 +65,22 @@ module.exports = {
     },
 
     join: (req, res) => {
-        let query = 'INSERT INTO submitions (teamId, hackathonId) VALUES (?, ?)';
+        let exist = 'SELECT * FROM submissions WHERE teamID = ? AND hackathonId = ?';
+        let query = 'INSERT INTO submissions (teamId, hackathonId) VALUES (?, ?)';
         let data = [req.session.userId, req.params.hackId]
-        db.query(query, data, (err, packet) => {
-            if (err) sendServerError(err, res);
-            else res.json({'status': true});
-        });
+        db.query(exist, data, (err, packet) => {
+            if(err) sendServerError(err, res);
+            else if(packet.length > 0){
+                res.json({'status': false, 'message': "You've already joined this hackathon"})
+            }
+            else {
+                db.query(query, data, (err, packet) => {
+                    if (err) sendServerError(err, res);
+                    else res.json({'status': true});
+                });
+            }
+        })
+        
     },
 
     addProject: (req, res) => {

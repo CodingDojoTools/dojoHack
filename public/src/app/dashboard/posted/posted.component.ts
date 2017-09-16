@@ -24,5 +24,16 @@ export class PostedComponent implements OnInit {
       }
     })
   }
+  joinHackathon(hack){
+    console.log("we're joining this hackathon", hack);
+    this.httpService.joinHackathon(hack, (res) => {
+      if(res.status){
+        console.log("Successfully joined")
+      }
+      else if (res.message){
+        console.log("Could not join this hackathon")
+      }
+    })
+  }
 
 }

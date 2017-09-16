@@ -14,11 +14,14 @@
               <td>{{hack.name}}</td>
               <td>iOS</td>
               <td>{{hack.deadline | date: 'medium'}}</td>
-              <td><button class="button is-small is-dark">Join</button></td>
+              <td><button class="button is-small is-dark" (click)="joinHackathon(hack)">Join</button></td>
             </tr>
           </tbody>
         </table>
-        </div>
+      </div>
+      <div *ngIf="postedHackathons.length < 1" class="box">
+        <h2 class="subtitle">We've run out of hackathons for you to join! Suggest one to your instructor or captain!</h2>
+      </div>
 
   </div>
 

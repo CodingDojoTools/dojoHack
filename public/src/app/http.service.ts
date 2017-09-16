@@ -11,6 +11,7 @@ export class HttpService {
   redirectUrl: String;
   postedHackathons: Hackathon[] = [];
   pastHackathons: Hackathon[] = [];
+  joinedHackathons: Hackathon[] = [];
 
   locations = [];
   constructor(private _http: Http) { }
@@ -72,6 +73,7 @@ export class HttpService {
         if(res.hackathons){
           this.postedHackathons = res.hackathons;
           callback({status: true, hacks: this.postedHackathons});
+          
         }
         else {
           callback({status: false})
@@ -97,6 +99,40 @@ export class HttpService {
       },
       (err) => {
         console.log("Error getting past hackathons in service", err);
+      }
+    )
+  }
+
+  joinHackathon(hack, callback){
+    this._http.get(`/hackathons/${hack.id}/join`).subscribe(
+      (response) => {
+        let res = response.json();
+        if(res.status){
+          let index = this.postedHackathons.indexOf(hack);
+          this.postedHackathons.splice(index, 1);
+          this.joinedHackathons.push(hack);
+        }
+        callback(res)
+      },
+      (err) => {
+        console.log("Error trying to join in service", err);
+      }
+    )
+  }
+  fetchJoined(callback){
+    this._http.get('/hackathons/joined').subscribe(
+      (response)=>{
+        let res = response.json();
+        if(res.hackathons){
+          this.joinedHackathons = res.hackathons;
+          callback({status: true, hacks: this.joinedHackathons});
+        }
+        else {
+          callback({status: false})
+        }
+      },
+      (err) => {
+        console.log("Error getting the joined hackathons in service", err)
       }
     )
   }

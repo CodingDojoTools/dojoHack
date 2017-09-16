@@ -6,7 +6,7 @@
     </div>
     <div class="box">
   
-    <table class="table is-striped is-fullwidth">
+    <table *ngIf="joinedHackathons.length > 0" class="table is-striped is-fullwidth">
         <thead>
           <th>Name</th>
           <th>Deadline</th>      
@@ -14,24 +14,12 @@
           <th>Action</th>
         </thead>
         <tbody>
-          <tr>
-            <td>Hackathon 1</td>
-            <td>September 30</td>
+          <tr *ngFor="let hack of joinedHackathons">
+            <td>{{hack.name}} 1</td>
+            <td>{{hack.deadline | date: 'medium'}}</td>
             <td>5 minutes</td>
             <td><button class="button is-danger is-large">Submit</button></td>
           </tr>
-          <tr>
-              <td>Hackathon 2</td>
-              <td>September 30</td>
-              <td>Two days</td>
-              <td><button class="button is-dark is-small">Submit</button></td>
-            </tr>
-            <tr>
-                <td>Hackathon 3</td>
-                <td>September 30</td>
-                <td>Two days</td>
-                <td><button class="button is-dark is-small">Submit</button></td>
-              </tr>
         </tbody>
       </table>
     </div>
