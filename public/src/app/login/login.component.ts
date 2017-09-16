@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
           this.logForm.reset();
         }
         else {
+          console.log("unsuccessful login")
           if(res.message){
             this.serverError = true;
           }
@@ -65,7 +66,9 @@ export class LoginComponent implements OnInit {
   }
 
   fieldChanged(){
+    console.log("firing field changed")
     if(this.serverError || this.loginError){
+      
       this.serverError = false;
       this.loginError = false;
     }
