@@ -1,13 +1,23 @@
 <div [formGroup]="memberForm">
   <div class="field is-grouped columns">
-    <div class="control has-icons-left has-icons-right column">
-        <input class="input" type="text" formControlName="firstName" placeholder="First Name">
+        <div class="column">
+            <div class="control has-icons-left has-icons-right">
+                <input class="input" [ngClass] = "{'is-success':firstName.valid, 'is-danger': FNDanger }" type="text" formControlName="firstName" placeholder="First Name">
+                <span *ngIf="firstName.valid" class="icon is-small is-right"><i class="fa fa-check"></i></span>
+                <span *ngIf="FNDanger" class="icon is-small is-right"><i class="fa fa-warning"></i></span>
+            </div>
+            <p *ngIf="firstReq" class="help is-danger">First name is required</p>
+            <p *ngIf="firstLen" class="help is-danger">First name must contain at least three characters</p>
+        </div>
+    
+        <div class="column">
+            <div class="control has-icons-left has-icons-right"> 
+                <input class="input" [ngClass] = "{'is-success':lastName.valid, 'is-danger':LNDanger }" type="text" formControlName="lastName" placeholder="Last Name">
+                <span *ngIf="lastName.valid" class="icon is-small is-right"><i class="fa fa-check"></i></span>
+                <span *ngIf="LNDanger" class="icon is-small is-right"><i class="fa fa-warning"></i></span>
+            </div>
+            <p *ngIf="lastReq" class="help is-danger">Last name is required</p>
+            <p *ngIf="lastLen" class="help is-danger">Last name must contain at least two characters</p>
+        </div>  
     </div>
-  
-  <!-- <div class="field"> -->
-      <div class="control has-icons-left has-icons-right column"> 
-          <input class="input" type="text" formControlName="lastName" placeholder="Last Name">
-      </div>
-  </div>
-   
 </div>

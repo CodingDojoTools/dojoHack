@@ -27,3 +27,10 @@
 .addMember i {
    margin-right: 5px;
 }
+.member {
+    color: #06AAE2;
+}
+.remove {
+    margin-left: 2em;
+    cursor: pointer;
+}
