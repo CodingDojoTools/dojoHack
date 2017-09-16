@@ -64,7 +64,15 @@ export class RegisterComponent implements OnInit {
 
   addMember(){
     let control = <FormArray>this.regForm.controls['members'];
-    control.push(this.initMember());
+    if(control.length < 5){
+      control.push(this.initMember());
+    }
+  }
+
+  removeMember(index){
+    
+    let control = <FormArray>this.regForm.controls['members'];
+    control.removeAt(index);
   }
 
   get passGroup(){
@@ -72,7 +80,6 @@ export class RegisterComponent implements OnInit {
   }
 
   get teamName() {
-    console.log("regform", this.regForm)
     let newTeam = this.regForm.get('teamName');
     this.TError = newTeam.errors ? newTeam.errors : {};
     return newTeam;

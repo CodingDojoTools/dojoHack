@@ -121,12 +121,12 @@
       </div>
       
       <!-- list of members -->
-      <div formArrayName="members">
-        <div class="field">
-          <div *ngFor="let member of regForm.controls.members.controls; let i=index">
+      <div formArrayName="members" class="field">
+        <div>
+          <div *ngFor="let member of regForm.controls.members.controls; let i=index" class="field">
             <div>
-              <span>Member {{i+1}}</span>
-              <span *ngIf="regForm.controls.members.controls.length > 1">Remove a member</span>
+              <span class="member">Member {{i+1}}</span>
+              <span *ngIf="regForm.controls.members.controls.length > 1" class="remove" (click)="removeMember(i)"><i class="fa fa-minus-circle"></i> Remove member</span>
             </div>
             <div [formGroupName]="i">
               <app-register-members [group]="regForm.controls.members.controls[i]"></app-register-members>
@@ -134,7 +134,7 @@
           </div>
         </div>
       </div>
-      <div id="addMemberWrapper">
+      <div *ngIf = "regForm.controls.members.controls.length < 5" id="addMemberWrapper">
       <div class="field addMember" (click)="addMember()">
           <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
           <p>Add a member</p>
