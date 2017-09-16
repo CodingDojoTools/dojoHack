@@ -32,3 +32,9 @@
     margin-left: 2em;
     cursor: pointer;
 }
+.logo {
+    padding: 5% 10%;
+}
+.logo img {
+    width: 70%;
+}

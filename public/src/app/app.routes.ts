@@ -1,12 +1,11 @@
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
-import { RegisterMembersComponent } from './register-members/register-members.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'register', pathMatch: 'full' },
-    { path: 'register', component: RegisterComponent, children:[
-        {path: 'members', component: RegisterMembersComponent}
-    ] }
+    { path: 'register', component: RegisterComponent},
+    { path: 'dashboard', component: DashboardComponent}
     
 ];
 

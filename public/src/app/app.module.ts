@@ -10,6 +10,7 @@ import { DynamicComponent } from './dynamic/dynamic.component';
 import { AddressComponent } from './dynamic/address/address.component';
 import { HttpService } from './http.service';
 import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { LoginComponent } from './login/login.component';
     RegisterMembersComponent,
     DynamicComponent,
     AddressComponent,
-    LoginComponent
+    LoginComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

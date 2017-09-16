@@ -14,6 +14,7 @@ export class HttpService {
     this._http.post('/login', team).subscribe(
       (response) => {
         let res = response.json();
+        this.loggedInId = res.userId
         callback(res);
       },
       (err) => {

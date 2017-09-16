@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Team } from '../team';
+
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,7 @@ export class LoginComponent implements OnInit {
   serverError: Boolean;
 
 
-  constructor(private fb: FormBuilder, private httpService: HttpService) { }
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
 
   ngOnInit() {
 
@@ -44,6 +46,7 @@ export class LoginComponent implements OnInit {
       this.httpService.loginTeam(login, (res) => {
         if(res.status){
           console.log("successful login, we should go into the app")
+          this._router.navigate(['/dashboard']);
           this.logForm.reset();
         }
         else {
