@@ -1,0 +1,29 @@
+.hero-body{
+    background-color: #06AAE2;
+}
+
+.bottom {
+    margin-top: 4em;
+}
+#addMemberWrapper {
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    height: 55px;
+}
+
+.addMember {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    width: 150px;
+    height: 40px;
+    display: block;
+}
+.addMember p {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+.addMember i {
+   margin-right: 5px;
+}

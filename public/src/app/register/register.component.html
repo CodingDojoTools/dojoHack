@@ -1,0 +1,166 @@
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <h1 class="title">Coding Dojo Hackathons</h1>
+          <h2 class="subtitle">Dojo vs. Dojo</h2>
+        </div>
+        <div class="column">
+          <form (submit)="loggingIn()" class="field is-horizontal">
+            <div class="field-body">
+              <div class="field">
+                <input class="input" type="text" placeholder="Team name">
+              </div>
+              <div class="field"> 
+                <input class="input" type="text" placeholder="Password">
+              </div>
+              <div class="field">
+                <button class="button is-dark">Login</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container bottom">
+  <div class="columns">
+    <div class="column">
+
+      <h3>Coding dojo logo</h3>
+
+    </div>
+    <div class="column">
+      <h2 class="title">Register here</h2>
+      <form [formGroup] = "regForm" (submit)="register(regForm)"> 
+      <div class="field">
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger':((TError.minlength || TError.required)&& teamName.touched) || TError.maxlength }" type="text" formControlName="teamName" placeholder="Team Name" id="teamName">
+          <span class="icon is-small is-left">
+            <i class="fa fa-users"></i>
+          </span>
+          <span *ngIf="teamName.valid" class="icon is-small is-right">
+            <i class="fa fa-check"></i>
+          </span>
+          <p *ngIf="TError.required && teamName.touched" class="help is-danger">A team name is required.</p>
+          <p *ngIf="TError.minlength && teamName.touched" class="help is-danger">Team names must consist of at least five characters.</p>
+          <p *ngIf="TError.maxlength" class="help is-danger">Team names must not contain more than 32 characters.</p>
+        </div>
+      </div>
+
+
+      <div class="field" formGroupName = 'passGroup'>
+          <div class="field">
+              <div class="control has-icons-left has-icons-right">
+                
+                <input class="input" [ngClass]="{'is-success': password.valid, 'is-danger': pDanger }" type="password" formControlName="password" id="password" placeholder="Password">
+                <span class="icon is-small is-left">
+                  <i class="fa fa-key"></i>
+                </span>
+                <span *ngIf="password.valid" class="icon is-small is-right">
+                  <i class="fa fa-check"></i>
+                </span>
+                <span *ngIf="pDanger" class="icon is-small is-right">
+                    <i class="fa fa-warning"></i>
+                  </span>
+              </div>
+              <p *ngIf="pR" class="help is-danger">Password is required</p>
+      
+              <p *ngIf="pLen" class="help is-danger">Password must have at least 8 characters.</p>
+              
+            </div>
+            
+            <div class="field">
+              <div class="control has-icons-left has-icons-right" >
+
+                  <input *ngIf="password.invalid" disabled type="password" class="input" placeholder="Confirm Password" value="{{confirmPassword.value}}">
+
+                <input *ngIf="password.valid" class="input" [ngClass]="{'is-success': passGroup.valid, 'is-danger': CPDanger }" type="password" formControlName="confirmPassword" placeholder="Confirm Password" >
+
+                <span class="icon is-small is-left">
+                  <i class="fa fa-key"></i>
+                </span>
+                <span *ngIf="passGroup.valid" class="icon is-small is-right">
+                    <i class="fa fa-check"></i>
+                  </span>
+                <span *ngIf="CPDanger" class="icon is-small is-right">
+                  <i class="fa fa-warning"></i>
+                </span>
+              </div>
+              <p  *ngIf="CPDanger" class="help is-danger">Passwords do not match</p>
+            
+      
+            </div>
+
+      </div>
+      
+
+      <div class="field">
+        <div class="control has-icons-left">
+          <div class="select">
+            <select formControlName="location">
+                <option value="" disabled="true">Location</option>
+              <option>San Jose</option>
+              <option>Burbank</option>
+              <option>Seattle</option>
+              <option>Chicago</option>
+              <option>Dallas</option>
+              <option>DC</option>
+              <option>Tulsa</option>
+              <option>Berkeley</option>
+              <option>OC</option>
+            </select>
+          </div>
+          <span class="icon is-small is-left">
+            <i class="fa fa-map-marker"></i>
+          </span>
+        </div>
+      </div>
+      
+      <!-- list of members -->
+      <div formArrayName="members">
+        <div class="field">
+          <div *ngFor="let member of regForm.controls.members.controls; let i=index">
+            <div>
+              <span>Member {{i+1}}</span>
+              <span *ngIf="regForm.controls.members.controls.length > 1">Remove a member</span>
+            </div>
+            <div [formGroupName]="i">
+              <app-register-members [group]="regForm.controls.members.controls[i]"></app-register-members>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="addMemberWrapper">
+      <div class="field addMember" (click)="addMember()">
+          <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+          <p>Add a member</p>
+      </div>
+      </div>
+      
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-medium is-dark" [disabled]="!regForm.valid">Register team</button>
+  
+        </div>
+        
+        <div class="control">
+          <button class="button is-medium" type="button" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+      
+      </form>
+      
+      
+
+
+    </div>
+
+  </div>
+  
+
+</section>

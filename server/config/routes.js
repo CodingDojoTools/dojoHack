@@ -1,6 +1,7 @@
 var teams = require('../controllers/teams.js');
 var users = require('../controllers/users.js');
 var hackathons = require('../controllers/hackathons.js');
+var path = require('path')
 
 // =============================================================
 
@@ -72,10 +73,6 @@ module.exports = function(app) {
     })
 
 
-// -----------------------------------------------------------------
-    // angular
-    
-    app.get('/', (req, res) => { res.send("index"); });
     
     // =============================================================
     //                          Admin
@@ -125,4 +122,13 @@ module.exports = function(app) {
     app.get('/hackathons/:hackId/join',         (req, res) => { hackathons.join(req, res); })
     
     app.post('/hackathons/:hackId/addproject',  (req, res) => { hackathons.addProject(req, res); })
+
+
+    // =============================================================
+    //                      Angular
+    // ============================================================= 
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve('./public/dist/index.html'));
+    })
 }
