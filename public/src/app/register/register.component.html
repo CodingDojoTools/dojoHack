@@ -34,6 +34,8 @@
 
     </div>
     <div class="column">
+      {{regForm.value | json}}
+      {{regForm.status | json}}
       <h2 class="title">Register here</h2>
       <form [formGroup] = "regForm" (submit)="register(regForm)"> 
       <div class="field">
@@ -103,15 +105,15 @@
           <div class="select">
             <select formControlName="location">
                 <option value="" disabled="true">Location</option>
-              <option>San Jose</option>
-              <option>Burbank</option>
-              <option>Seattle</option>
-              <option>Chicago</option>
-              <option>Dallas</option>
-              <option>DC</option>
-              <option>Tulsa</option>
-              <option>Berkeley</option>
-              <option>OC</option>
+              <option value="1">San Jose</option>
+              <option value="2">Burbank</option>
+              <option value="3">Seattle</option>
+              <option value="4">Chicago</option>
+              <option value="5">Dallas</option>
+              <option value="6">DC</option>
+              <option value="7">Tulsa</option>
+              <option value="8">Berkeley</option>
+              <option value="9">OC</option>
             </select>
           </div>
           <span class="icon is-small is-left">
