@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../http.service';
-import { Team } from '../team';
+import { Team } from '../models';
 
 
 @Component({

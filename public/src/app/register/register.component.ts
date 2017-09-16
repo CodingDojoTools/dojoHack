@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { HttpService } from '../http.service';
-import { Team } from '../team';
+import { Team } from '../models';
 
 export function comparePassword(group: FormGroup){
   const pass = group.value;
