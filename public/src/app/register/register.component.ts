@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 
+export function comparePassword(group: FormGroup){
+  const pass = group.value;
+  return (pass.password === pass.confirmPassword) ? null : {invalid: true}
+}
 
 @Component({
   selector: 'app-register',
@@ -14,7 +18,15 @@ export class RegisterComponent implements OnInit {
 
   regForm: FormGroup;
 
-  teamValid: String;
+  TError: Object;
+  PError: Object;
+  pDanger: Boolean;
+  pLen: Boolean;
+  pR: Boolean;
+  pMatch: Boolean;
+  pValid: Boolean = false;
+
+  teamValid: Boolean = false;
 
   loggingIn() {
     console.log("We're logging in!")
@@ -29,9 +41,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.regForm = this.fb.group({
-      teamName: ['', [Validators.required, Validators.minLength(2)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+      teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
+      passGroup: this.fb.group({
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', [Validators.required]]
+      }, {validator: comparePassword}),
       location: [''],
       members: this.fb.array([
         this.initMember()
@@ -39,6 +53,8 @@ export class RegisterComponent implements OnInit {
 
     })
   }
+  // {value: "", disabled: true}
+
   initMember(){
     return this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -51,13 +67,37 @@ export class RegisterComponent implements OnInit {
     control.push(this.initMember());
   }
 
+  get passGroup(){
+    return this.regForm.get('passGroup');
+  }
+
   get teamName() {
-    console.log(this.regForm.get('teamName'))
-    if(!this.regForm.get('teamName').valid && this.regForm.get('teamName').touched){
-      console.log("not valid")
-      this.teamValid = "is-danger"
-    }
-    return this.regForm.get('teamName')
+    console.log("regform", this.regForm)
+    let newTeam = this.regForm.get('teamName');
+    this.TError = newTeam.errors ? newTeam.errors : {};
+    return newTeam;
+  }
+
+  get password(){
+    let newPass = this.passGroup.get('password');
+    this.PError = newPass.errors ? newPass.errors : {};
+
+    this.pLen = this.PError["minlength"] && newPass["touched"];
+    this.pR = this.PError["required"] && newPass["touched"];
+
+    this.pDanger = this.pLen || this.pR;
+
+    // if (newPass.valid) this.confirmPassword.enable();
+
+    return newPass;
+  }
+  get confirmPassword(){
+    return this.passGroup.get('confirmPassword');
+  }
+
+  get CPDanger(){
+    let cp = this.confirmPassword;
+    return this.passGroup.invalid && cp.touched
   }
 
 
