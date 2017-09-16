@@ -12,10 +12,10 @@ export class JoinedComponent implements OnInit {
   constructor(private httpService: HttpService, private _router: Router) { }
 
   ngOnInit() {
-    this.fetchHackathons()
+   
   }
-  fetchHackathons(){
+  
+
 
   }
 
-}
