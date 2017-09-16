@@ -1,13 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs';
 
 @Injectable()
 export class HttpService {
   loggedInId: Number;
+  isLoggedIn = true;
+  redirectUrl: String;
 
   locations = [];
   constructor(private _http: Http) { }
+
+  login(): Boolean {
+    return this.isLoggedIn;
+  }
 
   loginTeam(team, callback){
     console.log("in the service about to login a team", team)
@@ -15,6 +22,7 @@ export class HttpService {
       (response) => {
         let res = response.json();
         this.loggedInId = res.userId
+        this.isLoggedIn = true;
         callback(res);
       },
       (err) => {

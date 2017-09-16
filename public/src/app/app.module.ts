@@ -9,8 +9,11 @@ import { RegisterMembersComponent } from './register-members/register-members.co
 import { DynamicComponent } from './dynamic/dynamic.component';
 import { AddressComponent } from './dynamic/address/address.component';
 import { HttpService } from './http.service';
+import { AuthGuardService } from './auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavbarComponent } from './navbar/navbar.component';
+
 
 
 @NgModule({
@@ -21,16 +24,22 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     DynamicComponent,
     AddressComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    NavbarComponent,
+    
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    routing
+    routing,
+  
   ],
-  providers: [HttpService],
+  providers: [
+    HttpService,
+    AuthGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

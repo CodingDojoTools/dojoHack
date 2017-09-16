@@ -1,11 +1,12 @@
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthGuardService } from './auth-guard.service';
 
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'register', pathMatch: 'full' },
     { path: 'register', component: RegisterComponent},
-    { path: 'dashboard', component: DashboardComponent}
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]}
     
 ];
 

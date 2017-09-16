@@ -12,12 +12,12 @@ export class DashboardComponent implements OnInit {
   constructor(private httpService: HttpService, private _router: Router) { }
 
   ngOnInit() {
-    if(this.httpService.loggedInId){
-      console.log("logged in")
-    }
-    else {
-      this._router.navigate(['/']);
-    }
+    // if(this.httpService.loggedInId){
+    //   console.log("logged in")
+    // }
+    // else {
+    //   this._router.navigate(['/']);
+    // }
   }
 
 }
