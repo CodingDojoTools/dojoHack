@@ -1,11 +1,15 @@
 
-.hero-body img, .hero-body .title {
+.topTitle img, .topTitle h2 {
     display: inline-block;
     vertical-align: bottom;
+    
 }
 #ninjaimg {
    width: 8%;
 }
 table {
     margin: 0 auto;
+}
+.topTitle {
+    padding-bottom: 1.5rem;
 }

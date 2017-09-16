@@ -13,6 +13,9 @@ import { AuthGuardService } from './auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { JoinedComponent } from './dashboard/joined/joined.component';
+import { PostedComponent } from './dashboard/posted/posted.component';
+import { PastComponent } from './dashboard/past/past.component';
 
 
 
@@ -26,6 +29,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     LoginComponent,
     DashboardComponent,
     NavbarComponent,
+    JoinedComponent,
+    PostedComponent,
+    PastComponent,
     
   ],
   imports: [
