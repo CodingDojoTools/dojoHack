@@ -12,22 +12,10 @@
         <th>Action</th>
       </thead>
       <tbody>
-        <tr>
-          <td>Hackathon A</td>
+        <tr *ngFor="let hack of pastHackathons">
+          <td>{{hack.name}}</td>
           <td>iOS</td>
-          <td>The Kermits</td>
-          <td><button class="button is-dark is-small">Watch</button></td>
-        </tr>
-        <tr>
-          <td>Hackathon B</td>
-          <td>MEAN stack</td>
-          <td>Jesus</td>
-          <td><button class="button is-dark is-small">Watch</button></td>
-        </tr>
-        <tr>
-          <td>Hackathon C</td>
-          <td>Code for good</td>
-          <td>Stinky Pete</td>
+          <td>{{hack.winner}}</td>
           <td><button class="button is-dark is-small">Watch</button></td>
         </tr>
       </tbody>

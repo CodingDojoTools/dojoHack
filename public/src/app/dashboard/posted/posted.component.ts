@@ -15,9 +15,9 @@ export class PostedComponent implements OnInit {
   ngOnInit() {
     this.httpService.fetchPosted((res) => {
       if(res.status){
-        console.log("we got hackahtons to post!")
+       
         this.postedHackathons = res.hacks;
-        console.log(this.postedHackathons)
+       
       }
       else {
         console.log("We don't appear to have any luck.")

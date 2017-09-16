@@ -10,6 +10,7 @@ export class HttpService {
   isLoggedIn = true;
   redirectUrl: String;
   postedHackathons: Hackathon[] = [];
+  pastHackathons: Hackathon[] = [];
 
   locations = [];
   constructor(private _http: Http) { }
@@ -78,6 +79,24 @@ export class HttpService {
       },
       (err) => {
         console.log("Got an error, failed hackathon request", err)
+      }
+    )
+  }
+
+  fetchPast(callback){
+    this._http.get('/hackathons/past').subscribe(
+      (response) => {
+        let res = response.json();
+        if(res.hackathons){
+          this.pastHackathons = res.hackathons;
+          callback({status: true, hacks: this.pastHackathons});
+        }
+        else {
+          callback({status: false})
+        }
+      },
+      (err) => {
+        console.log("Error getting past hackathons in service", err);
       }
     )
   }
