@@ -40,10 +40,11 @@ export class LoginComponent implements OnInit {
       let login = {name: "", password: ""};
       login.name = model.teamName;
       login.password = model.password;
-      this.logForm.reset();
+     
       this.httpService.loginTeam(login, (res) => {
         if(res.status){
           console.log("successful login, we should go into the app")
+          this.logForm.reset();
         }
         else {
           if(res.message){
