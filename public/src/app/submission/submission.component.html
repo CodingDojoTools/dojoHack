@@ -1,0 +1,113 @@
+<app-navbar></app-navbar>
+
+
+<section class="hero is-dark is-bold">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Hackathon 4</h1>
+      <h2 class="subtitle">
+        Time left to submit your entry: 4hr 30sec
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section ">
+<form [formGroup]="projForm" (submit)='hackEntry()'>
+  <div class="field">
+    <div class="control has-icons-left has-icons-right">
+      <input class="input" [ngClass]="{'is-success':title.valid, 'is-danger': titleDanger}" type="text"  formControlName="title" placeholder="Project title" id="title">
+      <span class="icon is-small is-left">
+        <i class="fa fa-cubes"></i>
+      </span>
+      <span *ngIf="title.valid" class="icon is-small is-right">
+        <i class="fa fa-check"></i>
+      </span>
+      <p *ngIf="titleReq" class="help is-danger">A project title is required</p>
+      <p *ngIf="titleLen" class="help is-danger">Project titles must consist of 5 - 50 characters</p>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control has-icons-left has-icons-right">
+      <input class="input" [ngClass]="{'is-success':gitUrl.valid, 'is-danger': gitDanger}" type="text" formControlName="gitUrl" placeholder="Github url">
+      <span class="icon is-small is-left">
+        <i class="fa fa-github"></i>
+      </span>
+      <span *ngIf="gitUrl.valid" class="icon is-small is-right">
+        <i class="fa fa-check"></i>
+      </span>
+      <p *ngIf="gitReq" class="help is-danger">A Github url is required</p>
+      <p *ngIf="invalidGit" class="help is-danger">A valid Github url is required</p>    
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control has-icons-left has-icons-right">
+      <input class="input" [ngClass]="{'is-success':vidUrl.valid, 'is-danger':vidDanger}" type="text" formControlName="vidUrl"  placeholder="Video url" >
+      <span class="icon is-small is-left">
+        <i class="fa fa-youtube"></i>
+      </span>
+      <span *ngIf="vidUrl.valid" class="icon is-small is-right">
+        <i class="fa fa-check"></i>
+      </span>
+      <p *ngIf="vidReq" class="help is-danger">A YouTube url is required</p>
+      <p *ngIf="invalidVid" class="help is-danger">A valid YouTube url is required</p>    
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <textarea class="textarea" [ngClass]="{'is-success': description.valid, 'is-danger':descDanger}" formControlName="description" placeholder="Description"></textarea>
+      <p *ngIf="descReq" class="help is-danger">A description is required</p>
+      <p *ngIf="descLen" class="help is-danger">A description of at least 30 characters is required</p>    
+    </div>
+  </div>
+
+  <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-medium is-dark" [disabled]="!projForm.valid">Register team</button>
+
+      </div>
+      
+      <div class="control">
+        <button class="button is-medium" type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+  
+
+
+</form>
+</section>
+<!-- 
+<section class="section">
+    <div class="container">
+      <div class="topTitle">
+        <img id="ninjaimg" src="./assets/images/ninjaComp.png" alt="Hacking ninja">
+        <h2 clas="title">Hackathon 4</h2>
+        <h2 class="subtitle">Submit your entry</h2>
+      </div>
+      <div class="box">
+    
+      <table *ngIf="joinedHackathons.length > 0" class="table is-striped is-fullwidth">
+          <thead>
+            <th>Name</th>
+            <th>Deadline</th>      
+            <th>Time left</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let hack of joinedHackathons">
+              <td>{{hack.name}}</td>
+              <td>{{hack.deadline | date: 'medium'}}</td>
+              <td>{{hack.timeLeft | async}}</td>
+              <td><button class="button" [ngClass]="{'is-danger' : hack.danger | async, 'is-large': hack.danger | async, 'is-dark': !hack.danger | async}" >Submit</button>{{hack.danger | async}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="joinedHackathons.length < 1">
+          <h2 class="subtitle">You are not competing in any hackathons at the moment.</h2>
+        </div>
+      </div>
+      </div>
+    </section> -->

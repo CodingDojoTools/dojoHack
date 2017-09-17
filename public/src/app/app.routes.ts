@@ -1,12 +1,14 @@
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SubmissionComponent} from './submission/submission.component';
 import { AuthGuardService } from './auth-guard.service';
 
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'register', pathMatch: 'full' },
     { path: 'register', component: RegisterComponent},
-    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]}
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
+    { path: 'entry', component: SubmissionComponent, canActivate: [AuthGuardService]}
     
 ];
 

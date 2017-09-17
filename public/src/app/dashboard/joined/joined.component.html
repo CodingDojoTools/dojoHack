@@ -18,7 +18,7 @@
             <td>{{hack.name}}</td>
             <td>{{hack.deadline | date: 'medium'}}</td>
             <td>{{hack.timeLeft | async}}</td>
-            <td><button class="button" [ngClass]="{'is-danger' : hack.danger | async, 'is-large': hack.danger | async, 'is-dark': !hack.danger | async}" >Submit</button>{{hack.danger | async}}</td>
+            <td><button class="button" (click)="submitEntry(hack.id)">Submit</button>{{hack.danger | async}}</td>
           </tr>
         </tbody>
       </table>

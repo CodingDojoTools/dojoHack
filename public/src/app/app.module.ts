@@ -16,6 +16,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { JoinedComponent } from './dashboard/joined/joined.component';
 import { PostedComponent } from './dashboard/posted/posted.component';
 import { PastComponent } from './dashboard/past/past.component';
+import { SubmissionComponent } from './submission/submission.component';
 
 
 
@@ -32,6 +33,7 @@ import { PastComponent } from './dashboard/past/past.component';
     JoinedComponent,
     PostedComponent,
     PastComponent,
+    SubmissionComponent,
     
   ],
   imports: [

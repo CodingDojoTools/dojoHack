@@ -20,13 +20,16 @@ export class JoinedComponent implements OnInit {
     this.httpService.fetchJoined((res)=>{
       if(res.status){
         this.joinedHackathons = res.hacks;
-        console.log("IN danger?", this.joinedHackathons[0]["danger"])
+       
       }
       else {
         console.log("Could not get joined hackathons")
       }
     })
     
+  }
+  submitEntry(hackId){
+    console.log("Submitting for hack", hackId)
   }
 
  

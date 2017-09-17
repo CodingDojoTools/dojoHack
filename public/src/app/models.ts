@@ -16,3 +16,15 @@ export class Hackathon {
         public winner: Number = 0
     ){}
 }
+
+export class Project {
+    constructor(
+        public id: number = 0,
+        public title: string = "",
+        public gitUrl: string = "",
+        public vidURL: string = "",
+        public description: string = "",
+        public teamId: number = 0,
+        public hackathonId: number = 0
+    ){}
+}

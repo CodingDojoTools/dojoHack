@@ -19,9 +19,9 @@
           <span *ngIf="teamName.valid" class="icon is-small is-right">
             <i class="fa fa-check"></i>
           </span>
-          <p *ngIf="TError.required && teamName.touched" class="help is-danger">A team name is required.</p>
-          <p *ngIf="TError.minlength && teamName.touched" class="help is-danger">Team names must consist of at least five characters.</p>
-          <p *ngIf="TError.maxlength" class="help is-danger">Team names must not contain more than 32 characters.</p>
+          <p *ngIf="TError.required && teamName.touched" class="help is-danger">A team name is required</p>
+          <p *ngIf="TError.minlength && teamName.touched" class="help is-danger">Team names must consist of at least five characters</p>
+          <p *ngIf="TError.maxlength" class="help is-danger">Team names must not contain more than 32 characters</p>
         </div>
       </div>
 
@@ -43,7 +43,7 @@
               </div>
               <p *ngIf="pR" class="help is-danger">Password is required</p>
       
-              <p *ngIf="pLen" class="help is-danger">Password must have at least 8 characters.</p>
+              <p *ngIf="pLen" class="help is-danger">Password must have at least 8 characters</p>
               
             </div>
             
