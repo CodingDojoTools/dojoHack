@@ -1,1 +1,53 @@
 <app-navbar></app-navbar>
+
+<div [formGroup]="proForm">
+  <div class="field ">
+          
+    <div class="control has-icons-left has-icons-right">
+      <input class="input" type="text" formControlName="teamName" placeholder="Team Name">
+      <span class="icon is-small is-left">
+        <i class="fa fa-users"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control has-icons-left">
+      <div class="select">
+        <select formControlName="location">
+          <option value="" disabled="true">Location</option>
+          <option value="1">San Jose</option>
+          <option value="2">Burbank</option>
+          <option value="3">Seattle</option>
+          <option value="4">Chicago</option>
+          <option value="5">Dallas</option>
+          <option value="6">DC</option>
+          <option value="7">Tulsa</option>
+          <option value="8">Berkeley</option>
+          <option value="9">OC</option>
+        </select>
+      </div>
+      <span class="icon is-small is-left">
+        <i class="fa fa-map-marker"></i>
+      </span>
+    </div>
+  </div>
+    <!-- list of members  -->
+  <div formArrayName="members" class="field">
+    <div>
+      <div *ngFor="let member of proForm.controls.members.controls; let i=index" class="field">
+        <div>
+          <span class="member">Member {{i+1}}</span>
+          <span *ngIf="proForm.controls.members.controls.length > 1" class="remove" (click)="removeMember(i)"><i class="fa fa-minus-circle"></i> Remove member
+          </span>
+        </div>
+        <div [formGroupName]="i">
+          <app-register-members [group]="proForm.controls.members.controls[i]"></app-register-members>
+        </div>
+      </div>
+    </div>
+  </div>
+              <!-- <p *ngIf="lastReq" class="help is-danger">Last name is required</p>
+              <p *ngIf="lastLen" class="help is-danger">Last name must contain at least two characters</p> -->
+</div>  
+  

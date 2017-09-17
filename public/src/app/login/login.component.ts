@@ -13,13 +13,13 @@ import { Team } from '../models';
 export class LoginComponent implements OnInit {
 
   logForm: FormGroup;
-  tLen: Boolean;
-  tLenMax: Boolean;
-  tReq: Boolean;
-  pReq: Boolean;
-  tDanger: Boolean;
-  loginError: Boolean;
-  serverError: Boolean;
+  tLen: boolean;
+  tLenMax: boolean;
+  tReq: boolean;
+  pReq: boolean;
+  tDanger: boolean;
+  loginError: boolean;
+  serverError: boolean;
 
 
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
@@ -42,25 +42,30 @@ export class LoginComponent implements OnInit {
       login.name = model.teamName;
       login.password = model.password;
      
-      this.httpService.loginTeam(login, (res) => {
-        if(res.status){
-          this._router.navigate(['/dashboard']);
-          this.logForm.reset();
-        }
-        else {
-          console.log("unsuccessful login")
-          if(res.message){
-            this.serverError = true;
-          }
-          else {
-            this.loginError = true;
-          }
-        }
-      });
+      this.httpService.loginTeam(login)
+      .subscribe(success => console.log("team in", success), 
+      err=>console.log("failed"))
     }
-    else {
-      console.log("You're a stubborn one, aren't you?")
-    }
+      
+    //   (res) => {
+    //     if(res.status){
+    //       this._router.navigate(['/dashboard']);
+    //       this.logForm.reset();
+    //     }
+    //     else {
+    //       console.log("unsuccessful login")
+    //       if(res.message){
+    //         this.serverError = true;
+    //       }
+    //       else {
+    //         this.loginError = true;
+    //       }
+    //     }
+    //   });
+    // }
+    // else {
+    //   console.log("You're a stubborn one, aren't you?")
+    // }
   }
 
   fieldChanged(){

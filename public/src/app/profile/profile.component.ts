@@ -18,12 +18,30 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getMembers();
+    this.proForm = this.fb.group({
+      teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
+      location: [''],
+      members: this.fb.array([
+        this.initMember()
+      ])
+    })  
   }
+
+  initMember(){
+    return this.fb.group({
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]]
+    })
+  }
+
   getMembers(){
     this.httpService.getTeamMembers((res)=>{
       if(res.status){
-
+        this.members = res.members;
       }
+      else {
+        console.log("Having trouble getting the team members");
+      } 
     })
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Hackathon, Project, Session } from './models';
+import { Hackathon, Project, Session } from './models'; 
 import 'rxjs';
 
 @Injectable()
@@ -40,42 +40,50 @@ export class HttpService {
     this.loggedSession.loggedTeamName = teamname;
   }
 
-  loginTeam(team, callback){
+  loginTeam(team): Observable<Response>{
     console.log("in the service about to login a team", team)
-    this._http.post('/login', team).subscribe(
-      (response) => {
-        const res = response.json();
-        if(res.status){
-          this.startSession(team.name, res.userId);
-          this.loggedInId = res.userId
-          this.isLoggedIn = true;
-          this.loggedTeamName = team.name;
-        }
+    return this._http.post('/login', team).map(response=>response.json()).catch(err => err.json());
+    
+    
+    
+    // subscribe(
+    //   (response) => {
+    //     const res = response.json();
+    //     if(res.status){
+    //       this.startSession(team.name, res.userId);
+    //       this.loggedInId = res.userId
+    //       this.isLoggedIn = true;
+    //       this.loggedTeamName = team.name;
+    //     }
         
-        callback(res);
-      },
-      (err) => {
-        console.log("Got an error trying to login", err);
-        callback({status: false, message: "catch"})
-      }
-    )
+    //     callback(res);
+    //   },
+    //   (err) => {
+    //     console.log("Got an error trying to login", err);
+    //     callback({status: false, message: "catch"})
+    //   }
+    // )
   }
+  
+
+
   getTeamMembers(callback){
-    this._http.get("/teams/members").subscribe(
-      (response) => {
-        const res = response.json();
-        if(res.members){
-          callback({status: true, members: res.members})
-        }
-        else {
-          callback({status: false});
-        }
-      },
-      (err) => {
-        console.log("Got an error trying to fetch team members", err);
-        callback({status: false});
-      }
-    )
+    // this._http.get("/teams/members").subscribe(
+    // this._http.get("/teams/members").map(response => response.json())
+    //   (response) => {
+    //     const res = response.json();
+    //     if(res.members){
+    //       callback({status: true, members: res.members})
+    //     }
+    //     else {
+    //       callback({status: false});
+    //     }
+    //   },
+    //   (err) => {
+    //     console.log("Got an error trying to fetch team members", err);
+    //     callback({status: false});
+    //   }
+    // )
   }
 
   registerTeam(team, callback){
