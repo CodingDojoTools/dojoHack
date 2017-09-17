@@ -5,14 +5,6 @@ import { HttpService } from '../http.service';
 import { Project, Hackathon } from '../models';
 import { Subscription } from 'rxjs/Subscription';
 
-// export function validGitUrl(group: FormGroup){
-//   const model = group.value;
-//   const giturl = model.gitUrl;
-//   const gitRegex = new RegExp('((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)([\w\.@\:/\-~]+)(\.git)?(/)?');
-//   console.log("testing the git regex", gitRegex.test(giturl))
-//   return gitRegex.test(giturl) ? null : {invalid: true}
-// }
-
 export function validGitUrl(control: FormControl){
   const giturl = control.value;
   const gitRegex = new RegExp('((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)([\w\.@\:/\-~]+)(\.git)?(/)?');

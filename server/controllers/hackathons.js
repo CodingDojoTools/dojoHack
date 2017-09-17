@@ -121,9 +121,10 @@ module.exports = {
 
     submissions: (req, res) => {
         let query = `
-            SELECT sub.teamId, teams.name as teamName, projectId, projects.title AS projectTitle 
+            SELECT sub.teamId, teams.name as teamName, locations.name as teamLocation, projectId, projects.title AS projectTitle 
             FROM submissions AS sub 
             LEFT JOIN teams ON sub.teamId = teams.id
+            LEFT JOIN locations ON teams.location = locations.id
             LEFT JOIN projects ON sub.projectId = projects.id
             WHERE sub.hackathonId = ?;
         `;

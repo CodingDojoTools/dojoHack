@@ -13,6 +13,7 @@ export class HttpService {
   postedHackathons: Hackathon[] = [];
   pastHackathons: Hackathon[] = [];
   joinedHackathons: Hackathon[] = [];
+  allHackathons: Hackathon[] = [];
   count = 60;
   locations = [];
   constructor(private _http: Http) { }
@@ -82,6 +83,7 @@ export class HttpService {
         let res = response.json();
         if(res.hackathons){
           this.postedHackathons = res.hackathons;
+          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
           callback({status: true, hacks: this.postedHackathons});
         }
         else {
@@ -100,6 +102,7 @@ export class HttpService {
         let res = response.json();
         if(res.hackathons){
           this.pastHackathons = res.hackathons;
+          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
           callback({status: true, hacks: this.pastHackathons});
         }
         else {
@@ -121,6 +124,7 @@ export class HttpService {
           this.postedHackathons.splice(index, 1);
           this.getTimeLeft(hack);
           this.joinedHackathons.push(hack);
+          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
         }
         callback(res)
       },
@@ -138,6 +142,7 @@ export class HttpService {
             this.getTimeLeft(hack);
           }
           this.joinedHackathons = res.hackathons;
+          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
           callback({status: true, hacks: this.joinedHackathons});
         }
         else {
@@ -150,10 +155,23 @@ export class HttpService {
     )
   }
 
+  getOneHackathon(id, callback){
+    var found = false;
+    for(let hack of this.allHackathons){
+      if(hack.id == id){
+        found = true;
+        callback({status: true, hackathon: hack});
+        break;
+      }
+    }
+    if(!found){
+      callback({status: false})
+    }
+  }
+
   getOneJoinedHackathon(id, callback){
     var found = false;
     for(let hack of this.joinedHackathons){
-      console.log("each hack", hack)
       if(hack.id == id){
         found = true;
         callback({status: true, hackathon: hack});
@@ -163,6 +181,22 @@ export class HttpService {
     if(!found){
       callback({status: false});
     } 
+  }
+
+  getHackathonSubmissions(id, callback){
+    this._http.get(`hackathons/${id}/submissions`).subscribe(
+      (response)=>{
+        
+        let res = response.json()
+        console.log("got a response", res)
+        if(res.submissions){
+          callback({status: true, submissions: res.submissions})
+        }
+      },
+      (err)=>{
+        callback({status: false})
+      }
+    )
   }
 
   submitProject(project, id, callback){

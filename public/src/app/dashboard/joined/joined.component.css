@@ -13,3 +13,7 @@ table {
 .topTitle {
     padding-bottom: 1.5rem;
 }
+
+tbody a {
+    color: #06AAE2;
+}

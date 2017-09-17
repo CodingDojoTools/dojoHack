@@ -17,6 +17,7 @@ import { JoinedComponent } from './dashboard/joined/joined.component';
 import { PostedComponent } from './dashboard/posted/posted.component';
 import { PastComponent } from './dashboard/past/past.component';
 import { SubmissionComponent } from './submission/submission.component';
+import { DetailsComponent } from './details/details.component';
 
 
 
@@ -34,6 +35,7 @@ import { SubmissionComponent } from './submission/submission.component';
     PostedComponent,
     PastComponent,
     SubmissionComponent,
+    DetailsComponent,
     
   ],
   imports: [
