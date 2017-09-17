@@ -19,6 +19,7 @@ import { PastComponent } from './dashboard/past/past.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { DetailsComponent } from './details/details.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -38,6 +39,7 @@ import { GuidelinesComponent } from './guidelines/guidelines.component';
     SubmissionComponent,
     DetailsComponent,
     GuidelinesComponent,
+    ProfileComponent,
     
   ],
   imports: [

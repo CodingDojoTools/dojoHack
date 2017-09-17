@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Hackathon, Project } from './models';
+import { Hackathon, Project, Session } from './models';
 import 'rxjs';
 
 @Injectable()
 export class HttpService {
+
+  loggedSession = new Session();
   loggedInId: number;
   isLoggedIn = true;
   loggedTeamName: string;
@@ -22,6 +24,7 @@ export class HttpService {
     return this.isLoggedIn;
   }
   logout() {
+    this.loggedSession = new Session();
     this.loggedInId = null;
     this.isLoggedIn = false;
     this.loggedTeamName = null;
@@ -31,20 +34,46 @@ export class HttpService {
     this.allHackathons = [];
 
   }
+  startSession(teamname, teamid){
+    this.loggedSession.loggedInId = teamid;
+    this.loggedSession.isLoggedIn = true;
+    this.loggedSession.loggedTeamName = teamname;
+  }
 
   loginTeam(team, callback){
     console.log("in the service about to login a team", team)
     this._http.post('/login', team).subscribe(
       (response) => {
         const res = response.json();
-        this.loggedInId = res.userId
-        this.isLoggedIn = true;
-        this.loggedTeamName = team.name;
+        if(res.status){
+          this.startSession(team.name, res.userId);
+          this.loggedInId = res.userId
+          this.isLoggedIn = true;
+          this.loggedTeamName = team.name;
+        }
+        
         callback(res);
       },
       (err) => {
         console.log("Got an error trying to login", err);
         callback({status: false, message: "catch"})
+      }
+    )
+  }
+  getTeamMembers(callback){
+    this._http.get("/teams/members").subscribe(
+      (response) => {
+        const res = response.json();
+        if(res.members){
+          callback({status: true, members: res.members})
+        }
+        else {
+          callback({status: false});
+        }
+      },
+      (err) => {
+        console.log("Got an error trying to fetch team members", err);
+        callback({status: false});
       }
     )
   }
@@ -55,10 +84,10 @@ export class HttpService {
       (response) => {
         const res = response.json();
         if(res.status){
+          this.startSession(team.name, res.userId);
           this.loggedInId = res.userId;
           this.isLoggedIn = true;
           this.loggedTeamName = team.name;
-          console.log("logging the team name", this.loggedTeamName)
         }
         callback(res);
       },
