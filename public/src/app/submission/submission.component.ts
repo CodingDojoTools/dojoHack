@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
-import { Project } from '../models';
+import { Project, Hackathon } from '../models';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
   styleUrls: ['./submission.component.css']
 })
-export class SubmissionComponent implements OnInit {
+export class SubmissionComponent implements OnInit, OnDestroy {
 
   projForm: FormGroup;
   titleLen: boolean;
@@ -24,8 +25,18 @@ export class SubmissionComponent implements OnInit {
   descDanger: boolean;
   descReq: boolean;
   descLen: boolean;
+  hackathonId: number;
+  paramSub: Subscription;
+  hackathon: Hackathon;
 
-  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
+
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute) {
+    this.paramSub = this._route.params.subscribe((param)=>{
+      this.hackathonId = param.id;
+      console.log("the parameter is", param.id)
+      this.getHackathon(param.id);
+    })
+   }
 
   ngOnInit() {
     this.projForm = this.fb.group({
@@ -36,6 +47,19 @@ export class SubmissionComponent implements OnInit {
 
     })
   }
+  getHackathon(id){
+    console.log("asking the service for", id)
+    this.httpService.getOneJoinedHackathon(id, (res) => {
+      if(res.status){
+       this.hackathon = res.hackathon;
+       console.log("got the hackathon", this.hackathon)
+      }
+      else {
+        console.log("This isn't a hackathon we can submit to")
+      }
+    })
+  }
+
   hackEntry(){
     console.log("submitting an entry")
   }
@@ -76,6 +100,10 @@ export class SubmissionComponent implements OnInit {
     this.descLen = descErrors["minlength"] && newdesc.touched;
     this.descDanger = this.descReq || this.descLen;
     return newdesc;
+  }
+
+  ngOnDestroy(){
+    this.paramSub.unsubscribe();
   }
 
 }

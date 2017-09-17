@@ -1,19 +1,20 @@
 export class Team {
     constructor(
-        public name: String = "",
-        public password: String = "",
-        public confirmPassword: String = "",
-        public location: Number = 0
+        public name: string = "",
+        public password: string = "",
+        public confirmPassword: string = "",
+        public location: number = 0
     ){}
 }
 
 
 export class Hackathon {
     constructor(
-        public id: Number = 0,
-        public name: String = "",
+        public id: number = 0,
+        public name: string = "",
         public deadline: Date = new Date(),
-        public winner: Number = 0
+        public winner: number = 0,
+        public submitted: boolean = false
     ){}
 }
 

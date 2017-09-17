@@ -8,7 +8,8 @@ const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'register', pathMatch: 'full' },
     { path: 'register', component: RegisterComponent},
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
-    { path: 'entry', component: SubmissionComponent, canActivate: [AuthGuardService]}
+    { path: 'entry/:id', component: SubmissionComponent, canActivate: [AuthGuardService]},
+    {path: '**', redirectTo: 'dashboard'}
     
 ];
 

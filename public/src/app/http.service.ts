@@ -152,6 +152,24 @@ export class HttpService {
     )
   }
 
+  getOneJoinedHackathon(id, callback){
+    console.log("looking for id", id, "length is", this.joinedHackathons.length);
+  
+    var found = false;
+    for(let hack of this.joinedHackathons){
+      console.log("each hack", hack)
+      if(hack.id == id){
+        found = true;
+        callback({status: true, hackathon: hack});
+        break;
+      }
+    }
+    if(!found){
+      callback({status: false});
+    }
+    
+  }
+
   getTimeLeft(hackathon){
     const due = new Date(hackathon.deadline).getTime();
     const now = new Date().getTime();

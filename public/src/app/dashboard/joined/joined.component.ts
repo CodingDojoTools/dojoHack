@@ -30,6 +30,7 @@ export class JoinedComponent implements OnInit {
   }
   submitEntry(hackId){
     console.log("Submitting for hack", hackId)
+    this._router.navigate(['entry', hackId])
   }
 
  

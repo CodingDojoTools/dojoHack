@@ -4,9 +4,9 @@
 <section class="hero is-dark is-bold">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title">Hackathon 4</h1>
+      <h1 class="title">{{hackathon.name}}</h1>
       <h2 class="subtitle">
-        Time left to submit your entry: 4hr 30sec
+        Time left to submit your entry: {{hackathon.timeLeft | async}}
       </h2>
     </div>
   </div>
