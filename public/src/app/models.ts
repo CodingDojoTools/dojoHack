@@ -28,3 +28,23 @@ export class Project {
 
     ){}
 }
+
+export class Session {
+    constructor(
+        public loggedInId: number = null,
+        public isLoggedIn: boolean = false,
+        public loggedTeamName: string = "",
+        public redirectUrl: string = "",
+        public postedHackathons: Hackathon[] = [],
+        public pastHackathons: Hackathon[] = [],
+        public joinedHackathons: Hackathon[] = [],
+        public allHackathons: Hackathon[] = []
+    ){}
+}
+
+export class Member {
+    constructor(
+        public firstName: string = "",
+        public lastName: string = ""
+    ){}
+}

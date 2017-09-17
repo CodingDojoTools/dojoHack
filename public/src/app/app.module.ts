@@ -18,6 +18,8 @@ import { PostedComponent } from './dashboard/posted/posted.component';
 import { PastComponent } from './dashboard/past/past.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { DetailsComponent } from './details/details.component';
+import { GuidelinesComponent } from './guidelines/guidelines.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -36,6 +38,8 @@ import { DetailsComponent } from './details/details.component';
     PastComponent,
     SubmissionComponent,
     DetailsComponent,
+    GuidelinesComponent,
+    ProfileComponent,
     
   ],
   imports: [
