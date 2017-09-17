@@ -68,6 +68,11 @@ module.exports = {
             });
         }
     },
+
+    isLoggedIn: (req, res) => {
+        if (req.session.userId) res.json({'status': true, 'userId':req.session.userId});
+        else res.json({'status':false});
+    },
     
     logout: (req, res) => {
         req.session.userId = null;

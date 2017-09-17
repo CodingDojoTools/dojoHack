@@ -43,8 +43,8 @@ module.exports = function(app) {
             console.log('user '+req.session.userId+' is logged in');
             next();
         } else {
-            console.log('user '+req.session.userId+' is not admin');
-            res.redirect('/');
+            console.log('user '+req.session.userId+' is not logged in');
+            res.json({"status": false});
         }
     }),
 
@@ -88,12 +88,17 @@ module.exports = function(app) {
     // =============================================================
     //                          Teams
     // =============================================================
+    
     app.post('/login',      (req, res) => { users.login(req, res, "teams"); }),
     
     app.post('/register',   (req, res) => { users.register(req, res, "teams"); }),
     
     app.get('/logout',      (req, res) => { users.logout(req, res); }),
     
+    app.get('/isLoggedIn',  (req, res) => { users.isLoggedIn(req, res); }),
+
+    app.get('/teams/:id',   (req, res) => { teams.get(req, res); }),
+
     app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
     
     app.post('/teams/addmember', (req, res) => { teams.addMember(req, res); }),
