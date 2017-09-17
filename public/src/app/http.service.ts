@@ -110,6 +110,7 @@ export class HttpService {
         if(res.status){
           let index = this.postedHackathons.indexOf(hack);
           this.postedHackathons.splice(index, 1);
+          this.getTimeLeft(hack);
           this.joinedHackathons.push(hack);
         }
         callback(res)
@@ -127,11 +128,12 @@ export class HttpService {
           // go through the array of recieved hackathons
           // give each an attribute of timeLeft, which is equal to what gets returned from countdown function
           for(let hack of res.hackathons){
-            const due = new Date(hack.deadline).getTime();
-            const now = new Date().getTime();
-            const left = Math.trunc((due - now)/1000);
-            console.log("left on 133", left)
-            hack["timeLeft"] = this.countdown(left)
+            // const due = new Date(hack.deadline).getTime();
+            // const now = new Date().getTime();
+            // const left = Math.trunc((due - now)/1000);
+            // console.log("left on 133", left)
+            // hack["timeLeft"] = this.countdown(left);
+            this.getTimeLeft(hack);
           }
           this.joinedHackathons = res.hackathons;
           callback({status: true, hacks: this.joinedHackathons});
@@ -144,6 +146,26 @@ export class HttpService {
         console.log("Error getting the joined hackathons in service", err)
       }
     )
+  }
+
+  getTimeLeft(hackathon){
+    const due = new Date(hackathon.deadline).getTime();
+    const now = new Date().getTime();
+    const left = Math.trunc((due-now)/1000);
+    hackathon["timeLeft"] = this.countdown(left);
+    hackathon["danger"] = this.countdownInt(left);
+  }
+
+  countdownInt(deadline){
+    return Observable.timer(0,1000)
+    .take(deadline)
+    .map(() => {
+      deadline--;
+      if(deadline > 86400){
+        return false;
+      }
+      return true;
+    })
   }
 
   countdown(deadline){
