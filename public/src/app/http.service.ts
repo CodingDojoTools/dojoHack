@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Hackathon } from './models';
+import { Hackathon, Project } from './models';
 import 'rxjs';
 
 @Injectable()
@@ -76,31 +76,13 @@ export class HttpService {
     )
   }
 
-  retrieveLocations(callback){
-    this._http.get('/locations').subscribe(
-      (response) => {
-        console.log("got a response", response)
-        //response from request
-        this.locations = response.json();
-    
-        callback(this.locations)
-      },
-      (err) => {
-        // error object on failed request
-        console.log("Got an error, failed request", err)
-      }
-    )
-  }
-
   fetchPosted(callback){
     this._http.get('/hackathons/current').subscribe(
       (response) => {
-        
         let res = response.json();
         if(res.hackathons){
           this.postedHackathons = res.hackathons;
           callback({status: true, hacks: this.postedHackathons});
-          
         }
         else {
           callback({status: false})
@@ -152,14 +134,7 @@ export class HttpService {
       (response)=>{
         let res = response.json();
         if(res.hackathons){
-          // go through the array of recieved hackathons
-          // give each an attribute of timeLeft, which is equal to what gets returned from countdown function
           for(let hack of res.hackathons){
-            // const due = new Date(hack.deadline).getTime();
-            // const now = new Date().getTime();
-            // const left = Math.trunc((due - now)/1000);
-            // console.log("left on 133", left)
-            // hack["timeLeft"] = this.countdown(left);
             this.getTimeLeft(hack);
           }
           this.joinedHackathons = res.hackathons;
@@ -176,8 +151,6 @@ export class HttpService {
   }
 
   getOneJoinedHackathon(id, callback){
-    console.log("looking for id", id, "length is", this.joinedHackathons.length);
-  
     var found = false;
     for(let hack of this.joinedHackathons){
       console.log("each hack", hack)
@@ -189,8 +162,22 @@ export class HttpService {
     }
     if(!found){
       callback({status: false});
-    }
-    
+    } 
+  }
+
+  submitProject(project, id, callback){
+    console.log("We'll submit this", project);
+    this._http.post(`/hackathons/${id}/addproject`, project).subscribe(
+      (response) => {
+        const res = response.json();
+        console.log("We got our response", res)
+        callback(res)
+      },
+      (err) => {
+        console.log("Error trying to submit a project in service", err)
+        callback({status: false})
+      }
+    )
   }
 
   getTimeLeft(hackathon){

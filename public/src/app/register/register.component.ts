@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit {
   register(){
 
     const model = this.regForm.value;
-    console.log("The members",model.members);
     if(this.regForm.status=="VALID"){
       this.newTeam.name = model.teamName;
       this.newTeam.password = model.passGroup.password;

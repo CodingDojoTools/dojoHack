@@ -3,16 +3,19 @@
 
 <section class="hero is-dark is-bold">
   <div class="hero-body">
-    <div class="container">
-      <h1 class="title">{{hackathon.name}}</h1>
+    <div *ngIf="hackathon" class="container">
+      <h1  class="title">{{hackathon.name}}</h1>
       <h2 class="subtitle">
         Time left to submit your entry: {{hackathon.timeLeft | async}}
       </h2>
     </div>
+    
   </div>
 </section>
 
 <section class="section ">
+  
+ 
 <form [formGroup]="projForm" (submit)='hackEntry()'>
   <div class="field">
     <div class="control has-icons-left has-icons-right">
@@ -38,7 +41,7 @@
         <i class="fa fa-check"></i>
       </span>
       <p *ngIf="gitReq" class="help is-danger">A Github url is required</p>
-      <p *ngIf="invalidGit" class="help is-danger">A valid Github url is required</p>    
+      <p *ngIf="gitMatch" class="help is-danger">A valid Github url is required</p>
     </div>
   </div>
 
@@ -52,7 +55,7 @@
         <i class="fa fa-check"></i>
       </span>
       <p *ngIf="vidReq" class="help is-danger">A YouTube url is required</p>
-      <p *ngIf="invalidVid" class="help is-danger">A valid YouTube url is required</p>    
+      <p *ngIf="vidMatch" class="help is-danger">A valid YouTube url is required</p>    
     </div>
   </div>
 
@@ -66,7 +69,7 @@
 
   <div class="field is-grouped">
       <div class="control">
-        <button class="button is-medium is-dark" [disabled]="!projForm.valid">Register team</button>
+        <button class="button is-medium is-dark" [disabled]="!projForm.valid">Submit project</button>
 
       </div>
       
@@ -78,6 +81,7 @@
 
 
 </form>
+
 </section>
 <!-- 
 <section class="section">
