@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit {
   loggingIn() {
     this.loginError = false;
     this.serverError = false;
-    console.log("We're logging in!")
     const model = this.logForm.value;
     if(this.logForm.status == "VALID"){
       let login = {name: "", password: ""};
@@ -45,7 +44,6 @@ export class LoginComponent implements OnInit {
      
       this.httpService.loginTeam(login, (res) => {
         if(res.status){
-          console.log("successful login, we should go into the app")
           this._router.navigate(['/dashboard']);
           this.logForm.reset();
         }

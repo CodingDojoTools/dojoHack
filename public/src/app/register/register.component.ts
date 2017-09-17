@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { HttpService } from '../http.service';
 import { Team } from '../models';
+import { Router } from '@angular/router';
 
 export function comparePassword(group: FormGroup){
   const pass = group.value;
@@ -16,7 +17,7 @@ export function comparePassword(group: FormGroup){
 export class RegisterComponent implements OnInit {
 
   
-  constructor(private fb: FormBuilder, private httpService: HttpService) { }
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
 
   newTeam = new Team();
 
@@ -46,6 +47,7 @@ export class RegisterComponent implements OnInit {
       this.httpService.registerTeam(this.newTeam);
       this.regForm.reset();
       this.newTeam = new Team();
+
     }
     else {
       console.log("nice try");
