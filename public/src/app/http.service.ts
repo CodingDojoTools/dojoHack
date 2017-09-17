@@ -6,9 +6,10 @@ import 'rxjs';
 
 @Injectable()
 export class HttpService {
-  loggedInId: Number;
+  loggedInId: number;
   isLoggedIn = true;
-  redirectUrl: String;
+  loggedTeamName: string;
+  redirectUrl: string;
   postedHackathons: Hackathon[] = [];
   pastHackathons: Hackathon[] = [];
   joinedHackathons: Hackathon[] = [];
@@ -28,9 +29,10 @@ export class HttpService {
     console.log("in the service about to login a team", team)
     this._http.post('/login', team).subscribe(
       (response) => {
-        let res = response.json();
+        const res = response.json();
         this.loggedInId = res.userId
         this.isLoggedIn = true;
+        this.loggedTeamName = team.name;
         callback(res);
       },
       (err) => {
@@ -40,15 +42,36 @@ export class HttpService {
     )
   }
 
-  registerTeam(team){
+  registerTeam(team, callback){
     console.log("in service about to register a team", team);
     this._http.post('/register', team).subscribe(
       (response) => {
-        console.log("got a response from post to register", response.json());
-        
+        const res = response.json();
+        if(res.status){
+          this.loggedInId = res.userId;
+          this.isLoggedIn = true;
+          this.loggedTeamName = team.name;
+          console.log("logging the team name", this.loggedTeamName)
+        }
+        callback(res);
       },
       (err) => {
+        callback({status: false, message: "Server error"})
         console.log("Got an error trying to register", err);
+      }
+    )
+  }
+
+  registerMember(member, callback){
+    console.log("in service about to register a member", member);
+    this._http.post('/teams/addmember', member).subscribe(
+      (response) => {
+        const res = response.json();
+        callback(res);
+      },
+      (err) => {
+        callback({status: false, message: "Server error"})
+        console.log("Got an error trying to register a team member", err)
       }
     )
   }

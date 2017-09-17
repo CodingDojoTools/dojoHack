@@ -8,8 +8,8 @@
   
     <div class="navbar-menu">
       <div class="navbar-start">
-        <div class="navbar-item">
-          <a href="#">The Kermits</a>
+        <div *ngIf = "loggedTeamName" class="navbar-item">
+          <a href="#">{{loggedTeamName}}</a>
         </div>
         <div class="navbar-item">
           <a href="#">Guidelines</a>

@@ -38,16 +38,27 @@ export class RegisterComponent implements OnInit {
 
  
   register(){
+
     const model = this.regForm.value;
+    console.log("The members",model.members);
     if(this.regForm.status=="VALID"){
       this.newTeam.name = model.teamName;
       this.newTeam.password = model.passGroup.password;
       this.newTeam.confirmPassword = model.passGroup.confirmPassword;
       this.newTeam.location = model.location;
-      this.httpService.registerTeam(this.newTeam);
-      this.regForm.reset();
-      this.newTeam = new Team();
-
+      this.httpService.registerTeam(this.newTeam, (res) => {
+        if(res.status){
+          for(let member of model.members){
+            this.regMember(member)
+          }
+          this.regForm.reset();
+          this.newTeam = new Team();
+          this._router.navigate(['/dashboard']);
+        }
+        else {
+          console.log("We'll have to handle error messages")
+        }
+        });
     }
     else {
       console.log("nice try");
@@ -57,6 +68,17 @@ export class RegisterComponent implements OnInit {
   cancel(){
     this.regForm.reset();
     console.log("We're canceling")
+  }
+
+  regMember(member){
+    this.httpService.registerMember(member, (res)=>{
+      if(res.status){
+        console.log("Added member")
+      }
+      else {
+        console.log("We'll have to handle error messages if we can't include the member on the team")
+      }
+    })
   }
 
 
