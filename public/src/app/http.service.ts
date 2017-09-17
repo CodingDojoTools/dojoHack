@@ -19,6 +19,10 @@ export class HttpService {
   login(): Boolean {
     return this.isLoggedIn;
   }
+  logout() {
+    this.loggedInId = null;
+    this.isLoggedIn = false;
+  }
 
   loginTeam(team, callback){
     console.log("in the service about to login a team", team)
