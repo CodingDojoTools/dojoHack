@@ -44,7 +44,7 @@ module.exports = function(app) {
             next();
         } else {
             console.log('user '+req.session.userId+' is not logged in');
-            res.json({"status": false});
+            res.status(401).send("Not logged it");
         }
     }),
 
@@ -56,7 +56,7 @@ module.exports = function(app) {
             next();
         } else {
             console.log('user '+req.session.userId+' is not admin');
-            res.json({"status": false});
+            res.status(401).send("Not an admin");
         }
     }),
     
@@ -68,7 +68,7 @@ module.exports = function(app) {
             next();
         } else {
             console.log('user is not a team');
-            res.json({"status": false});
+            res.status(401).send("Not a team");
         }
     })
 

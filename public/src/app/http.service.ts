@@ -269,6 +269,12 @@ export class HttpService {
     })
   }
 
+  pad(num){
+    let pad = ""
+    if (num < 10) pad = "0";
+    return pad+num;
+  }
+
   countdown(deadline){
     return Observable.timer(0,1000)
     .take(deadline)
@@ -284,57 +290,53 @@ export class HttpService {
       var minutes = 0;
       var seconds = 0;
       var calcdeadline = deadline;
-      while(calcdeadline >= 604800){
-        weeks++;
-        calcdeadline -= 604800;
-      }
-      if(weeks > 1){
-        toreturn += `${weeks} weeks `
-      }
-      else if(weeks == 1){
-        toreturn += "1 week ";
-      }
-      while(calcdeadline >= 86400){
-        days++;
-        calcdeadline -= 86400;
-      }
-      if(days > 1){
-        toreturn += `${days} days `;
-      }
-      else if(days == 1){
-        toreturn += "1 day ";
-      }
-      // console.log("got days", days)
+
+      weeks = Math.floor(calcdeadline / 604800);
+      calcdeadline %= 604800;
+
+      if(weeks > 1) toreturn += `${weeks} weeks `;
+      else if(weeks == 1) toreturn += "1 week ";
       
-      while(calcdeadline >= 3600){
-        hours++;
-        calcdeadline -= 3600;
-      }
-      if(hours > 1){
-        toreturn += `${hours} hours `;
-      }
-      else if(hours == 1){
-        toreturn += "1 hour "
-      }
-      while(calcdeadline >= 60){
-        minutes++;
-        calcdeadline -= 60
-      }
-      if(minutes > 1 || minutes == 0){
-        toreturn += `${minutes} minutes `;
-      }
-      else if(minutes == 1){
-        toreturn += "1 minute ";
-      }
+      days = Math.floor(calcdeadline / 86400);
+      calcdeadline %= 86400;
+    
+      if(days > 1) toreturn += `${days} days `;
+      else if(days == 1) toreturn += "1 day ";
+
+      if (weeks) return toreturn;
+
+      // new
+      hours = Math.floor(calcdeadline / 3600);
+      calcdeadline %= 3600;
+      
+      minutes = Math.floor(calcdeadline / 60);
+      calcdeadline %= 60;
 
       seconds = calcdeadline;
-      if(seconds > 1 || seconds == 0){
-        toreturn += `${seconds} seconds`
-      }
-      else if(seconds == 1){
-        toreturn += "1 second" 
-      }
+
+      toreturn += `${this.pad(hours)}h `;
+      toreturn += `${this.pad(minutes)}m `;
+      toreturn += `${this.pad(seconds)}s`;
+      
       return toreturn;
+      
+      // hours = Math.floor(calcdeadline / 3600);
+      // calcdeadline %= 3600;
+      
+      // if(hours > 1) toreturn += `${hours} hours `;
+      // else if(hours == 1) toreturn += "1 hour "
+      
+      // minutes = Math.floor(calcdeadline / 60);
+      // calcdeadline %= 60;
+      
+      // if(minutes > 1 || minutes == 0) toreturn += `${minutes} minutes `;
+      // else if(minutes == 1) toreturn += "1 minute ";
+
+      // seconds = calcdeadline;
+      // if(seconds > 1 || seconds == 0) toreturn += `${seconds} seconds`;
+      // else if(seconds == 1) toreturn += "1 second";
+
+      // return toreturn;
     })
   }
 }

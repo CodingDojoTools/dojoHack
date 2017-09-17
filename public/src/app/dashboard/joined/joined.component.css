@@ -17,3 +17,7 @@ table {
 tbody a {
     color: #06AAE2;
 }
+
+.timer {
+    font-family: "Lucida Console", Monaco, monospace;
+}
