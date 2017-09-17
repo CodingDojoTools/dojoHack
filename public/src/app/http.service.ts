@@ -12,7 +12,7 @@ export class HttpService {
   postedHackathons: Hackathon[] = [];
   pastHackathons: Hackathon[] = [];
   joinedHackathons: Hackathon[] = [];
-
+  count = 60;
   locations = [];
   constructor(private _http: Http) { }
 
@@ -124,6 +124,15 @@ export class HttpService {
       (response)=>{
         let res = response.json();
         if(res.hackathons){
+          // go through the array of recieved hackathons
+          // give each an attribute of timeLeft, which is equal to what gets returned from countdown function
+          for(let hack of res.hackathons){
+            const due = new Date(hack.deadline).getTime();
+            const now = new Date().getTime();
+            const left = Math.trunc((due - now)/1000);
+            console.log("left on 133", left)
+            hack["timeLeft"] = this.countdown(left)
+          }
           this.joinedHackathons = res.hackathons;
           callback({status: true, hacks: this.joinedHackathons});
         }
@@ -137,5 +146,72 @@ export class HttpService {
     )
   }
 
+  countdown(deadline){
+    return Observable.timer(0,1000)
+    .take(deadline)
+    .map(() => { deadline--;
+      // 60 seconds in a minute
+      // 60 minutes in an hour, 3600 seconds in an hour
+      // 24 hours in a day, 1440 minutes in a day, 86400 seconds in a day
+      // 7 days in a week, 168 hours in a week, 10080 minutes in a week, 604800 seconds in a week
+      var toreturn = ""
+      var weeks = 0;
+      var days = 0;
+      var hours = 0;
+      var minutes = 0;
+      var seconds = 0;
+      var calcdeadline = deadline;
+      while(calcdeadline >= 604800){
+        weeks++;
+        calcdeadline -= 604800;
+      }
+      if(weeks > 1){
+        toreturn += `${weeks} weeks `
+      }
+      else if(weeks == 1){
+        toreturn += "1 week ";
+      }
+      while(calcdeadline >= 86400){
+        days++;
+        calcdeadline -= 86400;
+      }
+      if(days > 1){
+        toreturn += `${days} days `;
+      }
+      else if(days == 1){
+        toreturn += "1 day ";
+      }
+      // console.log("got days", days)
+      
+      while(calcdeadline >= 3600){
+        hours++;
+        calcdeadline -= 3600;
+      }
+      if(hours > 1){
+        toreturn += `${hours} hours `;
+      }
+      else if(hours == 1){
+        toreturn += "1 hour "
+      }
+      while(calcdeadline >= 60){
+        minutes++;
+        calcdeadline -= 60
+      }
+      if(minutes > 1 || minutes == 0){
+        toreturn += `${minutes} minutes `;
+      }
+      else if(minutes == 1){
+        toreturn += "1 minute ";
+      }
 
+      seconds = calcdeadline;
+      if(seconds > 1 || seconds == 0){
+        toreturn += `${seconds} seconds`
+      }
+      else if(seconds == 1){
+        toreturn += "1 second" 
+      }
+      return toreturn;
+    })
+  }
 }

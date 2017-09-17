@@ -15,13 +15,18 @@
         </thead>
         <tbody>
           <tr *ngFor="let hack of joinedHackathons">
-            <td>{{hack.name}} 1</td>
+            <td>{{hack.name}}</td>
             <td>{{hack.deadline | date: 'medium'}}</td>
-            <td>5 minutes</td>
+            <td>{{hack.timeLeft | async}}</td>
             <td><button class="button is-danger is-large">Submit</button></td>
           </tr>
         </tbody>
       </table>
+      <div *ngIf="joinedHackathons.length < 1">
+        <h2 class="subtitle">You are not competing in any hackathons at the moment.</h2>
+      </div>
     </div>
     </div>
   </section>
+
+  

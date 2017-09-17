@@ -1,25 +1,25 @@
-<section class="section">
+<section *ngIf="pastHackathons.length > 0" class="section">
   <div class="container">
     
-      <h2 class="title">Past hackathons</h2>
+    <h2 class="title">Past hackathons</h2>
     
     <div class="box">
-    <table class="table table-striped is-fullwidth">
-      <thead>
-        <th>Name</th>
-        <th>Theme</th>
-        <th>Winner</th>
-        <th>Action</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let hack of pastHackathons">
-          <td>{{hack.name}}</td>
-          <td>iOS</td>
-          <td>{{hack.winner}}</td>
-          <td><button class="button is-dark is-small">Watch</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <table class="table table-striped is-fullwidth">
+        <thead>
+          <th>Name</th>
+          <th>Theme</th>
+          <th>Winner</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hack of pastHackathons">
+            <td>{{hack.name}}</td>
+            <td>iOS</td>
+            <td>{{hack.winner}}</td>
+            <td><button class="button is-dark is-small">Watch</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
