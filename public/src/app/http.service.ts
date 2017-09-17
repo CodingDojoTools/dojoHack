@@ -24,6 +24,12 @@ export class HttpService {
   logout() {
     this.loggedInId = null;
     this.isLoggedIn = false;
+    this.loggedTeamName = null;
+    this.postedHackathons = [];
+    this.pastHackathons = [];
+    this.joinedHackathons = [];
+    this.allHackathons = [];
+
   }
 
   loginTeam(team, callback){

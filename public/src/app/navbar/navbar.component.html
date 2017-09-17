@@ -9,16 +9,19 @@
     <div class="navbar-menu">
       <div class="navbar-start">
         <div *ngIf = "loggedTeamName" class="navbar-item">
-          <a href="#">{{loggedTeamName}}</a>
+          <a [routerLink]="['/guide']">{{loggedTeamName}}</a>
         </div>
         <div class="navbar-item">
-          <a href="#">Guidelines</a>
+          <a [routerLink]="['/guide']">Guidelines</a>
         </div>
       </div>
   
       <div class="navbar-end">
-        <div class="navbar-item">
-          <a href="#" (click)="logout()">Logout</a>
+        <div *ngIf = "loggedTeamName" class="navbar-item">
+          <a (click)="logout()">Logout</a>
+        </div>
+        <div *ngIf="!loggedTeamName" class="navbar-item">
+          <a [routerLink]="['/register']">Register or login</a>
         </div>
       </div>
     </div>
