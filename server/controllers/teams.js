@@ -25,6 +25,14 @@ module.exports = {
         });
     },
 
+    isValidMember: (req, res) => {
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
+
+        if (firstName != "" || lastName != "") res.json({'status': true});
+        else res.json({'status': false});
+    },
+
     members: (req, res) => {
         let query = "SELECT * FROM members WHERE team = ?";
         db.query(query, req.session.userId, (err, members) => {

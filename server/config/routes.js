@@ -94,6 +94,8 @@ module.exports = function(app) {
     
     app.get('/logout',      (req, res) => { users.logout(req, res); }),
     
+    app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
+    
     app.post('/teams/addmember', (req, res) => { teams.addMember(req, res); }),
 
     app.get('/teams/members',    (req, res) => { teams.members(req, res); }),
