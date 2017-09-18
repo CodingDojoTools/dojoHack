@@ -6,7 +6,7 @@ import 'rxjs';
 
 @Injectable()
 export class HttpService {
-
+  selectedHackathon: Hackathon;
   loggedSession = new Session();
   loggedInId: number;
   isLoggedIn = false;
@@ -26,6 +26,7 @@ export class HttpService {
   logout() {
     this.loggedSession = new Session();
     this.loggedInId = null;
+
     this.isLoggedIn = false;
     this.loggedTeamName = null;
     this.postedHackathons = [];
@@ -34,19 +35,28 @@ export class HttpService {
     this.allHackathons = [];
 
   }
-  startSession(teamname, teamid){
+  startSession(teamid){
     this.loggedSession.loggedInId = teamid;
     this.loggedSession.isLoggedIn = true;
-    this.loggedSession.loggedTeamName = teamname;
   }
+  requestSession(){
+    return this._http.get('/isLoggedIn').map(
+      response => {
+        const res = response.json();
+        this.startSession(res.userId);
 
+
+      },
+      err => console.log("error", err)
+    )
+  }
   loginTeam(team, callback){
     console.log("in the service about to login a team", team)
     this._http.post('/login', team).subscribe(
       (response) => {
         const res = response.json();
         if(res.status){
-          this.startSession(team.name, res.userId);
+          this.startSession(res.userId);
           this.loggedInId = res.userId
           this.isLoggedIn = true;
           this.loggedTeamName = team.name;
@@ -84,7 +94,7 @@ export class HttpService {
       (response) => {
         const res = response.json();
         if(res.status){
-          this.startSession(team.name, res.userId);
+          this.startSession(res.userId);
           this.loggedInId = res.userId;
           this.isLoggedIn = true;
           this.loggedTeamName = team.name;
