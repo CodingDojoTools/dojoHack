@@ -83,7 +83,7 @@ module.exports = {
             else {
                 db.query(query, data, (err, packet) => {
                     if (err) sendServerError(err, res);
-                    else res.status(200);
+                    else res.status(200).send();
                 });
             }
         })
@@ -167,7 +167,7 @@ module.exports = {
             let data = [userId, projectId, uiux, pres, idea, impl, extra, comment];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.status(200)
+                else res.status(200).send();
             });
         }
 
@@ -179,7 +179,7 @@ module.exports = {
             let data = [uiux, pres, idea, impl, extra, comment, userId, projectId];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.status(200)
+                else res.status(200).send();
             });
         }
         

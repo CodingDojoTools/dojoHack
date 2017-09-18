@@ -31,7 +31,7 @@ module.exports = {
         let query = "INSERT INTO members (firstName, lastName, team) VALUES (?, ?, ?)";
         let data = [firstName, lastName, req.session.userId];
         db.query(query, data, (err, packet) => {
-            res.status(200);
+            res.status(200).send();
         });
     },
 
@@ -40,7 +40,7 @@ module.exports = {
         let lastName = req.body.lastName;
 
         if (firstName != "" || lastName != "") res.status(200);
-        else res.status(409);
+        else res.status(409).send();
     },
 
     members: (req, res) => {

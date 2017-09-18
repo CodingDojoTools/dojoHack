@@ -14,6 +14,8 @@ function sendServerError(error, res){
 
 function setSessionRole(req, role, userId){
     req.session.userId = userId;
+    req.session.admin = false;
+    req.session.team = false;
     switch (role){
         case "users": req.session.admin = true; break;
         case "teams": req.session.team = true; break;
@@ -64,26 +66,25 @@ module.exports = {
 
         function validateUser(req, user){
             bcrypt.compare(req.body.password, user.password, (err, status) => {
-                let data = {'status': status}
                 if (status) {
-                    data.userId = user.id;
                     setSessionRole(req, role, user.id);
-                }
-                res.json(data);
+                    res.json({'userId': user.id});
+                } 
+                else res.status(409).send();
             });
         }
     },
 
     isLoggedIn: (req, res) => {
         if (req.session.userId) res.json({'userId':req.session.userId});
-        else res.status(401);
+        else res.status(401).send();
     },
     
     logout: (req, res) => {
         req.session.userId = null;
         req.session.admin = null;
         req.session.team = null;
-        res.status(200);
+        res.status(200).send();
     },
 
     locations: (req, res) => {
