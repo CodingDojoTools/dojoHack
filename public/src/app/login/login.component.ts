@@ -22,13 +22,19 @@ export class LoginComponent implements OnInit {
   serverError: boolean;
 
 
-  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) {}
 
   ngOnInit() {
 
     this.logForm = this.fb.group({
       teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
       password: ['', [Validators.required]]
+    })
+    
+    this.logForm.valueChanges.subscribe(data => {
+      if(this.loginError){
+        this.loginError = false;
+      }
     })
 
   }
@@ -48,7 +54,14 @@ export class LoginComponent implements OnInit {
         this._router.navigate(['/dashboard'])
       }, 
       err=>{
-        console.log("failed logging in");
+        console.log("failed logging in", err.status);
+        if(err.status == 409){
+          this.loginError = true;
+    
+        }
+        else {
+          this.serverError = true;
+        }
       })
     }
       
@@ -89,7 +102,7 @@ export class LoginComponent implements OnInit {
     this.tLen = TError["minlength"] && newTeam["touched"];
     this.tLenMax = TError["maxlength"];
     this.tReq = TError["required"] && newTeam["touched"];
-    this.tDanger = this.tLen || this.tReq || this.tLenMax;
+    this.tDanger = this.tLen || this.tReq || this.tLenMax || this.loginError;
 
     return newTeam;
   }

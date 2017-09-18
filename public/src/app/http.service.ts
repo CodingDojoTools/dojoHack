@@ -47,7 +47,11 @@ export class HttpService {
   }
  
   getAllData(teamid){
+    console.log("About to get all data");
+    
     this.getLoggedTeam();
+    console.log("After getting logged team in get all data");
+    
     this.fetchPostedHackathons();
     this.fetchCompletedHackathons();
     this.fetchJoinedHackathons();
@@ -81,13 +85,20 @@ export class HttpService {
   }
 
   getLoggedTeam(){
-    this._http.get('/teams/logged')
-    .map(response => {
-      const res = response.json();
-      this.loggedSession.loggedTeamName = res.team.name;
-      this.loggedSession.loggedTeamLocation = res.team.location;
-    })
-    .catch(err => err.json())
+    console.log("About to get the logged team")
+    this._http.get('/teamasdgasdgs/logged').map(
+      response => {
+
+        const res = response.json();
+        console.log("response for getting logged team", res)
+        this.loggedSession.loggedTeamName = res.team.name;
+        this.loggedSession.loggedTeamLocation = res.team.location;
+      },
+      err => {
+        err.json()
+        console.log("in th error for logged team", err);
+      } 
+    )
   }
 
   
@@ -151,11 +162,20 @@ export class HttpService {
     )
   }
 
-  loginTeam(team): Observable<Response>{
+  loginTeam(team){
     console.log("in the service about to login a team", team)
     return this._http.post('/login', team).map(
-      response=>response.json())
-      .catch(err => err.json());
+      response => {
+        const res = response.json();
+        this.startSession(res.userId);
+        return true
+      },
+      err => {
+        console.log(err.status)
+        return err
+      }
+    )
+  }
     
     
     
@@ -176,7 +196,6 @@ export class HttpService {
     //     callback({status: false, message: "catch"})
     //   }
     // )
-  }
   
 
 
