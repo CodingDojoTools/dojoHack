@@ -20,11 +20,17 @@ export class AuthGuardService implements CanActivate {
       return true;
     }
     this.httpService.redirectUrl = url;
-    this.httpService.requestSession.subscribe()
+    this.httpService.requestSession.subscribe(success => 
+      return true
+      err=>this.router.navigate('/register'])))
     // use the httpService to find out what our session is
     // if we have a session, we'll navigate to the redirecturl
-    this.router.navigate(['/register']);
     return false;
+
+
+    
+    
+    
   }
 
 }
