@@ -39,10 +39,13 @@ module.exports = function(app) {
     // =============================================================
     //                        Middleware
     // =============================================================
+    app.all(/^/, (req, res, next) => { 
+        console.log(req.originalUrl); 
+        next();
+    })
 
     // session check for all routes but /login, /register & /
     app.all(/^\/(?!login|register|locations|$).*$/, (req, res, next) => {
-        console.log(req.originalUrl);
         if (req.session.userId) {
             console.log('user '+req.session.userId+' is logged in');
             next();
@@ -54,7 +57,6 @@ module.exports = function(app) {
 
     // admin check
     app.all(/^\/admin(\/.*)?/, (req, res, next) => {
-        console.log(req.originalUrl);
         if (req.session.admin) {
             console.log('user '+req.session.userId+' is admin');
             next();
@@ -66,12 +68,11 @@ module.exports = function(app) {
     
     // team check
     app.all(safeForTeams, (req, res, next) => {
-        console.log(req.originalUrl);
         if (req.session.team) {
             console.log('user '+req.session.userId+' is a team');
             next();
         } else {
-            console.log('user is not a team');
+            console.log('user '+req.session.userId+' is not a team');
             res.status(401).send("Not a team");
         }
     })
@@ -101,13 +102,13 @@ module.exports = function(app) {
     
     app.get('/isLoggedIn',  (req, res) => { users.isLoggedIn(req, res); }),
 
-    app.get('/teams/members',    (req, res) => { teams.members(req, res); }),
+    app.get('/teams/members',  (req, res) => { teams.members(req, res); }),
     
     app.get('/teams/logged',   (req, res) => { teams.get(req, res); }),
 
-    app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
-    
     app.post('/teams/addmember', (req, res) => { teams.addMember(req, res); }),
+    
+    app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
 
 
     
