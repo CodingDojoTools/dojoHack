@@ -17,10 +17,10 @@
       </div>
   
       <div class="navbar-end">
-        <div *ngIf = "loggedTeamName" class="navbar-item">
+        <div *ngIf = "isLoggedIn" class="navbar-item">
           <a (click)="logout()">Logout</a>
         </div>
-        <div *ngIf="!loggedTeamName" class="navbar-item">
+        <div *ngIf="!isLoggedIn" class="navbar-item">
           <a [routerLink]="['/register']">Register or login</a>
         </div>
       </div>

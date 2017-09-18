@@ -13,11 +13,15 @@
   </div>
 </section>
 <section class="section">
+ 
   <div class = "columns">
     <div class="column">
       <p>A whole lotta text. We could include more information about the hackathon here. The theme, a description provided by whomever created the hackathon.</p>
     </div>
     <div class="column is-three-quarters">
+        <div *ngIf="submissionMessage">
+          <p class="subtitle is-success">{{submissionMessage}}</p>
+        </div>
         <div *ngIf="submissions.length > 1" class="box">
             
         <table class="table is-striped is-fullwidth">

@@ -87,6 +87,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.httpService.submitProject(this.newProj, this.hackathonId, (res)=>{
         if(res.status){
           console.log("We added our project!", res.projectId)
+          this.httpService.submissionFlashMessage = "You successfully submitted your project! Yaaaay."
+          this._router.navigate(['/details', this.hackathonId]);
         }
         else {
           console.log("We'll have to figure out how to display error messages")

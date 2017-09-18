@@ -34,7 +34,6 @@ export class Session {
         public loggedInId: number = null,
         public isLoggedIn: boolean = false,
         public loggedTeamName: string = "",
-        public redirectUrl: string = "",
         public postedHackathons: Hackathon[] = [],
         public pastHackathons: Hackathon[] = [],
         public joinedHackathons: Hackathon[] = [],

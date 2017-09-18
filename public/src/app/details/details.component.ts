@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -9,12 +9,13 @@ import { Hackathon, Project } from '../models';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
 
   paramSub: Subscription;
   hackathonId: number;
   hackathon: Hackathon;
   submissions: Project[] = [];
+  submissionMessage: string;
 
   constructor(private httpService: HttpService, private _router: Router, private _route: ActivatedRoute) { 
     this.paramSub = this._route.params.subscribe((param)=>{
@@ -40,6 +41,10 @@ export class DetailsComponent implements OnInit {
   ngOnInit() {
     // get submission to this hackathon
     this.getSubmissions();
+    this.submissionMessage = this.httpService.submissionFlashMessage;
+  }
+  ngOnDestroy(){
+    this.httpService.submissionFlashMessage = null;
   }
 
   getSubmissions(){

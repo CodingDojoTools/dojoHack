@@ -7,6 +7,7 @@ import 'rxjs';
 @Injectable()
 export class HttpService {
   selectedHackathon: Hackathon;
+  submissionFlashMessage: string;
   loggedSession = new Session();
   loggedInId: number;
   isLoggedIn = false;
@@ -18,6 +19,8 @@ export class HttpService {
   allHackathons: Hackathon[] = [];
   count = 60;
   locations = [];
+
+
   constructor(private _http: Http) { }
 
   login(): Boolean {
@@ -36,14 +39,17 @@ export class HttpService {
 
   }
   startSession(teamid){
-    this.loggedSession.loggedInId = teamid;
-    this.loggedSession.isLoggedIn = true;
+    this.loggedInId = teamid;
+    this.isLoggedIn = true;
   }
   requestSession(){
+    console.log("in the request session")
     return this._http.get('/isLoggedIn').map(
       response => {
+        console.log("got a response 200")
         const res = response.json();
         this.startSession(res.userId);
+        return true
 
 
       },
