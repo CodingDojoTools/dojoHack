@@ -70,8 +70,8 @@ module.exports = {
     },
 
     isLoggedIn: (req, res) => {
-        if (req.session.userId) res.json({'status': true, 'userId':req.session.userId});
-        else res.json({'status':false});
+        if (req.session.userId) res.json({'userId':req.session.userId});
+        else res.status(401);
     },
     
     logout: (req, res) => {
