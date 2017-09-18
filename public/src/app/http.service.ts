@@ -6,19 +6,17 @@ import 'rxjs';
 
 @Injectable()
 export class HttpService {
-  selectedHackathon: Hackathon;
-  submissionFlashMessage: string;
+  
   loggedSession = new Session();
   loggedInId: number;
   isLoggedIn = false;
   loggedTeamName: string;
-  redirectUrl: string;
   postedHackathons: Hackathon[] = [];
   pastHackathons: Hackathon[] = [];
   joinedHackathons: Hackathon[] = [];
   allHackathons: Hackathon[] = [];
-  count = 60;
-  locations = [];
+  selectedHackathon: Hackathon;
+  submissionFlashMessage: string;
 
 
   constructor(private _http: Http) { }
@@ -28,8 +26,9 @@ export class HttpService {
   }
   logout() {
     this.loggedSession = new Session();
-    this.loggedInId = null;
 
+    //redundant
+    this.loggedInId = null;
     this.isLoggedIn = false;
     this.loggedTeamName = null;
     this.postedHackathons = [];
@@ -39,9 +38,15 @@ export class HttpService {
 
   }
   startSession(teamid){
+    this.loggedSession.loggedInId = teamid;
+    this.loggedSession.isLoggedIn = true;
+    this.getAllData(teamid);
+
+    // redundant
     this.loggedInId = teamid;
     this.isLoggedIn = true;
   }
+
   requestSession(){
     console.log("in the request session")
     return this._http.get('/isLoggedIn').map(
@@ -50,32 +55,45 @@ export class HttpService {
         const res = response.json();
         this.startSession(res.userId);
         return true
-
-
       },
       err => console.log("error", err)
     )
   }
+
   loginTeam(team, callback){
     console.log("in the service about to login a team", team)
-    this._http.post('/login', team).subscribe(
-      (response) => {
+       //redundant
+    
+
+    return this._http.post('/login').map(
+      response => {
         const res = response.json();
-        if(res.status){
-          this.startSession(res.userId);
-          this.loggedInId = res.userId
-          this.isLoggedIn = true;
-          this.loggedTeamName = team.name;
-        }
-        
-        callback(res);
+        this.startSession(res.userId);
       },
-      (err) => {
-        console.log("Got an error trying to login", err);
-        callback({status: false, message: "catch"})
+      err => {
+        console.log("Got an error logging in", err)
       }
-    )
+    );
   }
+
+  //   this._http.post('/login', team).subscribe(
+  //     (response) => {
+  //       const res = response.json();
+  //       if(res.status){
+  //         this.startSession(res.userId);
+  //         this.loggedInId = res.userId
+  //         this.isLoggedIn = true;
+  //         this.loggedTeamName = team.name;
+  //       }
+        
+  //       callback(res);
+  //     },
+  //     (err) => {
+  //       console.log("Got an error trying to login", err);
+  //       callback({status: false, message: "catch"})
+  //     }
+  //   )
+  // }
   getTeamMembers(callback){
     this._http.get("/teams/members").subscribe(
       (response) => {

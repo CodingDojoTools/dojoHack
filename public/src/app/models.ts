@@ -37,7 +37,9 @@ export class Session {
         public postedHackathons: Hackathon[] = [],
         public pastHackathons: Hackathon[] = [],
         public joinedHackathons: Hackathon[] = [],
-        public allHackathons: Hackathon[] = []
+        public allHackathons = {},
+        public selectedHackathon: Hackathon = null,
+        public submissionFlashMessage: string = ""
     ){}
 }
 

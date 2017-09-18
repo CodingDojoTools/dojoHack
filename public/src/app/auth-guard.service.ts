@@ -21,7 +21,6 @@ export class AuthGuardService implements CanActivate {
     if(this.httpService.isLoggedIn){
       return true;
     }
-    this.httpService.redirectUrl = url;
     this.httpService.requestSession().subscribe(
       success => {
         this.res = true;
