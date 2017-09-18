@@ -6,18 +6,19 @@ import 'rxjs';
 
 @Injectable()
 export class HttpService {
-
+  
   loggedSession = new Session();
   loggedInId: number;
-  isLoggedIn = true;
+  isLoggedIn = false;
   loggedTeamName: string;
-  redirectUrl: string;
   postedHackathons: Hackathon[] = [];
   pastHackathons: Hackathon[] = [];
   joinedHackathons: Hackathon[] = [];
   allHackathons: Hackathon[] = [];
-  count = 60;
-  locations = [];
+  selectedHackathon: Hackathon;
+  submissionFlashMessage: string;
+
+
   constructor(private _http: Http) { }
 
   login(): Boolean {
@@ -25,6 +26,8 @@ export class HttpService {
   }
   logout() {
     this.loggedSession = new Session();
+
+    //redundant
     this.loggedInId = null;
     this.isLoggedIn = false;
     this.loggedTeamName = null;
@@ -32,17 +35,97 @@ export class HttpService {
     this.pastHackathons = [];
     this.joinedHackathons = [];
     this.allHackathons = [];
-
   }
-  startSession(teamname, teamid){
+  startSession(teamid){
     this.loggedSession.loggedInId = teamid;
     this.loggedSession.isLoggedIn = true;
-    this.loggedSession.loggedTeamName = teamname;
+    this.getAllData(teamid);
+
+    // redundant
+    this.loggedInId = teamid;
+    this.isLoggedIn = true;
+  }
+
+  getAllData(teamid){
+    this.fetchPostedHackathons();
+    this.fetchCompletedHackathons();
+    this.fetchJoinedHackathons();
+    
+
+  }
+  fetchPostedHackathons(){
+    this._http.get('/hackathons/current')
+    .map(response => {
+      const res = response.json();
+      this.loggedSession.postedHackathons = res.hackathons;
+    })
+    .catch(err => err.json())
+  }
+
+  
+
+  fetchCompletedHackathons(){
+    this._http.get('/hackathons/past')
+    .map(response=> {
+      const res = response.json();
+      this.loggedSession.pastHackathons = res.hackathons;
+    })
+    .catch(err => err.json())
+  }
+
+  fetchJoinedHackathons(){
+    this._http.get('/hackathons/joined')
+    .map(response => {
+      const res = response.json();
+      if(res.hackathons){
+        for(let hack of res.hackathons){
+          this.getTimeLeft(hack);
+        }
+        this.loggedSession.joinedHackathons = res.hackathons;
+      }
+    })
+    .catch(err => err.json())
+  }
+
+  
+
+//  fetchPosted(callback){
+//     this._http.get('/hackathons/current').subscribe(
+//       (response) => {
+//         let res = response.json();
+//         if(res.hackathons){
+//           this.postedHackathons = res.hackathons;
+//           this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
+//           callback({status: true, hacks: this.postedHackathons});
+//         }
+//         else {
+//           callback({status: false})
+//         }
+//       },
+//       (err) => {
+//         console.log("Got an error, failed hackathon request", err)
+//       }
+//     )
+//   }
+
+  requestSession(){
+    console.log("in the request session")
+    return this._http.get('/isLoggedIn').map(
+      response => {
+        console.log("got a response 200")
+        const res = response.json();
+        this.startSession(res.userId);
+        return true
+      },
+      err => console.log("error", err)
+    )
   }
 
   loginTeam(team): Observable<Response>{
     console.log("in the service about to login a team", team)
-    return this._http.post('/login', team).map(response=>response.json()).catch(err => err.json());
+    return this._http.post('/login', team).map(
+      response=>response.json())
+      .catch(err => err.json());
     
     
     
@@ -67,6 +150,38 @@ export class HttpService {
   
 
 
+  //      //redundant
+    
+
+  //   return this._http.post('/login').map(
+  //     response => {
+  //       const res = response.json();
+  //       this.startSession(res.userId);
+  //     },
+  //     err => {
+  //       console.log("Got an error logging in", err)
+  //     }
+  //   );
+  // }
+
+  //   this._http.post('/login', team).subscribe(
+  //     (response) => {
+  //       const res = response.json();
+  //       if(res.status){
+  //         this.startSession(res.userId);
+  //         this.loggedInId = res.userId
+  //         this.isLoggedIn = true;
+  //         this.loggedTeamName = team.name;
+  //       }
+        
+  //       callback(res);
+  //     },
+  //     (err) => {
+  //       console.log("Got an error trying to login", err);
+  //       callback({status: false, message: "catch"})
+  //     }
+  //   )
+  // }
   getTeamMembers(callback){
     // this._http.get("/teams/members").subscribe(
     // this._http.get("/teams/members").map(response => response.json())
@@ -85,6 +200,46 @@ export class HttpService {
     //   }
     // )
   }
+  fetchJoined(callback){
+    this._http.get('/hackathons/joined').subscribe(
+      (response)=>{
+        let res = response.json();
+        if(res.hackathons){
+          for(let hack of res.hackathons){
+            this.getTimeLeft(hack);
+          }
+          this.joinedHackathons = res.hackathons;
+          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
+          callback({status: true, hacks: this.joinedHackathons});
+        }
+        else {
+          callback({status: false})
+        }
+      },
+      (err) => {
+        console.log("Error getting the joined hackathons in service", err)
+      }
+    )
+  }
+
+  fetchPast(callback){
+    this._http.get('/hackathons/past').subscribe(
+      (response) => {
+        let res = response.json();
+        if(res.hackathons){
+          this.pastHackathons = res.hackathons;
+          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
+          callback({status: true, hacks: this.pastHackathons});
+        }
+        else {
+          callback({status: false})
+        }
+      },
+      (err) => {
+        console.log("Error getting past hackathons in service", err);
+      }
+    )
+  }
 
   registerTeam(team, callback){
     console.log("in service about to register a team", team);
@@ -92,7 +247,7 @@ export class HttpService {
       (response) => {
         const res = response.json();
         if(res.status){
-          this.startSession(team.name, res.userId);
+          this.startSession(res.userId);
           this.loggedInId = res.userId;
           this.isLoggedIn = true;
           this.loggedTeamName = team.name;
@@ -139,24 +294,7 @@ export class HttpService {
     )
   }
 
-  fetchPast(callback){
-    this._http.get('/hackathons/past').subscribe(
-      (response) => {
-        let res = response.json();
-        if(res.hackathons){
-          this.pastHackathons = res.hackathons;
-          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
-          callback({status: true, hacks: this.pastHackathons});
-        }
-        else {
-          callback({status: false})
-        }
-      },
-      (err) => {
-        console.log("Error getting past hackathons in service", err);
-      }
-    )
-  }
+ 
 
   joinHackathon(hack, callback){
     this._http.get(`/hackathons/${hack.id}/join`).subscribe(
@@ -176,28 +314,7 @@ export class HttpService {
       }
     )
   }
-  fetchJoined(callback){
-    this._http.get('/hackathons/joined').subscribe(
-      (response)=>{
-        let res = response.json();
-        if(res.hackathons){
-          for(let hack of res.hackathons){
-            this.getTimeLeft(hack);
-          }
-          this.joinedHackathons = res.hackathons;
-          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
-          callback({status: true, hacks: this.joinedHackathons});
-        }
-        else {
-          callback({status: false})
-        }
-      },
-      (err) => {
-        console.log("Error getting the joined hackathons in service", err)
-      }
-    )
-  }
-
+  
   getOneHackathon(id, callback){
     var found = false;
     for(let hack of this.allHackathons){
@@ -277,6 +394,12 @@ export class HttpService {
     })
   }
 
+  pad(num){
+    let pad = ""
+    if (num < 10) pad = "0";
+    return pad+num;
+  }
+
   countdown(deadline){
     return Observable.timer(0,1000)
     .take(deadline)
@@ -292,57 +415,53 @@ export class HttpService {
       var minutes = 0;
       var seconds = 0;
       var calcdeadline = deadline;
-      while(calcdeadline >= 604800){
-        weeks++;
-        calcdeadline -= 604800;
-      }
-      if(weeks > 1){
-        toreturn += `${weeks} weeks `
-      }
-      else if(weeks == 1){
-        toreturn += "1 week ";
-      }
-      while(calcdeadline >= 86400){
-        days++;
-        calcdeadline -= 86400;
-      }
-      if(days > 1){
-        toreturn += `${days} days `;
-      }
-      else if(days == 1){
-        toreturn += "1 day ";
-      }
-      // console.log("got days", days)
+
+      weeks = Math.floor(calcdeadline / 604800);
+      calcdeadline %= 604800;
+
+      if(weeks > 1) toreturn += `${weeks} weeks `;
+      else if(weeks == 1) toreturn += "1 week ";
       
-      while(calcdeadline >= 3600){
-        hours++;
-        calcdeadline -= 3600;
-      }
-      if(hours > 1){
-        toreturn += `${hours} hours `;
-      }
-      else if(hours == 1){
-        toreturn += "1 hour "
-      }
-      while(calcdeadline >= 60){
-        minutes++;
-        calcdeadline -= 60
-      }
-      if(minutes > 1 || minutes == 0){
-        toreturn += `${minutes} minutes `;
-      }
-      else if(minutes == 1){
-        toreturn += "1 minute ";
-      }
+      days = Math.floor(calcdeadline / 86400);
+      calcdeadline %= 86400;
+    
+      if(days > 1) toreturn += `${days} days `;
+      else if(days == 1) toreturn += "1 day ";
+
+      if (weeks) return toreturn;
+
+      // new
+      hours = Math.floor(calcdeadline / 3600);
+      calcdeadline %= 3600;
+      
+      minutes = Math.floor(calcdeadline / 60);
+      calcdeadline %= 60;
 
       seconds = calcdeadline;
-      if(seconds > 1 || seconds == 0){
-        toreturn += `${seconds} seconds`
-      }
-      else if(seconds == 1){
-        toreturn += "1 second" 
-      }
+
+      toreturn += `${this.pad(hours)}h `;
+      toreturn += `${this.pad(minutes)}m `;
+      toreturn += `${this.pad(seconds)}s`;
+      
       return toreturn;
+      
+      // hours = Math.floor(calcdeadline / 3600);
+      // calcdeadline %= 3600;
+      
+      // if(hours > 1) toreturn += `${hours} hours `;
+      // else if(hours == 1) toreturn += "1 hour "
+      
+      // minutes = Math.floor(calcdeadline / 60);
+      // calcdeadline %= 60;
+      
+      // if(minutes > 1 || minutes == 0) toreturn += `${minutes} minutes `;
+      // else if(minutes == 1) toreturn += "1 minute ";
+
+      // seconds = calcdeadline;
+      // if(seconds > 1 || seconds == 0) toreturn += `${seconds} seconds`;
+      // else if(seconds == 1) toreturn += "1 second";
+
+      // return toreturn;
     })
   }
 }

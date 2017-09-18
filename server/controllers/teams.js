@@ -8,6 +8,17 @@ function sendServerError(error, res){
 }
 
 module.exports = {
+
+    get: (req, res) => {
+        let query = `
+            SELECT teams.name, l.name as location FROM teams 
+            JOIN locations AS l on l.id = teams.location
+            WHERE teams.id = ?
+        `;
+        db.query(query, req.params.id, (err, data) => {
+            res.json({'status': true, 'team': data[0]});
+        })
+    },
     
     addMember: (req, res) => {
         let firstName = req.body.firstName;
@@ -25,11 +36,19 @@ module.exports = {
         });
     },
 
+    isValidMember: (req, res) => {
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
+
+        if (firstName != "" || lastName != "") res.json({'status': true});
+        else res.json({'status': false});
+    },
+
     members: (req, res) => {
         let query = "SELECT * FROM members WHERE team = ?";
         db.query(query, req.session.userId, (err, members) => {
             res.json({"members": members});
-        }) 
+        })
     }
 
 }

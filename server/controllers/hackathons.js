@@ -50,7 +50,7 @@ module.exports = {
         let name = req.body['name'];
         let deadline = new Date(req.body['deadline']);
 
-        if (deadline < new Date()) res.json({'status': false, 'error': 'Deadline must be in the future'});
+        if (deadline < new Date()) res.status(409).send('Deadline must be in the future');
         else {
             let query = `
                 INSERT INTO hackathons (name, deadline)
