@@ -4,8 +4,15 @@ const YT_REGEX = /https:\/\/youtu\.be\/\w+$/;
 
 function sendServerError(error, res){
 	console.log('[SQL error]', error);
-	res.json({'error': 'Server Error'});
+	res.status(500).send(error);
 }
+
+// Codes
+//==============================
+// 409 : Conflict
+// 500 : Internal Server Error
+// 200 : OK
+
 
 module.exports = {
 
@@ -59,7 +66,7 @@ module.exports = {
             let data = [name, deadline];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.json({'status': true, 'hackathonId': packet.insertId});
+                else res.json({'hackathonId': packet.insertId});
             });
         }
     },
@@ -71,12 +78,12 @@ module.exports = {
         db.query(exist, data, (err, packet) => {
             if(err) sendServerError(err, res);
             else if(packet.length > 0){
-                res.json({'status': false, 'message': "You've already joined this hackathon"})
+                res.status(409).send("You've already joined this hackathon")
             }
             else {
                 db.query(query, data, (err, packet) => {
                     if (err) sendServerError(err, res);
-                    else res.json({'status': true});
+                    else res.status(200);
                 });
             }
         })
@@ -108,13 +115,13 @@ module.exports = {
                     updateSubmition(data);
                 }
             });
-        } else res.json({'status': false, errors: errors});
+        } else res.status(409).json({'errors': errors});
         
         function updateSubmition(data){
             let query = "UPDATE submissions SET projectId = ? WHERE (teamId = ? AND hackathonId = ?)";
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.json({'status': true, 'projectId': data[0]});
+                else res.json({'projectId': data[0]});
             });
         }
     },
@@ -160,7 +167,7 @@ module.exports = {
             let data = [userId, projectId, uiux, pres, idea, impl, extra, comment];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.json({'status': true})
+                else res.status(200)
             });
         }
 
@@ -172,7 +179,7 @@ module.exports = {
             let data = [uiux, pres, idea, impl, extra, comment, userId, projectId];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.json({'status': true})
+                else res.status(200)
             });
         }
         

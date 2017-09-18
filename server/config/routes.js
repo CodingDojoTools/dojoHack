@@ -28,6 +28,10 @@ const safeForTeams = [
 // =============================================================
 
 
+// Code
+// 401 : Unauthorized
+// 409 : Validations
+// 500 : Server error
 
 
 module.exports = function(app) {
@@ -37,7 +41,7 @@ module.exports = function(app) {
     // =============================================================
 
     // session check for all routes but /login, /register & /
-    app.all(/^\/(?!login|register|$).*$/, (req, res, next) => {
+    app.all(/^\/(?!login|register|locations|$).*$/, (req, res, next) => {
         console.log(req.originalUrl);
         if (req.session.userId) {
             console.log('user '+req.session.userId+' is logged in');
@@ -99,7 +103,7 @@ module.exports = function(app) {
 
     app.get('/teams/members',    (req, res) => { teams.members(req, res); }),
     
-    app.get('/teams/:id',   (req, res) => { teams.get(req, res); }),
+    app.get('/teams/logged',   (req, res) => { teams.get(req, res); }),
 
     app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
     
