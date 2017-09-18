@@ -1,5 +1,5 @@
 const db = require('../config/mysql.js');
-const GIT_REGEX = new RegExp('((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)([\w\.@\:/\-~]+)(\.git)?(/)?');
+const GIT_REGEX = new RegExp('https://github.com/([\w\-]+)/([\w\-]+)');
 const YT_REGEX = new RegExp('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*');
 
 function sendServerError(error, res){

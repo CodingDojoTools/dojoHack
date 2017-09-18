@@ -7,14 +7,15 @@ import { Subscription } from 'rxjs/Subscription';
 
 export function validGitUrl(control: FormControl){
   const giturl = control.value;
-  const gitRegex = new RegExp('((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)([\w\.@\:/\-~]+)(\.git)?(/)?');
+  const gitRegex = /https:\/\/github\.com\/[\w\\-]+\/[\w\\-]+$/;
   console.log("testing the git regex", gitRegex.test(giturl))
   return gitRegex.test(giturl) ? null : {match: true}
 }
 export function validYouTubeUrl(control: FormControl){
   const yturl = control.value;
-  const ytRegex = new RegExp('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*');
-  return ytRegex.test(yturl) ? null: {match: true}
+  const ytRegex = /https:\/\/youtu\.be\/\w+$/;
+  console.log("testing the youtube regex", ytRegex.test(yturl))
+  return ytRegex.test(yturl) ? null : {match: true}
 }
 
 @Component({
@@ -57,8 +58,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.projForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      gitUrl: ['', [Validators.required, validGitUrl]],
-      vidUrl: ['', [Validators.required, validYouTubeUrl]],
+      gitUrl: ['https://github.com/', [Validators.required, validGitUrl]],
+      vidUrl: ['https://youtu.be/', [Validators.required, validYouTubeUrl]],
       description: ['', [Validators.required, Validators.minLength(30)]]
     })
   }
