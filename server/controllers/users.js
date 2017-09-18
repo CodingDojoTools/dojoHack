@@ -2,6 +2,11 @@ const db = require('../config/mysql.js')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+// Codes
+// =======================
+// 401 : Unauthorized
+// 409 : Conflict
+
 function sendServerError(error, res){
 	console.log('[SQL error]', error);
 	res.json({'error': 'Server Error'});
@@ -9,6 +14,8 @@ function sendServerError(error, res){
 
 function setSessionRole(req, role, userId){
     req.session.userId = userId;
+    req.session.admin = false;
+    req.session.team = false;
     switch (role){
         case "users": req.session.admin = true; break;
         case "teams": req.session.team = true; break;
@@ -33,7 +40,7 @@ module.exports = {
             if (users.length) errors.name = 'User name in already taken';
             
             if (Object.keys(errors).length == 0) createUser(req.body);
-            else res.json({'status': false, 'errors': errors});
+            else res.status(409).json({'errors': errors});
         });
         
 
@@ -43,7 +50,7 @@ module.exports = {
                 let userData = [user.name, hash, user.location];
                 db.query(query, userData, (err, packet) => {
                     setSessionRole(req, role, packet.insertId);
-                    res.json({'status': true, 'userId': packet.insertId});
+                    res.json({'userId': packet.insertId});
                 });
             });                
         }
@@ -54,31 +61,30 @@ module.exports = {
 		db.query(query, req.body.name, (err, users) => {
 			if(err) return sendServerError(err, res);
             if (users.length) validateUser(req, users[0]);
-            else res.json({'status': false});
+            else res.status(409).send("Username or password invalid");
         });
 
         function validateUser(req, user){
             bcrypt.compare(req.body.password, user.password, (err, status) => {
-                let data = {'status': status}
                 if (status) {
-                    data.userId = user.id;
                     setSessionRole(req, role, user.id);
-                }
-                res.json(data);
+                    res.json({'userId': user.id});
+                } 
+                else res.status(409).send();
             });
         }
     },
 
     isLoggedIn: (req, res) => {
         if (req.session.userId) res.json({'userId':req.session.userId});
-        else res.status(401);
+        else res.status(401).send();
     },
     
     logout: (req, res) => {
         req.session.userId = null;
         req.session.admin = null;
         req.session.team = null;
-        res.json({'status': true});
+        res.status(200).send();
     },
 
     locations: (req, res) => {

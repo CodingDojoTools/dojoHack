@@ -1,0 +1,12 @@
+.is-success {
+    border-radius: 4px;
+    padding: 15px;
+    background: #75c575;
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.timer {
+    font-family: "Lucida Console", Monaco, monospace;
+}

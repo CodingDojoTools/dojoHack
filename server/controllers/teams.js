@@ -15,8 +15,8 @@ module.exports = {
             JOIN locations AS l on l.id = teams.location
             WHERE teams.id = ?
         `;
-        db.query(query, req.params.id, (err, data) => {
-            res.json({'status': true, 'team': data[0]});
+        db.query(query, req.session.userId, (err, data) => {
+            res.json({'team': data[0]});
         })
     },
     
@@ -25,14 +25,13 @@ module.exports = {
         let lastName = req.body.lastName;
 
         if (firstName == "" || lastName == "") {
-            errors = {"name":"First and last name must be entered"};
-            return res.json({'status': false, 'errors': errors});
+            return res.status(409).send("First and last name must be entered");
         }
 
         let query = "INSERT INTO members (firstName, lastName, team) VALUES (?, ?, ?)";
         let data = [firstName, lastName, req.session.userId];
         db.query(query, data, (err, packet) => {
-            res.json({'status': true});
+            res.status(200).send();
         });
     },
 
@@ -40,13 +39,14 @@ module.exports = {
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
 
-        if (firstName != "" || lastName != "") res.json({'status': true});
-        else res.json({'status': false});
+        if (firstName != "" || lastName != "") res.status(200);
+        else res.status(409).send();
     },
 
     members: (req, res) => {
         let query = "SELECT * FROM members WHERE team = ?";
         db.query(query, req.session.userId, (err, members) => {
+            console.log("asdfa");
             res.json({"members": members});
         })
     }
