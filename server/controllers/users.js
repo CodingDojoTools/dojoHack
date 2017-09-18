@@ -70,7 +70,7 @@ module.exports = {
                     setSessionRole(req, role, user.id);
                     res.json({'userId': user.id});
                 } 
-                else res.status(409).send();
+                else res.status(409).send("Username or password invalid");
             });
         }
     },
