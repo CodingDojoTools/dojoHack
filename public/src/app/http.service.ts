@@ -21,7 +21,7 @@ export class HttpService {
 
   constructor(private _http: Http) { }
 
-  login(): Boolean {
+  login(): boolean {
     return this.isLoggedIn;
   }
   logout() {
@@ -45,19 +45,47 @@ export class HttpService {
     this.loggedInId = teamid;
     this.isLoggedIn = true;
   }
-
+ 
   getAllData(teamid){
+    this.getLoggedTeam();
     this.fetchPostedHackathons();
     this.fetchCompletedHackathons();
     this.fetchJoinedHackathons();
-    
+    this.fetchLoggedMembers();
 
   }
+  fetchLoggedMembers(){
+    this._http.get('/teams/members')
+    .map(response => {
+      const res = response.json();
+      this.loggedSession.loggedMembers = res.members;
+    })
+    .catch(err => err.json())
+  }
+
+  buildAllHacksObject(arr){
+    for(let hack of arr){
+      this.loggedSession.allHackathons[hack.id] = hack;
+    }
+  }
+
   fetchPostedHackathons(){
     this._http.get('/hackathons/current')
     .map(response => {
       const res = response.json();
       this.loggedSession.postedHackathons = res.hackathons;
+      this.buildAllHacksObject(res.hackathons);
+      
+    })
+    .catch(err => err.json())
+  }
+
+  getLoggedTeam(){
+    this._http.get('/teams/logged')
+    .map(response => {
+      const res = response.json();
+      this.loggedSession.loggedTeamName = res.team.name;
+      this.loggedSession.loggedTeamLocation = res.team.location;
     })
     .catch(err => err.json())
   }
@@ -69,6 +97,7 @@ export class HttpService {
     .map(response=> {
       const res = response.json();
       this.loggedSession.pastHackathons = res.hackathons;
+      this.buildAllHacksObject(res.hackathons);
     })
     .catch(err => err.json())
   }
@@ -82,6 +111,7 @@ export class HttpService {
           this.getTimeLeft(hack);
         }
         this.loggedSession.joinedHackathons = res.hackathons;
+        this.buildAllHacksObject(res.hackathons);
       }
     })
     .catch(err => err.json())

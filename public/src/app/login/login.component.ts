@@ -43,8 +43,13 @@ export class LoginComponent implements OnInit {
       login.password = model.password;
      
       this.httpService.loginTeam(login)
-      .subscribe(success => console.log("team in", success), 
-      err=>console.log("failed"))
+      .subscribe(success => {
+        console.log("team in", success);
+        this._router.navigate(['/dashboard'])
+      }, 
+      err=>{
+        console.log("failed logging in");
+      })
     }
       
     //   (res) => {
