@@ -46,7 +46,6 @@ module.exports = {
     members: (req, res) => {
         let query = "SELECT * FROM members WHERE team = ?";
         db.query(query, req.session.userId, (err, members) => {
-            console.log("asdfa");
             res.json({"members": members});
         })
     }

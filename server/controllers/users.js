@@ -9,7 +9,7 @@ const saltRounds = 10;
 
 function sendServerError(error, res){
 	console.log('[SQL error]', error);
-	res.json({'error': 'Server Error'});
+	res.status(500).json({'error': 'Server Error'});
 }
 
 function setSessionRole(req, role, userId){
@@ -36,9 +36,8 @@ module.exports = {
 
         let query = 'SELECT id FROM '+ role +' WHERE name = ?';
         db.query(query, req.body.name, (err, users) => {
-            if(err) return sendServerError(err, response);
-            if (users.length) errors.name = 'User name in already taken';
-            
+            if(err) return sendServerError(err, res);
+            if (users.length > 0) errors.name = 'User name in already taken';
             if (Object.keys(errors).length == 0) createUser(req.body);
             else res.status(409).json({'errors': errors});
         });
@@ -70,7 +69,7 @@ module.exports = {
                     setSessionRole(req, role, user.id);
                     res.json({'userId': user.id});
                 } 
-                else res.status(409).send();
+                else res.status(409).send("Username or password invalid");
             });
         }
     },
