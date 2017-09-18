@@ -7,15 +7,16 @@ import { HttpService } from '../http.service';import { Router } from '@angular/r
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
-  loggedTeamName: string;
+  session: object
+  loggedTeam: object;
   isLoggedIn: boolean;
 
   constructor(private httpService: HttpService, private _router: Router) { }
 
   ngOnInit() {
     console.log("our session", this.httpService.loggedSession)
-    this.loggedTeamName = this.httpService.loggedSession.loggedTeamName;
+    this.session = this.httpService.loggedSession
+    this.loggedTeam = this.httpService.loggedSession.loggedTeam;
     this.isLoggedIn = this.httpService.loggedSession.isLoggedIn;
   }
   logout(){

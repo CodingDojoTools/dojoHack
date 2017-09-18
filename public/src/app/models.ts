@@ -33,8 +33,7 @@ export class Session {
     constructor(
         public loggedInId: number = null,
         public isLoggedIn: boolean = false,
-        public loggedTeamName: string = "",
-        public loggedTeamLocation: string = "",
+        public loggedTeam: Team = null,
         public postedHackathons: Hackathon[] = [],
         public pastHackathons: Hackathon[] = [],
         public joinedHackathons: Hackathon[] = [],

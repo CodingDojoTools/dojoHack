@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Hackathon, Project, Session } from './models'; 
+import { Hackathon, Project, Session, Team } from './models'; 
 import 'rxjs';
 
 @Injectable()
@@ -17,9 +17,19 @@ export class HttpService {
   allHackathons: Hackathon[] = [];
   selectedHackathon: Hackathon;
   submissionFlashMessage: string;
-
+  errorMessage
 
   constructor(private _http: Http) { }
+
+  private extractData(res: Response){
+    let body = res.json();
+    return body || []; 
+  }
+  private handleError(error: any){
+    let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : "Server err";
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
 
   login(): boolean {
     return this.isLoggedIn;
@@ -49,10 +59,13 @@ export class HttpService {
   getAllData(teamid){
     console.log("About to get all data");
     
-    this.getLoggedTeam();
-    console.log("After getting logged team in get all data");
+    this.getLoggedTeam().subscribe(
+      body => this.loggedSession.loggedTeam = body['team'],
+      error => this.errorMessage = <any>error);
     
-    this.fetchPostedHackathons();
+    this.fetchPostedHackathons().subscribe(
+      body => this.loggedSession.postedHackathons = body['hackathons'],
+      error => this.errorMessage = <any>error);
     this.fetchCompletedHackathons();
     this.fetchJoinedHackathons();
     this.fetchLoggedMembers();
@@ -73,32 +86,16 @@ export class HttpService {
     }
   }
 
-  fetchPostedHackathons(){
-    this._http.get('/hackathons/current')
-    .map(response => {
-      const res = response.json();
-      this.loggedSession.postedHackathons = res.hackathons;
-      this.buildAllHacksObject(res.hackathons);
-      
-    })
-    .catch(err => err.json())
+  fetchPostedHackathons(): Observable<Object>{
+    return this._http.get('/hackathons/current')
+    .map(this.extractData) 
+    .catch(this.handleError);
   }
 
-  getLoggedTeam(){
-    console.log("About to get the logged team")
-    this._http.get('/teamasdgasdgs/logged').map(
-      response => {
-
-        const res = response.json();
-        console.log("response for getting logged team", res)
-        this.loggedSession.loggedTeamName = res.team.name;
-        this.loggedSession.loggedTeamLocation = res.team.location;
-      },
-      err => {
-        err.json()
-        console.log("in th error for logged team", err);
-      } 
-    )
+  getLoggedTeam(): Observable<Object>{
+    return this._http.get('/teams/logged')
+    .map(this.extractData)
+    .catch(this.handleError)
   }
 
   
