@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { SubmissionComponent} from './submission/submission.component';
+import { SubmissionComponent } from './submission/submission.component';
 import { DetailsComponent } from './details/details.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { ProfileComponent } from './profile/profile.component'; 

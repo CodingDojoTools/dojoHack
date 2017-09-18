@@ -9,7 +9,7 @@ export class HttpService {
 
   loggedSession = new Session();
   loggedInId: number;
-  isLoggedIn = true;
+  isLoggedIn = false;
   loggedTeamName: string;
   redirectUrl: string;
   postedHackathons: Hackathon[] = [];

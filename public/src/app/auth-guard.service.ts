@@ -11,6 +11,7 @@ export class AuthGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
     console.log("AuthGuard canActivate called");
     let url: string = state.url;
+    console.log("the url", url)
     return this.checkLogin(url);
     
   }
@@ -19,6 +20,9 @@ export class AuthGuardService implements CanActivate {
       return true;
     }
     this.httpService.redirectUrl = url;
+    this.httpService.requestSession.subscribe()
+    // use the httpService to find out what our session is
+    // if we have a session, we'll navigate to the redirecturl
     this.router.navigate(['/register']);
     return false;
   }
