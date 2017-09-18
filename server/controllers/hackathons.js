@@ -1,6 +1,6 @@
 const db = require('../config/mysql.js');
-const GIT_REGEX = new RegExp('https://github.com/([\w\-]+)/([\w\-]+)');
-const YT_REGEX = new RegExp('(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*');
+const GIT_REGEX = /https:\/\/github\.com\/[\w\\-]+\/[\w\\-]+$/;
+const YT_REGEX = /https:\/\/youtu\.be\/\w+$/;
 
 function sendServerError(error, res){
 	console.log('[SQL error]', error);

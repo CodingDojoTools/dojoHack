@@ -44,7 +44,7 @@ module.exports = function(app) {
             next();
         } else {
             console.log('user '+req.session.userId+' is not logged in');
-            res.status(401).send("Not logged it");
+            res.status(401).send("Not logged in");
         }
     }),
 
@@ -97,13 +97,14 @@ module.exports = function(app) {
     
     app.get('/isLoggedIn',  (req, res) => { users.isLoggedIn(req, res); }),
 
+    app.get('/teams/members',    (req, res) => { teams.members(req, res); }),
+    
     app.get('/teams/:id',   (req, res) => { teams.get(req, res); }),
 
     app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
     
     app.post('/teams/addmember', (req, res) => { teams.addMember(req, res); }),
 
-    app.get('/teams/members',    (req, res) => { teams.members(req, res); }),
 
     
     // =============================================================

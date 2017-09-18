@@ -8,13 +8,11 @@ import { Subscription } from 'rxjs/Subscription';
 export function validGitUrl(control: FormControl){
   const giturl = control.value;
   const gitRegex = /https:\/\/github\.com\/[\w\\-]+\/[\w\\-]+$/;
-  console.log("testing the git regex", gitRegex.test(giturl))
   return gitRegex.test(giturl) ? null : {match: true}
 }
 export function validYouTubeUrl(control: FormControl){
   const yturl = control.value;
   const ytRegex = /https:\/\/youtu\.be\/\w+$/;
-  console.log("testing the youtube regex", ytRegex.test(yturl))
   return ytRegex.test(yturl) ? null : {match: true}
 }
 
@@ -88,7 +86,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.httpService.submitProject(this.newProj, this.hackathonId, (res)=>{
         if(res.status){
           console.log("We added our project!", res.projectId)
-          this.httpService.submissionFlashMessage = "You successfully submitted your project! Yaaaay."
+          this.httpService.submissionFlashMessage = "You successfully submitted your project!"
           this._router.navigate(['/details', this.hackathonId]);
         }
         else {
