@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Hackathon, Project, Session, Team } from './models'; 
 import 'rxjs';
 
 @Injectable()
 export class HttpService {
+
+  session = new BehaviorSubject(null);
+  updateSession(session: Session){
+    console.log("updating session")
+    this.session.next(session);
+  }
   
   loggedSession = new Session();
   loggedInId: number;
@@ -26,6 +33,7 @@ export class HttpService {
     return body || []; 
   }
   private handleError(error: any){
+    console.log("error in the private error handler", error)
     let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : "Server err";
     console.error(errMsg);
     return Observable.throw(errMsg);
@@ -50,34 +58,56 @@ export class HttpService {
     this.loggedSession.loggedInId = teamid;
     this.loggedSession.isLoggedIn = true;
     this.getAllData(teamid);
-
-    // redundant
-    this.loggedInId = teamid;
-    this.isLoggedIn = true;
   }
  
   getAllData(teamid){
     console.log("About to get all data");
     
-    this.getLoggedTeam().subscribe(
-      body => this.loggedSession.loggedTeam = body['team'],
-      error => this.errorMessage = <any>error);
+    this.getObs('/teams/logged').subscribe(
+      body => {
+        this.loggedSession.loggedTeam = body['team'];
+        this.updateSession(this.loggedSession);
+      },
+      error => this.errorMessage = <any>error
+    );
     
-    this.fetchPostedHackathons().subscribe(
-      body => this.loggedSession.postedHackathons = body['hackathons'],
-      error => this.errorMessage = <any>error);
-    this.fetchCompletedHackathons();
-    this.fetchJoinedHackathons();
-    this.fetchLoggedMembers();
+    this.getObs('/hackathons/current').subscribe(
+      body => {
+        this.loggedSession.postedHackathons = body['hackathons'];
+        this.updateSession(this.loggedSession);
+      },
+      error => this.errorMessage = <any>error
+    );
 
-  }
-  fetchLoggedMembers(){
-    this._http.get('/teams/members')
-    .map(response => {
-      const res = response.json();
-      this.loggedSession.loggedMembers = res.members;
-    })
-    .catch(err => err.json())
+    this.getObs('/hackathons/past').subscribe(
+      body => {
+        this.loggedSession.pastHackathons = body['hackathons'];
+        this.updateSession(this.loggedSession);
+      },
+      error => this.errorMessage = <any>error
+    );
+
+    this.getObs('/hackathons/joined').subscribe(
+      body => {
+        this.loggedSession.joinedHackathons = body['hackathons'];
+        if(body['hackathons']){
+          for(let hack of body['hackathons']){
+            this.getTimeLeft(hack);
+          }
+        }
+        this.updateSession(this.loggedSession);
+      },
+      error => this.errorMessage = <any>error
+    );
+
+    this.getObs('/teams/members').subscribe(
+      body => {
+        this.loggedSession.loggedMembers = body['members'];
+        this.updateSession(this.loggedSession);
+      },
+      error => this.errorMessage = <any>error
+    );
+
   }
 
   buildAllHacksObject(arr){
@@ -86,66 +116,56 @@ export class HttpService {
     }
   }
 
-  fetchPostedHackathons(): Observable<Object>{
-    return this._http.get('/hackathons/current')
-    .map(this.extractData) 
-    .catch(this.handleError);
-  }
-
-  getLoggedTeam(): Observable<Object>{
-    return this._http.get('/teams/logged')
+  getObs(url): Observable<Object>{
+    return this._http.get(url)
     .map(this.extractData)
     .catch(this.handleError)
   }
-
   
+  postObs(url, data): Observable<Object>{
+    return this._http.post(url, data)
+    .map(this.extractData)
+    .catch(this.handleError)
 
-  fetchCompletedHackathons(){
-    this._http.get('/hackathons/past')
-    .map(response=> {
-      const res = response.json();
-      this.loggedSession.pastHackathons = res.hackathons;
-      this.buildAllHacksObject(res.hackathons);
-    })
-    .catch(err => err.json())
   }
 
-  fetchJoinedHackathons(){
-    this._http.get('/hackathons/joined')
-    .map(response => {
-      const res = response.json();
-      if(res.hackathons){
-        for(let hack of res.hackathons){
+  joinHackathon(hack, callback){
+    this._http.get(`/hackathons/${hack.id}/join`).subscribe(
+      (response) => {
+        let res = response.json();
+        if(res.status){
+          let index = this.postedHackathons.indexOf(hack);
+          this.postedHackathons.splice(index, 1);
           this.getTimeLeft(hack);
+          this.joinedHackathons.push(hack);
+          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
         }
-        this.loggedSession.joinedHackathons = res.hackathons;
-        this.buildAllHacksObject(res.hackathons);
+        callback(res)
+      },
+      (err) => {
+        console.log("Error trying to join in service", err);
       }
-    })
-    .catch(err => err.json())
+    )
   }
 
+  // submitProject(project, id, callback){
+  //   console.log("We'll submit this", project);
+  //   this._http.post(`/hackathons/${id}/addproject`, project).subscribe(
+  //     (response) => {
+  //       const res = response.json();
+  //       console.log("We got our response", res)
+  //       callback(res)
+  //     },
+  //     (err) => {
+  //       console.log("Error trying to submit a project in service", err)
+  //       callback({status: false})
+  //     }
+  //   )
+  // }
+
+  // DOWN THERE, THERE BE MONSTERS!!!
+  // =========================================================
   
-
-//  fetchPosted(callback){
-//     this._http.get('/hackathons/current').subscribe(
-//       (response) => {
-//         let res = response.json();
-//         if(res.hackathons){
-//           this.postedHackathons = res.hackathons;
-//           this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
-//           callback({status: true, hacks: this.postedHackathons});
-//         }
-//         else {
-//           callback({status: false})
-//         }
-//       },
-//       (err) => {
-//         console.log("Got an error, failed hackathon request", err)
-//       }
-//     )
-//   }
-
   requestSession(){
     console.log("in the request session")
     return this._http.get('/isLoggedIn').map(
@@ -246,46 +266,7 @@ export class HttpService {
     //   }
     // )
   }
-  fetchJoined(callback){
-    this._http.get('/hackathons/joined').subscribe(
-      (response)=>{
-        let res = response.json();
-        if(res.hackathons){
-          for(let hack of res.hackathons){
-            this.getTimeLeft(hack);
-          }
-          this.joinedHackathons = res.hackathons;
-          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
-          callback({status: true, hacks: this.joinedHackathons});
-        }
-        else {
-          callback({status: false})
-        }
-      },
-      (err) => {
-        console.log("Error getting the joined hackathons in service", err)
-      }
-    )
-  }
-
-  fetchPast(callback){
-    this._http.get('/hackathons/past').subscribe(
-      (response) => {
-        let res = response.json();
-        if(res.hackathons){
-          this.pastHackathons = res.hackathons;
-          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
-          callback({status: true, hacks: this.pastHackathons});
-        }
-        else {
-          callback({status: false})
-        }
-      },
-      (err) => {
-        console.log("Error getting past hackathons in service", err);
-      }
-    )
-  }
+ 
 
   registerTeam(team, callback){
     console.log("in service about to register a team", team);
@@ -321,45 +302,11 @@ export class HttpService {
     )
   }
 
-  fetchPosted(callback){
-    this._http.get('/hackathons/current').subscribe(
-      (response) => {
-        let res = response.json();
-        if(res.hackathons){
-          this.postedHackathons = res.hackathons;
-          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
-          callback({status: true, hacks: this.postedHackathons});
-        }
-        else {
-          callback({status: false})
-        }
-      },
-      (err) => {
-        console.log("Got an error, failed hackathon request", err)
-      }
-    )
-  }
+
 
  
 
-  joinHackathon(hack, callback){
-    this._http.get(`/hackathons/${hack.id}/join`).subscribe(
-      (response) => {
-        let res = response.json();
-        if(res.status){
-          let index = this.postedHackathons.indexOf(hack);
-          this.postedHackathons.splice(index, 1);
-          this.getTimeLeft(hack);
-          this.joinedHackathons.push(hack);
-          this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
-        }
-        callback(res)
-      },
-      (err) => {
-        console.log("Error trying to join in service", err);
-      }
-    )
-  }
+
   
   getOneHackathon(id, callback){
     var found = false;
@@ -405,20 +352,7 @@ export class HttpService {
     )
   }
 
-  submitProject(project, id, callback){
-    console.log("We'll submit this", project);
-    this._http.post(`/hackathons/${id}/addproject`, project).subscribe(
-      (response) => {
-        const res = response.json();
-        console.log("We got our response", res)
-        callback(res)
-      },
-      (err) => {
-        console.log("Error trying to submit a project in service", err)
-        callback({status: false})
-      }
-    )
-  }
+ 
 
   getTimeLeft(hackathon){
     const due = new Date(hackathon.deadline).getTime();

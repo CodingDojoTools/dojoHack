@@ -83,21 +83,16 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.newProj.vidUrl = model.vidUrl;
       this.newProj.description = model.description;
       
-      this.httpService.submitProject(this.newProj, this.hackathonId, (res)=>{
-        if(res.status){
-          console.log("We added our project!", res.projectId)
-          this.httpService.submissionFlashMessage = "You successfully submitted your project!"
+      this.httpService.postObs(
+        `/hackathons/${this.hackathonId}/addproject`, this.newProj
+      ).subscribe(
+        body => {
+          this.httpService.submissionFlashMessage = "You successfully submitted your project!";
           this._router.navigate(['/details', this.hackathonId]);
-        }
-        else {
-          console.log("We'll have to figure out how to display error messages")
-        }
-      })
-
-
+        },
+        err => console.log("handle the error on failed submission")
+      )
     }
-
-    console.log("submitting an entry")
   }
 
   cancel(){

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../http.service';
 import { Hackathon } from '../../models';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-posted',
@@ -9,31 +10,31 @@ import { Hackathon } from '../../models';
 })
 export class PostedComponent implements OnInit {
   postedHackathons: Hackathon[] = []
+  session: Subscription;
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) { 
+    this.session = this.httpService.session.subscribe(
+      session => {
+        console.log("Receiving from behavior subject", session)
+        this.session = session;
+        if(session){
+          this.postedHackathons = session['postedHackathons'];
+        }
+      },
+      err => console.log("Error with subscribing to behavior subject",err)
+    )
+  }
 
   ngOnInit() {
-    this.httpService.fetchPosted((res) => {
-      if(res.status){
-       
-        this.postedHackathons = res.hacks;
-       
-      }
-      else {
-        console.log("We don't appear to have any luck.")
-      }
-    })
+    this.postedHackathons = this.httpService.loggedSession.postedHackathons;
+    
   }
-  joinHackathon(hack){
-    console.log("we're joining this hackathon", hack);
-    this.httpService.joinHackathon(hack, (res) => {
-      if(res.status){
-        console.log("Successfully joined")
-      }
-      else if (res.message){
-        console.log("Could not join this hackathon")
-      }
-    })
+  joinHackathon(hackId){
+    console.log("we're joining this hackathon", hackId);
+    this.httpService.getObs(`/hackathons/${hackId}/join`).subscribe(
+      body => console.log("We joined!", body),
+      err => console.log("We have an error!", err)
+    )
+      
   }
-
 }

@@ -72,18 +72,25 @@ module.exports = {
     },
 
     join: (req, res) => {
+        console.log("in the controller join", req.params);
         let exist = 'SELECT * FROM submissions WHERE teamID = ? AND hackathonId = ?';
         let query = 'INSERT INTO submissions (teamId, hackathonId) VALUES (?, ?)';
         let data = [req.session.userId, req.params.hackId]
-        db.query(exist, data, (err, packet) => {
+        db.query(exist, data, (err, subs) => {
             if(err) sendServerError(err, res);
-            else if(packet.length > 0){
+            else if(subs.length > 0){
                 res.status(409).send("You've already joined this hackathon")
             }
             else {
                 db.query(query, data, (err, packet) => {
-                    if (err) sendServerError(err, res);
-                    else res.status(200).send();
+                    console.log("in line 86 controller join")
+                    if (err) {
+                        console.log("Error in controller join line 88");sendServerError(err, res);
+                    }
+                    else {
+                        console.log("Everything's fine in the join");
+                        res.status(200).json({hackathonId: req.params.hackId});
+                    }
                 });
             }
         })

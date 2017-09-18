@@ -1,7 +1,7 @@
 
 <nav class="navbar">
     <div class="navbar-brand">
-      <a class="navbar-item" href="#">
+      <a class="navbar-item" [routerLink]="['/dashboard']">
         <img src="../assets/images/logo_banner.png" alt="Dojo Logo" >
       </a>
     </div>
@@ -17,10 +17,10 @@
       </div>
   
       <div class="navbar-end">
-        <div *ngIf = "isLoggedIn" class="navbar-item">
+        <div *ngIf = "session.isLoggedIn" class="navbar-item">
           <a (click)="logout()">Logout</a>
         </div>
-        <div *ngIf="!isLoggedIn" class="navbar-item">
+        <div *ngIf="!session.isLoggedIn" class="navbar-item">
           <a [routerLink]="['/register']">Register or login</a>
         </div>
       </div>

@@ -16,7 +16,7 @@ const APP_ROUTES: Routes = [
     { path: 'details/:id', component: DetailsComponent, canActivate: [AuthGuardService]},
     { path: 'entry/:id', component: SubmissionComponent, canActivate: [AuthGuardService]},
     {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
-    {path: '**', redirectTo: 'dashboard'}
+    {path: '**', redirectTo: 'register'}
     
 ];
 
