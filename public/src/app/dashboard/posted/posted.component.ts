@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../http.service';
-import { Hackathon } from '../../models';
+import { Hackathon, Session } from '../../models';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -10,15 +10,16 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class PostedComponent implements OnInit {
   postedHackathons: Hackathon[] = []
-  session: Subscription;
+  sessionSub: Subscription;
+  session: Session;
 
   constructor(private httpService: HttpService) { 
-    this.session = this.httpService.session.subscribe(
+    this.sessionSub = this.httpService.session.subscribe(
       session => {
         console.log("Receiving from behavior subject", session)
         this.session = session;
         if(session){
-          this.postedHackathons = session['postedHackathons'];
+          this.postedHackathons = session.postedHackathons;
         }
       },
       err => console.log("Error with subscribing to behavior subject",err)
@@ -32,7 +33,15 @@ export class PostedComponent implements OnInit {
   joinHackathon(hackId){
     console.log("we're joining this hackathon", hackId);
     this.httpService.getObs(`/hackathons/${hackId}/join`).subscribe(
-      body => console.log("We joined!", body),
+      body => {
+        console.log("We joined!", body);
+        const joined = this.session.postedHackathons.splice(hackId, 1)[0];
+        this.session.joinedHackathons.push(joined);
+        this.httpService.updateSession(this.session);
+        
+
+
+      },
       err => console.log("We have an error!", err)
     )
       
