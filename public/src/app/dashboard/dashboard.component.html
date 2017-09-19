@@ -1,8 +1,8 @@
 <app-navbar></app-navbar>
 <section class="container">
- <app-joined></app-joined>
- <app-posted></app-posted>
- <app-past></app-past>
+<app-joined [joinedHackathons]="joinedHackathons"></app-joined>
+<app-posted [postedHackathons]="postedHackathons" (markAsJoined)="moveToJoined($event)"></app-posted>
+<app-past [pastHackathons]="pastHackathons"></app-past>
 
     
 </section>

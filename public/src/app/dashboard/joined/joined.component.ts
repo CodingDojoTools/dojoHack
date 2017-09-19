@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { HttpService } from '../../http.service';
 import { Router } from '@angular/router';
 import { Hackathon, Session } from '../../models';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./joined.component.css']
 })
 export class JoinedComponent implements OnInit, OnDestroy {
-  joinedHackathons = [];
+  @Input() joinedHackathons: Hackathon[];
   sessionSub: Subscription;
   session: Session;
   
@@ -19,16 +19,16 @@ export class JoinedComponent implements OnInit, OnDestroy {
   constructor(private httpService: HttpService, private _router: Router) { }
 
   ngOnInit() {
-    this.sessionSub = this.httpService.session.subscribe(
-      session => {
-        console.log("Receiving from behavior subject", session)
-        this.session = session;
-        if(session){
-          this.joinedHackathons = session.joinedHackathons;
-        }
-      },
-      err => console.log("Error with subscribing to behavior subject",err)
-    )
+    // this.sessionSub = this.httpService.session.subscribe(
+    //   session => {
+    //     console.log("Receiving from behavior subject", session)
+    //     this.session = session;
+    //     if(session){
+    //       this.joinedHackathons = session.joinedHackathons;
+    //     }
+    //   },
+    //   err => console.log("Error with subscribing to behavior subject",err)
+    // )
   }
 
   submitEntry(hackId){
@@ -37,7 +37,7 @@ export class JoinedComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.sessionSub.unsubscribe();
+    // this.sessionSub.unsubscribe();
   }
 
  
