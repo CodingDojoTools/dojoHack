@@ -10,7 +10,6 @@ export class HttpService {
 
   session = new BehaviorSubject(null);
   updateSession(session: Session){
-    console.log("updating session")
     this.session.next(session);
   }
   
