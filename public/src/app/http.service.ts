@@ -24,7 +24,7 @@ export class HttpService {
   joinedHackathons: Hackathon[] = [];
   allHackathons: Hackathon[] = [];
   selectedHackathon: Hackathon;
-  submissionFlashMessage: string;
+ 
   errorMessage
 
   constructor(private _http: Http) { }

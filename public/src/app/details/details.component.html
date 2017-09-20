@@ -3,10 +3,13 @@
 
 <section class="hero is-dark is-bold">
   <div class="hero-body">
-    <div *ngIf="hackathon" class="container">
+    <div *ngIf="hackathon" class="container hackTop">
       <h1  class="title">{{hackathon.name}}</h1>
       <h2 class="subtitle">
-        Time left to submit your entry: {{hackathon.timeLeft | async}}
+        Deadline: {{hackathon.deadline | date: 'medium'}}
+      </h2>
+      <h2 *ngIf="hackathon.timeLeft != 0" class="subtitle is-pulled-right">
+        Time left to submit your entry: <span class="timer">{{hackathon.timeLeft | async}}</span>
       </h2>
     </div>
       
@@ -16,14 +19,16 @@
  
   <div class = "columns">
     <div class="column">
+      
       <p>A whole lotta text. We could include more information about the hackathon here. The theme, a description provided by whomever created the hackathon.</p>
     </div>
     <div class="column is-three-quarters">
         <div *ngIf="submissionMessage">
           <p class="subtitle is-success">{{submissionMessage}}</p>
         </div>
-        <div *ngIf="submissions.length > 1" class="box">
-            
+        
+        <div *ngIf="submissions" class="box">
+         {{hackathon | json}}
         <table class="table is-striped is-fullwidth">
           <thead>
             <th>Team name</th>
@@ -34,8 +39,10 @@
             <tr *ngFor="let sub of submissions">
               <td>{{sub.teamName}}</td>
               <td>{{sub.teamLocation}}</td>
-              <td *ngIf="sub.projectTitle">{{sub.projectTitle}}</td>
-              <td *ngIf="!sub.projectTitle">Pending</td>
+              <td *ngIf="sub.projectTitle && sub.teamId!=session.loggedInId">{{sub.projectTitle}}</td>
+              <td *ngIf="sub.projectTitle && sub.teamId==session.loggedInId"><a>{{sub.projectTitle}}</a></td>
+              <td *ngIf="!sub.projectTitle && sub.teamId!=session.loggedInId">Pending</td>
+              <td *ngIf="!sub.projectTitle && sub.teamId==session.loggedInId"><button class="button" [routerLink]="['/entry', hackathonId]">Submit your entry</button></td>
             </tr>
           </tbody>
         </table>

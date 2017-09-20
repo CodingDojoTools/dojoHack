@@ -9,6 +9,7 @@ import { RegisterMembersComponent } from './register-members/register-members.co
 import { DynamicComponent } from './dynamic/dynamic.component';
 import { AddressComponent } from './dynamic/address/address.component';
 import { HttpService } from './http.service';
+import { CountdownService } from './countdown.service';
 import { AuthGuardService } from './auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -52,7 +53,8 @@ import { ProfileComponent } from './profile/profile.component';
   ],
   providers: [
     HttpService,
-    AuthGuardService
+    AuthGuardService,
+    CountdownService
   ],
   bootstrap: [AppComponent]
 })

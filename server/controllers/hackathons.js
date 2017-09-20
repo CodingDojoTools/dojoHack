@@ -28,6 +28,24 @@ module.exports = {
             else res.json({'hackathons': hackathons});
         });
     },
+
+    info: (req, res) => {
+        let query = `
+            SELECT * FROM hackathons
+            WHERE id = ?
+        `;
+        let data = [req.params.hackId];
+        db.query(query, data, (err, hackathon) => {
+            if(err) {
+                console.log("We have an error fetching one hack")
+                sendServerError(err, res);
+            }
+            else {
+                console.log("We got this", hackathon);
+                res.status(200).json({hackathon: hackathon});
+            }
+        })
+    },
     
     current: (req, res) => {
         let query = `
@@ -134,9 +152,11 @@ module.exports = {
     },
 
     submissions: (req, res) => {
+        console.log("Getting submissions")
         let query = `
-            SELECT sub.teamId, teams.name as teamName, locations.name as teamLocation, projectId, projects.title AS projectTitle 
+            SELECT sub.teamId, hackathons.name as hackName, teams.name as teamName, locations.name as teamLocation, projectId, projects.title AS projectTitle 
             FROM submissions AS sub 
+            LEFT JOIN hackathons ON sub.hackathonId = hackathons.id
             LEFT JOIN teams ON sub.teamId = teams.id
             LEFT JOIN locations ON teams.location = locations.id
             LEFT JOIN projects ON sub.projectId = projects.id
@@ -144,7 +164,10 @@ module.exports = {
         `;
         db.query(query, req.params.hackId, (err, submissions) => {
             if (err) sendServerError(err, res);
-            else res.json({'submissions': submissions});
+            else {
+                console.log("Sending back these submissions", submissions)
+                res.json({'submissions': submissions});
+            }
         });
     },
 

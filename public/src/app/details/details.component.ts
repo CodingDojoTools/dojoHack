@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
+import { Observable } from 'rxjs/Observable';
+import { CountdownService } from '../countdown.service';
 import { Subscription } from 'rxjs/Subscription';
-import { Hackathon, Project } from '../models';
+import { Hackathon, Project, Session } from '../models';
 
 @Component({
   selector: 'app-details',
@@ -14,49 +16,59 @@ export class DetailsComponent implements OnInit, OnDestroy {
   paramSub: Subscription;
   hackathonId: number;
   hackathon: Hackathon;
-  submissions: Project[] = [];
+  submissions = [];
   submissionMessage: string;
+  sessionSub: Subscription;
+  session: Session;
 
-  constructor(private httpService: HttpService, private _router: Router, private _route: ActivatedRoute) { 
-    this.paramSub = this._route.params.subscribe((param)=>{
-      this.hackathonId = param.id;
-      console.log("the parameter is", param.id)
-      this.getHackathon(param.id);
-    })
-  }
 
-  getHackathon(id){
-    console.log("asking the service for", id)
-    this.httpService.getOneHackathon(id, (res) => {
-      if(res.status){
-       this.hackathon = res.hackathon;
-       console.log("got the hackathon", this.hackathon)
-      }
-      else {
-        console.log("This hackathon doesn't exist")
-      }
-    })
-  }
+  constructor(private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) { }
 
   ngOnInit() {
-    // get submission to this hackathon
-    this.getSubmissions();
-    this.submissionMessage = this.httpService.submissionFlashMessage;
+    this.paramSub = this._route.params.subscribe(param => {
+      this.hackathonId = param.id;
+      this.getHackathon();
+      this.getSubmissions();
+    })
+
+    this.sessionSub = this.httpService.session.subscribe(
+      session => {
+        console.log("Receiving from behavior subject", session)
+        this.session = session;
+      },
+      err => console.log("Error with subscribing to behavior subject",err)
+    )
   }
   ngOnDestroy(){
-    this.httpService.submissionFlashMessage = null;
+    this.paramSub.unsubscribe();
   }
 
   getSubmissions(){
-    this.httpService.getHackathonSubmissions(this.hackathonId, (res)=>{
-      if(res.status){
-        this.submissions = res.submissions;
-        console.log("We have the submissions", this.submissions)
-      }
-      else {
-        console.log("Handle not being able to get the submissions")
-      }
-    })
+    this.httpService.getObs(`/hackathons/${this.hackathonId}/submissions`).subscribe(
+      body => {
+        this.submissions = body['submissions'];
+        for(var i=0; i<this.submissions.length; i++){
+          if(this.submissions[i].teamId == this.session.loggedInId){
+            let temp = this.submissions[i];
+            this.submissions[i] = this.submissions[0];
+            this.submissions[0] = temp;
+            break;
+          }
+        }
+      },
+      error => console.log("Can't seem to get submissions", error)
+    )
+  }
+
+  getHackathon(){
+    this.httpService.getObs(`hackathons/${this.hackathonId}`).subscribe(
+      body => {
+        this.hackathon = body['hackathon'][0];
+        this.count.getTimeLeft(this.hackathon);
+        
+      },
+      error => console.log("Can get a hackathon", error)
+    )
   }
 
 
