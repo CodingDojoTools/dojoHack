@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
-import { Project, Hackathon } from '../models';
+import { Project, Hackathon, Session } from '../models';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 export function validGitUrl(control: FormControl){
   const giturl = control.value;
@@ -40,39 +41,83 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   descLen: boolean;
   hackathonId: number;
   paramSub: Subscription;
+  sessionSub: Subscription;
+  session;
   hackathon: Hackathon;
   newProj = new Project();
 
+  allSubs: Subscription;
 
 
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute) {
-    this.paramSub = this._route.params.subscribe((param)=>{
-      this.hackathonId = param.id;
-      console.log("the parameter is", param.id)
-      this.getHackathon(param.id);
-    })
+   
    }
 
   ngOnInit() {
+    
+
+
     this.projForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       gitUrl: ['https://github.com/', [Validators.required, validGitUrl]],
       vidUrl: ['https://youtu.be/', [Validators.required, validYouTubeUrl]],
       description: ['', [Validators.required, Validators.minLength(30)]]
     })
+
+    this.allSubs = Observable.combineLatest(
+      [this.httpService.session, this._route.params.take(1)]).subscribe(
+        results => {
+          console.log("got results from forkjoin", results)
+          if(results[0] != null){
+            this.session = results[0];
+            this.getHackathon(results[1].id);
+            console.log("What if we wait a little longer?", results)
+          }
+          
+          // console.log("Do we have our hackathon?", this.hackathon)
+
+         
+        },
+        err=>console.log("Seems to be an error with forkjoin", err)
+      )
+
+
+
+    // this.paramSub = this._route.params.subscribe((param)=>{
+    //   this.hackathonId = param.id;
+    //   console.log("the parameter is", param.id)
+    //   // this.getHackathon(param.id);
+    // })
+    // this.sessionSub = this.httpService.session.subscribe(
+    //   session => {
+    //     console.log("Receiving from behavior subject", session)
+    //     this.session = session;
+    //     this.hackathon = session.
+    //     },
+    //     err => console.log("Error with subscribing to behavior subject",err)
+    //   )
   }
 
   getHackathon(id){
     console.log("asking the service for", id)
-    this.httpService.getOneJoinedHackathon(id, (res) => {
-      if(res.status){
-       this.hackathon = res.hackathon;
-       console.log("got the hackathon", this.hackathon)
-      }
-      else {
-        console.log("This isn't a hackathon we can submit to")
-      }
-    })
+    for(let hack of this.session.joinedHackathons){
+      console.log("the hack.id", hack.id);
+      
+        if(hack.id == id){
+          this.hackathon = hack;
+        }
+    }
+
+    // this.httpService.getOneJoinedHackathon(id, (res) => {
+    //   if(res.status){
+    //    this.hackathon = res.hackathon;
+    //    console.log("got the hackathon", this.hackathon)
+    //   }
+    //   else {
+    //     console.log("This isn't a hackathon we can submit to")
+    //   }
+    // })
+
   }
 
   hackEntry(){
@@ -137,7 +182,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.paramSub.unsubscribe();
+    // this.paramSub.unsubscribe();
+    this.allSubs.unsubscribe();
   }
 
 }

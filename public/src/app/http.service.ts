@@ -8,12 +8,14 @@ import 'rxjs';
 @Injectable()
 export class HttpService {
 
-  session = new BehaviorSubject(null);
+  
+
   updateSession(session: Session){
     this.session.next(session);
   }
   
   loggedSession = new Session();
+  session = new BehaviorSubject(this.loggedSession);
   loggedInId: number;
   isLoggedIn = false;
   loggedTeamName: string;
@@ -89,11 +91,11 @@ export class HttpService {
     this.getObs('/hackathons/joined').subscribe(
       body => {
         this.loggedSession.joinedHackathons = body['hackathons'];
-        if(body['hackathons']){
-          for(let hack of body['hackathons']){
-            this.getTimeLeft(hack);
-          }
-        }
+        // if(body['hackathons']){
+        //   for(let hack of body['hackathons']){
+        //     this.getTimeLeft(hack);
+        //   }
+        // }
         this.updateSession(this.loggedSession);
       },
       error => this.errorMessage = <any>error
@@ -135,8 +137,8 @@ export class HttpService {
         if(res.status){
           let index = this.postedHackathons.indexOf(hack);
           this.postedHackathons.splice(index, 1);
-          this.getTimeLeft(hack);
-          this.joinedHackathons.push(hack);
+          // this.getTimeLeft(hack);
+          // this.joinedHackathons.push(hack);
           this.allHackathons = this.postedHackathons.concat(this.joinedHackathons, this.pastHackathons);
         }
         callback(res)
@@ -323,7 +325,8 @@ export class HttpService {
 
   getOneJoinedHackathon(id, callback){
     var found = false;
-    for(let hack of this.joinedHackathons){
+    
+    for(let hack of this.session['joinedHackathons']){
       if(hack.id == id){
         found = true;
         callback({status: true, hackathon: hack});
@@ -352,95 +355,4 @@ export class HttpService {
   }
 
  
-
-  getTimeLeft(hackathon){
-    const due = new Date(hackathon.deadline).getTime();
-    const now = new Date().getTime();
-    const left = Math.trunc((due-now)/1000);
-    hackathon["timeLeft"] = this.countdown(left);
-    hackathon["danger"] = this.countdownInt(left);
-  }
-
-  countdownInt(deadline){
-    return Observable.timer(0,1000)
-    .take(deadline)
-    .map(() => {
-      deadline--;
-      if(deadline > 86400){
-        return false;
-      }
-      return true;
-    })
-  }
-
-  pad(num){
-    let pad = ""
-    if (num < 10) pad = "0";
-    return pad+num;
-  }
-
-  countdown(deadline){
-    return Observable.timer(0,1000)
-    .take(deadline)
-    .map(() => { deadline--;
-      // 60 seconds in a minute
-      // 60 minutes in an hour, 3600 seconds in an hour
-      // 24 hours in a day, 1440 minutes in a day, 86400 seconds in a day
-      // 7 days in a week, 168 hours in a week, 10080 minutes in a week, 604800 seconds in a week
-      var toreturn = ""
-      var weeks = 0;
-      var days = 0;
-      var hours = 0;
-      var minutes = 0;
-      var seconds = 0;
-      var calcdeadline = deadline;
-
-      weeks = Math.floor(calcdeadline / 604800);
-      calcdeadline %= 604800;
-
-      if(weeks > 1) toreturn += `${weeks} weeks `;
-      else if(weeks == 1) toreturn += "1 week ";
-      
-      days = Math.floor(calcdeadline / 86400);
-      calcdeadline %= 86400;
-    
-      if(days > 1) toreturn += `${days} days `;
-      else if(days == 1) toreturn += "1 day ";
-
-      if (weeks) return toreturn;
-
-      // new
-      hours = Math.floor(calcdeadline / 3600);
-      calcdeadline %= 3600;
-      
-      minutes = Math.floor(calcdeadline / 60);
-      calcdeadline %= 60;
-
-      seconds = calcdeadline;
-
-      toreturn += `${this.pad(hours)}h `;
-      toreturn += `${this.pad(minutes)}m `;
-      toreturn += `${this.pad(seconds)}s`;
-      
-      return toreturn;
-      
-      // hours = Math.floor(calcdeadline / 3600);
-      // calcdeadline %= 3600;
-      
-      // if(hours > 1) toreturn += `${hours} hours `;
-      // else if(hours == 1) toreturn += "1 hour "
-      
-      // minutes = Math.floor(calcdeadline / 60);
-      // calcdeadline %= 60;
-      
-      // if(minutes > 1 || minutes == 0) toreturn += `${minutes} minutes `;
-      // else if(minutes == 1) toreturn += "1 minute ";
-
-      // seconds = calcdeadline;
-      // if(seconds > 1 || seconds == 0) toreturn += `${seconds} seconds`;
-      // else if(seconds == 1) toreturn += "1 second";
-
-      // return toreturn;
-    })
-  }
 }

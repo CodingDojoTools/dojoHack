@@ -8,7 +8,7 @@
   
     <div class="navbar-menu">
       <div class="navbar-start">
-        <div *ngIf = "session.loggedTeam" class="navbar-item">
+        <div *ngIf = "session && session.loggedTeam" class="navbar-item">
           <a [routerLink]="['/guide']">{{session.loggedTeam.name}}</a>
         </div>
         <div class="navbar-item">
@@ -16,11 +16,11 @@
         </div>
       </div>
   
-      <div class="navbar-end">
-        <div *ngIf = "session.isLoggedIn" class="navbar-item">
+      <div class="navbar-end"  *ngIf="session">
+        <div class="navbar-item">
           <a (click)="logout()">Logout</a>
         </div>
-        <div *ngIf="!session.isLoggedIn" class="navbar-item">
+        <div *ngIf="!session && !session.isLoggedIn" class="navbar-item">
           <a [routerLink]="['/register']">Register or login</a>
         </div>
       </div>

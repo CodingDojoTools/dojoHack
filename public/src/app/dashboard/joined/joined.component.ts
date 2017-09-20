@@ -19,16 +19,6 @@ export class JoinedComponent implements OnInit, OnDestroy {
   constructor(private httpService: HttpService, private _router: Router) { }
 
   ngOnInit() {
-    // this.sessionSub = this.httpService.session.subscribe(
-    //   session => {
-    //     console.log("Receiving from behavior subject", session)
-    //     this.session = session;
-    //     if(session){
-    //       this.joinedHackathons = session.joinedHackathons;
-    //     }
-    //   },
-    //   err => console.log("Error with subscribing to behavior subject",err)
-    // )
   }
 
   submitEntry(hackId){
@@ -40,7 +30,8 @@ export class JoinedComponent implements OnInit, OnDestroy {
     // this.sessionSub.unsubscribe();
   }
 
- 
+
+
   
 
 
