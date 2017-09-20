@@ -14,7 +14,8 @@ const APP_ROUTES: Routes = [
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
     { path: 'guide', component: GuidelinesComponent},
     { path: 'details/:id', component: DetailsComponent, canActivate: [AuthGuardService]},
-    { path: 'entry/:id', component: SubmissionComponent, canActivate: [AuthGuardService]},
+    { path: 'hackathon/:purpose/:id', component: SubmissionComponent, canActivate: [AuthGuardService]},
+    // { path: 'hackathon/update/:id', component: SubmissionComponent, canActivate: [AuthGuardService]},
     {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
     {path: '**', redirectTo: 'register'}
     

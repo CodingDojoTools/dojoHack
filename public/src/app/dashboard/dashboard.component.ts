@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.postedHackathons.splice(index, 1);
     this.count.getTimeLeft(hackathon)
     this.joinedHackathons.push(hackathon);
+    this.httpService.updateSession(this.session);
 
   }
 

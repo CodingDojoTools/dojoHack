@@ -22,6 +22,7 @@ module.exports = {
             JOIN submissions AS ha ON h.id = ha.hackathonId
             WHERE deadline > NOW()
             AND ha.teamId = ?
+            ORDER BY deadline
         `;
         db.query(query, req.session.userId, (err, hackathons) => {
             if (err) sendServerError(err, res);
@@ -113,6 +114,22 @@ module.exports = {
             }
         })
         
+    },
+
+    getProject: (req, res) => {
+        let query = `SELECT * FROM projects WHERE id = ? AND teamID = ?`;
+        let data = [req.params.projectId, req.session.userId];
+        db.query(query, data, (err, project) => {
+            if(err) {
+                console.log("We have an error fetching one project")
+                sendServerError(err, res);
+            }
+            else {
+                console.log("We got this", project);
+                res.status(200).json({project: project});
+            }
+        })
+
     },
 
     addProject: (req, res) => {

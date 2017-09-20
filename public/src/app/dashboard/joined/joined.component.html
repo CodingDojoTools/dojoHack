@@ -5,7 +5,7 @@
       <h2 class="title">Joined hackathons</h2>
     </div>
     <div class="box">
-  
+  {{joinedHackathons | json}}
     <table *ngIf="joinedHackathons.length > 0" class="table is-striped is-fullwidth">
         <thead>
           <th>Name</th>
@@ -18,7 +18,8 @@
             <td><a class="button is-link" [routerLink]="['/details', hack.id]">{{hack.name}}</a></td>
             <td>{{hack.deadline | date: 'medium'}}</td>
             <td class="timer">{{hack.timeLeft | async}}</td>
-            <td><button class="button" (click)="submitEntry(hack.id)">Submit</button>{{hack.danger | async}}</td>
+            <td *ngIf="!hack.projectId"><button [routerLink]="['/hackathon', 'submit', hack.id]" class="button is-dark" >Submit</button></td>
+            <td *ngIf="hack.projectId"><button class="button is-dark" [routerLink]="['hackathon', 'update', hack.projectId]">Update</button></td>
           </tr>
         </tbody>
       </table>

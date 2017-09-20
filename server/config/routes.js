@@ -130,11 +130,15 @@ module.exports = function(app) {
 
     app.get('/hackathons/:hackId',  (req, res) => { hackathons.info(req, res); }),
 
+    app.get('/hackathons/:projectId/project', (req, res) => { hackathons.getProject(req, res);}),
+
     app.get('/hackathons/:hackId/submissions',  (req, res) => { hackathons.submissions(req, res); }),
     
-    app.get('/hackathons/:hackId/join',         (req, res) => { hackathons.join(req, res); })
+    app.get('/hackathons/:hackId/join',         (req, res) => { hackathons.join(req, res); }),
     
     app.post('/hackathons/:hackId/addproject',  (req, res) => { hackathons.addProject(req, res); })
+
+
 
 
     // =============================================================

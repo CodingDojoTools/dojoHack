@@ -12,6 +12,7 @@ export class HttpService {
 
   updateSession(session: Session){
     this.session.next(session);
+    console.log("Just updated the session", this.session)
   }
   
   loggedSession = new Session();

@@ -42,6 +42,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   descLen: boolean;
   hackathonId: number;
   paramSub: Subscription;
+  projectId: number;
+  project: Project;
   sessionSub: Subscription;
   session;
   hackathon: Hackathon;
@@ -66,15 +68,30 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.allSubs = Observable.combineLatest(
       [this.httpService.session, this._route.params.take(1)]).subscribe(
         results => {
+          console.log("results from observing params and bs", results)
           if(results[0] != null){
-            this.hackathonId = results[1].id;
             this.session = results[0];
-            this.getHackathon(results[1].id);
-            console.log("What if we wait a little longer?", results)
+            if(results[1].purpose == "submit"){
+              this.hackathonId = results[1].id;
+              this.getHackathon(results[1].id);
+            }
+            else {
+              this.projectId = results[1].id;
+              this.getProject(results[1].id);
+            }
           }
         },
         err=>console.log("Seems to be an error with forkjoin", err)
       )
+  }
+
+  getProject(id){
+    this.httpService.getObs(`hackathons/${id}/project`).subscribe(
+      body => {
+        this.project = body['project'][0];
+      },
+      error => console.log("Can get a hackathon", error)
+    )
   }
 
   getHackathon(id){

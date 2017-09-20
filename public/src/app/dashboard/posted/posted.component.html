@@ -14,7 +14,7 @@
             <td><a class="button is-link" [routerLink]="['/details', hack.id]">{{hack.name}}</a></td>
             <td>iOS</td>
             <td>{{hack.deadline | date: 'medium'}}</td>
-            <td><button class="button is-small is-dark" (click)="joinHackathon(hack)">Join</button></td>
+            <td><button class="button  is-dark" (click)="joinHackathon(hack)">Join</button></td>
           </tr>
         </tbody>
       </table>

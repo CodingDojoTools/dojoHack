@@ -40,9 +40,9 @@
               <td>{{sub.teamName}}</td>
               <td>{{sub.teamLocation}}</td>
               <td *ngIf="sub.projectTitle && sub.teamId!=session.loggedInId">{{sub.projectTitle}}</td>
-              <td *ngIf="sub.projectTitle && sub.teamId==session.loggedInId"><a>{{sub.projectTitle}}</a></td>
+              <td *ngIf="sub.projectTitle && sub.teamId==session.loggedInId"><button [routerLink]="['/hackathon', 'update', sub.projectId]" class="button is-dark">{{sub.projectTitle}}</button></td>
               <td *ngIf="!sub.projectTitle && sub.teamId!=session.loggedInId">Pending</td>
-              <td *ngIf="!sub.projectTitle && sub.teamId==session.loggedInId"><button class="button" [routerLink]="['/entry', hackathonId]">Submit your entry</button></td>
+              <td *ngIf="!sub.projectTitle && sub.teamId==session.loggedInId"><a [routerLink]="['/entry', hackathonId]"><button class="button" >Submit your entry</button></a></td>
             </tr>
           </tbody>
         </table>
