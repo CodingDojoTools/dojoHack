@@ -31,7 +31,10 @@ module.exports = {
         let query = "INSERT INTO members (firstName, lastName, team) VALUES (?, ?, ?)";
         let data = [firstName, lastName, req.session.userId];
         db.query(query, data, (err, packet) => {
-            res.status(200).send();
+            if(err){
+                return res.status(500).json(err)
+            }
+            res.status(200).send({member: packet});
         });
     },
 

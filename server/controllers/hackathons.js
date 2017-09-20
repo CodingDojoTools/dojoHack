@@ -38,11 +38,9 @@ module.exports = {
         let data = [req.params.hackId];
         db.query(query, data, (err, hackathon) => {
             if(err) {
-                console.log("We have an error fetching one hack")
                 sendServerError(err, res);
             }
             else {
-                console.log("We got this", hackathon);
                 res.status(200).json({hackathon: hackathon});
             }
         })
@@ -102,12 +100,10 @@ module.exports = {
             }
             else {
                 db.query(query, data, (err, packet) => {
-                    console.log("in line 86 controller join")
                     if (err) {
-                        console.log("Error in controller join line 88");sendServerError(err, res);
+                        sendServerError(err, res);
                     }
                     else {
-                        console.log("Everything's fine in the join");
                         res.status(200).json({hackathonId: req.params.hackId});
                     }
                 });
@@ -121,11 +117,9 @@ module.exports = {
         let data = [req.params.projectId, req.session.userId];
         db.query(query, data, (err, project) => {
             if(err) {
-                console.log("We have an error fetching one project")
                 sendServerError(err, res);
             }
             else {
-                console.log("We got this", project);
                 res.status(200).json({project: project});
             }
         })
@@ -169,7 +163,6 @@ module.exports = {
     },
 
     submissions: (req, res) => {
-        console.log("Getting submissions")
         let query = `
             SELECT sub.teamId, hackathons.name as hackName, teams.name as teamName, locations.name as teamLocation, projectId, projects.title AS projectTitle 
             FROM submissions AS sub 

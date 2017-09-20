@@ -71,13 +71,14 @@
 
       </div>
       
-
+{{locations | json}}
       <div class="field">
         <div class="control has-icons-left">
           <div class="select">
             <select formControlName="location">
                 <option value="" disabled="true">Location</option>
-              <option value="1">San Jose</option>
+                <option *ngFor="let loc of locations" value="{{loc.id}}">{{loc.name}}</option>
+              <!-- <option value="1">San Jose</option>
               <option value="2">Burbank</option>
               <option value="3">Seattle</option>
               <option value="4">Chicago</option>
@@ -85,7 +86,7 @@
               <option value="6">DC</option>
               <option value="7">Tulsa</option>
               <option value="8">Berkeley</option>
-              <option value="9">OC</option>
+              <option value="9">OC</option> -->
             </select>
           </div>
           <span class="icon is-small is-left">

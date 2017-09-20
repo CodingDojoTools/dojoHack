@@ -51,7 +51,8 @@ module.exports = function(app) {
             next();
         } else {
             console.log('user '+req.session.userId+' is not logged in');
-            res.status(401).send("Not logged in");
+            res.status(401).sendFile(path.resolve('./public/dist/index.html'));
+            // res.status(401).send("Not logged in");
         }
     }),
 

@@ -9,12 +9,12 @@ import { FormGroup } from '@angular/forms';
 export class RegisterMembersComponent implements OnInit {
   @Input('group')
   public memberForm: FormGroup;
-  FNDanger: Boolean;
-  firstReq: Boolean;
-  firstLen: Boolean;
-  LNDanger: Boolean;
-  lastReq: Boolean;
-  lastLen: Boolean;
+  FNDanger: boolean;
+  firstReq: boolean;
+  firstLen: boolean;
+  LNDanger: boolean;
+  lastReq: boolean;
+  lastLen: boolean;
   
   constructor() { 
     
@@ -22,10 +22,7 @@ export class RegisterMembersComponent implements OnInit {
 
  
 
-  ngOnInit() {
-    console.log("got a member Form", this.memberForm)
-    console.log(this.memberForm.valid)
-  }
+  ngOnInit() {}
 
   get firstName(){
     let fn = this.memberForm.get('firstName');

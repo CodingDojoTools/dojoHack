@@ -24,7 +24,8 @@ export class Project {
         public title: string = "",
         public gitUrl: string = "",
         public vidUrl: string = "",
-        public description: string = ""
+        public description: string = "",
+        public hackathonId: number = 0
 
     ){}
 }

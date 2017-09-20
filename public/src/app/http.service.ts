@@ -44,18 +44,11 @@ export class HttpService {
   login(): boolean {
     return this.isLoggedIn;
   }
-  logout() {
-    this.loggedSession = new Session();
+  // logout() {
+  //   this.loggedSession = new Session();
 
-    //redundant
-    this.loggedInId = null;
-    this.isLoggedIn = false;
-    this.loggedTeamName = null;
-    this.postedHackathons = [];
-    this.pastHackathons = [];
-    this.joinedHackathons = [];
-    this.allHackathons = [];
-  }
+  //   //redundant
+  // }
   startSession(teamid){
     this.loggedSession.loggedInId = teamid;
     this.loggedSession.isLoggedIn = true;

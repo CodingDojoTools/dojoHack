@@ -45,23 +45,39 @@ export class RegisterComponent implements OnInit {
       this.newTeam.password = model.passGroup.password;
       this.newTeam.confirmPassword = model.passGroup.confirmPassword;
       this.newTeam.location = model.location;
-      this.httpService.registerTeam(this.newTeam, (res) => {
-        if(res.status){
+      console.log(this.newTeam);
+      this.httpService.postObs('/register', this.newTeam).subscribe(
+        body => {
+          console.log("Got the register body", body)
           for(let member of model.members){
-            this.regMember(member)
+            this.httpService.postObs('/teams/addmember', member).subscribe(
+              body => console.log("got one member body", body),
+              err => console.log("Error with one member", err)
+              
+            )
           }
-          this.regForm.reset();
-          this.newTeam = new Team();
-          this._router.navigate(['/dashboard']);
-        }
-        else {
-          console.log("We'll have to handle error messages")
-        }
-        });
+          this._router.navigate(['/dashboard'])
+        },
+        err => console.log("Got the register error", err)
+      )
     }
-    else {
-      console.log("nice try");
-    }
+    //   this.httpService.registerTeam(this.newTeam, (res) => {
+    //     if(res.status){
+    //       for(let member of model.members){
+    //         this.regMember(member)
+    //       }
+    //       this.regForm.reset();
+    //       this.newTeam = new Team();
+    //       this._router.navigate(['/dashboard']);
+    //     }
+    //     else {
+    //       console.log("We'll have to handle error messages")
+    //     }
+    //     });
+    // }
+    // else {
+    //   console.log("nice try");
+    // }
 
   }
   cancel(){
@@ -93,13 +109,20 @@ export class RegisterComponent implements OnInit {
         this.initMember()
       ])
     })
+    this.getLocations();
 
     // this.httpService.retrieveLocations((locs)=> {
     //   this.locations = locs;
     //   console.log("We got the locations", locs)
     // })
   }
-  // {value: "", disabled: true}
+
+  getLocations(){
+    this.httpService.getObs('/locations').subscribe(
+      body => this.locations = body['locations'],
+      err => console.log("locations error", err)
+    )
+  }
 
   initMember(){
     return this.fb.group({

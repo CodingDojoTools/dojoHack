@@ -29,6 +29,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.hackathonId = param.id;
       this.getHackathon();
       this.getSubmissions();
+      this.submissionMessage = this.count.submissionFlashMessage;
     })
 
     this.sessionSub = this.httpService.session.subscribe(
@@ -41,6 +42,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(){
     this.paramSub.unsubscribe();
+    this.count.submissionFlashMessage = null;
   }
 
   getSubmissions(){

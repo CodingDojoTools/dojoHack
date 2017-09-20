@@ -25,6 +25,7 @@ export function validYouTubeUrl(control: FormControl){
 })
 export class SubmissionComponent implements OnInit, OnDestroy {
 
+  update: boolean;
   projForm: FormGroup;
   titleLen: boolean;
   titleReq: boolean;
@@ -68,16 +69,18 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.allSubs = Observable.combineLatest(
       [this.httpService.session, this._route.params.take(1)]).subscribe(
         results => {
-          console.log("results from observing params and bs", results)
           if(results[0] != null){
             this.session = results[0];
             if(results[1].purpose == "submit"){
+              this.update = false;
               this.hackathonId = results[1].id;
               this.getHackathon(results[1].id);
             }
             else {
+              this.update = true;
               this.projectId = results[1].id;
               this.getProject(results[1].id);
+              
             }
           }
         },
@@ -89,6 +92,14 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.httpService.getObs(`hackathons/${id}/project`).subscribe(
       body => {
         this.project = body['project'][0];
+        this.projForm.setValue({
+          title: this.project.title,
+          gitUrl: this.project.gitUrl,
+          vidUrl: this.project.vidUrl,
+          description: this.project.description
+
+        });
+        this.getHackathon(this.project.hackathonId);
       },
       error => console.log("Can get a hackathon", error)
     )
@@ -97,10 +108,9 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   getHackathon(id){
     console.log("asking the service for", id)
     for(let hack of this.session.joinedHackathons){
-      console.log("the hack.id", hack.id);
-      
         if(hack.id == id){
           this.hackathon = hack;
+          this.hackathonId = hack.id;
           this.count.getTimeLeft(hack);
         }
     }
@@ -127,7 +137,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   cancel(){
-    console.log("canceling the submission")
+    
     this.projForm.reset();
   }
   

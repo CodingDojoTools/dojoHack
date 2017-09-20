@@ -25,7 +25,13 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {}
   logout(){
-    this.httpService.logout();
+    this.httpService.getObs('/logout').subscribe(
+      body => {
+        this.httpService.updateSession(new Session());
+        this._router.navigate(['/register'])
+      },
+      err => console.log("Error with trying to logout", err)
+    )
     this._router.navigate(['/register'])
   }
 
