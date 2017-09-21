@@ -1,6 +1,8 @@
 <app-navbar></app-navbar>
 
 
+
+
 <section class="hero is-dark is-bold">
   <div class="hero-body">
     <div *ngIf="hackathon" class="container hackTop">
@@ -28,7 +30,7 @@
         </div>
         
         <div *ngIf="submissions" class="box">
-         {{hackathon | json}}
+       
         <table class="table is-striped is-fullwidth">
           <thead>
             <th>Team name</th>
@@ -37,12 +39,18 @@
           </thead>
           <tbody>
             <tr *ngFor="let sub of submissions">
+
+              
               <td>{{sub.teamName}}</td>
               <td>{{sub.teamLocation}}</td>
-              <td *ngIf="sub.projectTitle && sub.teamId!=session.loggedInId">{{sub.projectTitle}}</td>
-              <td *ngIf="sub.projectTitle && sub.teamId==session.loggedInId"><button [routerLink]="['/hackathon', 'update', sub.projectId]" class="button is-dark">{{sub.projectTitle}}</button></td>
-              <td *ngIf="!sub.projectTitle && sub.teamId!=session.loggedInId">Pending</td>
-              <td *ngIf="!sub.projectTitle && sub.teamId==session.loggedInId"><a [routerLink]="['/entry', hackathonId]"><button class="button" >Submit your entry</button></a></td>
+              <!-- someone else's project -->
+              <td *ngIf="sub.projectTitle && sub.teamId!=session.team.id">{{sub.projectTitle}}</td>
+              <!-- logged team's project -->
+              <td *ngIf="sub.projectTitle && sub.teamId==session.team.id"><button [routerLink]="['/hackathon', 'update', sub.projectId]" class="button updateBtn">{{sub.projectTitle}}</button></td>
+              <!-- waiting for someone else -->
+              <td *ngIf="!sub.projectTitle && sub.teamId!=session.team.id">Pending</td>
+              <!-- submit button for logged team -->
+              <td *ngIf="!sub.projectTitle && sub.teamId==session.team.id"><a [routerLink]="['/entry', hackathonId]"><button class="button" >Submit your entry</button></a></td>
             </tr>
           </tbody>
         </table>

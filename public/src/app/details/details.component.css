@@ -15,7 +15,6 @@
 .hackTop h2{
     display: inline-block;
 }
-
-button {
+.updateBtn {
     background-color: #06AAE2;
 }

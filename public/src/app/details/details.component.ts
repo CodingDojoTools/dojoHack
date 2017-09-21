@@ -51,6 +51,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.submissions = body['submissions'];
         for(var i=0; i<this.submissions.length; i++){
           if(this.submissions[i].teamId == this.session.team.id){
+            console.log("moving to top", this.submissions[i])
             let temp = this.submissions[i];
             this.submissions[i] = this.submissions[0];
             this.submissions[0] = temp;
@@ -65,7 +66,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   getHackathon(){
     this.httpService.getObs(`hackathons/${this.hackathonId}`).subscribe(
       body => {
-        this.hackathon = body['hackathon'][0];
+        console.log("getting hackathon for details page", body)
+        this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
         
       },
