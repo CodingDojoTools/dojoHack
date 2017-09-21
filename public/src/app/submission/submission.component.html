@@ -5,17 +5,28 @@
 
 <section class="hero is-dark is-bold">
   <div class="hero-body">
-    <div *ngIf="hackathon" class="container">
+    <div *ngIf="hackathon" class="container hackTop">
       <h1  class="title">{{hackathon.name}}</h1>
-      <h2 class="subtitle timer">
-        Time left to submit your entry: {{hackathon.timeLeft | async}}
-      </h2>
+      <h2 class="subtitle">
+          Deadline: {{hackathon.deadline | date: 'medium'}}
+        </h2>
+        <h2 *ngIf="hackathon.timeLeft && hackathon.timeLeft != 0" class="subtitle is-pulled-right">
+            Time left to submit your entry: <span class="timer">{{hackathon.timeLeft | async}}</span>
+          </h2>
+      <h2 class = "subtitle is-pulled-right" *ngIf="notJoinedMessage">{{notJoinedMessage}}</h2>
     </div>
-    
+    <div *ngIf="doesNotExistMessage">
+      <h1 class="title">The hackathon you are looking for does not exist in our database.</h1>
+    </div>
   </div>
 </section>
 
-<section class="section">
+<section *ngIf="!canSubmit">
+<button class="button">Click here to join this hackathon!</button>
+
+</section>
+
+<section class="section" *ngIf="canSubmit" class="section">
   
  
 <form [formGroup]="projForm" (submit)='hackEntry()'>

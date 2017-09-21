@@ -27,11 +27,6 @@ export class PostedComponent implements OnInit, OnDestroy {
       body => {
         console.log("We joined!", body);
         this.markAsJoined.emit(hack)
-        // const index = this.session.postedHackathons.indexOf(hack)
-        // this.session.postedHackathons.splice(index, 1)[0];
-        // this.session.joinedHackathons.push(hack);
-        // this.httpService.getTimeLeft(hack);
-        // this.httpService.updateSession(this.session);
       },
       err => console.log("We have an error trying to join a hackathon!", err)
     )

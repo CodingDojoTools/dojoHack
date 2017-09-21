@@ -8,7 +8,7 @@
       <h2 class="subtitle">
         Deadline: {{hackathon.deadline | date: 'medium'}}
       </h2>
-      <h2 *ngIf="hackathon.timeLeft != 0" class="subtitle is-pulled-right">
+      <h2 *ngIf="hackathon.timeLeft && hackathon.timeLeft != 0" class="subtitle is-pulled-right">
         Time left to submit your entry: <span class="timer">{{hackathon.timeLeft | async}}</span>
       </h2>
     </div>

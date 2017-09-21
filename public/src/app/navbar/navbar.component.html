@@ -5,11 +5,10 @@
         <img src="../assets/images/logo_banner.png" alt="Dojo Logo" >
       </a>
     </div>
-  
     <div class="navbar-menu">
       <div class="navbar-start">
-        <div *ngIf = "session && session.loggedTeam" class="navbar-item">
-          <a [routerLink]="['/guide']">{{session.loggedTeam.name}}</a>
+        <div *ngIf = "session && session.team" class="navbar-item">
+          <a [routerLink]="['/guide']">{{session.team.name}}</a>
         </div>
         <div class="navbar-item">
           <a [routerLink]="['/guide']">Guidelines</a>

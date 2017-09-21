@@ -36,7 +36,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   getJoined(){
     this.httpService.getObs('/hackathons/joined').subscribe(
-      body => this.joinedHackathons = body['hackathons'],
+      body => {
+        this.joinedHackathons = body['hackathons'];
+        for(let hack of this.joinedHackathons){
+          this.count.getTimeLeft(hack);
+        }
+      },
       err => console.log("Could not get joined Hackathons")
     )
   }

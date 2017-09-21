@@ -50,7 +50,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       body => {
         this.submissions = body['submissions'];
         for(var i=0; i<this.submissions.length; i++){
-          if(this.submissions[i].teamId == this.session.loggedInId){
+          if(this.submissions[i].teamId == this.session.team.id){
             let temp = this.submissions[i];
             this.submissions[i] = this.submissions[0];
             this.submissions[0] = temp;

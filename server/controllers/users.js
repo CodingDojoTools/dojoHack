@@ -75,8 +75,19 @@ module.exports = {
     },
 
     isLoggedIn: (req, res) => {
-        if (req.session.userId) res.json({'userId':req.session.userId});
-        else res.status(401).send();
+        if (req.session.userId){
+            let query = 'SELECT * FROM teams WHERE id=?';
+            let data = [req.session.userId];
+            db.query(query, data, (err, team)=> {
+                if(err){
+                    res.status(500).send({message: "Server error"})
+                }
+                else {
+                    res.status(200).send({team: team[0]})
+                }
+            })
+        } 
+        else res.status(401).send({message: "You are not logged in"});
     },
     
     logout: (req, res) => {

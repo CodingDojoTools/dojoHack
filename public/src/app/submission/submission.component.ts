@@ -25,7 +25,9 @@ export function validYouTubeUrl(control: FormControl){
 })
 export class SubmissionComponent implements OnInit, OnDestroy {
 
+  canSubmit: boolean;
   update: boolean;
+  doesNotExistMessage: string;
   projForm: FormGroup;
   titleLen: boolean;
   titleReq: boolean;
@@ -49,6 +51,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   session;
   hackathon: Hackathon;
   newProj = new Project();
+  notJoinedMessage: string;
 
   allSubs: Subscription;
 
@@ -74,7 +77,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
             if(results[1].purpose == "submit"){
               this.update = false;
               this.hackathonId = results[1].id;
-              this.getHackathon(results[1].id);
+              this.getJoinedHackathon(results[1].id);
             }
             else {
               this.update = true;
@@ -99,21 +102,43 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           description: this.project.description
 
         });
-        this.getHackathon(this.project.hackathonId);
+        this.getJoinedHackathon(this.project.hackathonId);
       },
       error => console.log("Can get a hackathon", error)
     )
   }
 
-  getHackathon(id){
-    console.log("asking the service for", id)
-    for(let hack of this.session.joinedHackathons){
-        if(hack.id == id){
-          this.hackathon = hack;
-          this.hackathonId = hack.id;
-          this.count.getTimeLeft(hack);
+  getJoinedHackathon(id){
+    console.log("asking the service for", id);
+    this.httpService.getObs(`/hackathons/joined/${this.hackathonId}`).subscribe(
+      body => {
+        console.log("Got the body from get hack", body)
+        this.hackathon = body['hackathon'];
+        this.count.getTimeLeft(this.hackathon);
+        this.canSubmit = true;
+      },
+      err => {
+        console.log("Got an error fetching one hackathon", err);
+        this.notJoinedMessage = "You haven't joined this hackathon yet!";
+        this.getUnjoinedHackathon(id);
+        this.canSubmit = false;
+
+      }
+    )
+  }
+
+  getUnjoinedHackathon(id){
+      console.log("Going to find this hackathon that we haven't joined yet");
+      this.httpService.getObs(`/hackathons/${this.hackathonId}`).subscribe(
+        body => {
+          console.log("Got the body from get unjoined", body)
+          this.hackathon = body['hackathon'];
+        },
+        err => {
+          console.log("Got an error fetching one unjoined hackathon", err);
+          this.doesNotExistMessage = "This hackathon does not exist in our database";
         }
-    }
+      )
   }
 
   hackEntry(){

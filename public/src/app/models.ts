@@ -1,5 +1,6 @@
 export class Team {
     constructor(
+        public id: number = 0,
         public name: string = "",
         public password: string = "",
         public confirmPassword: string = "",
@@ -32,7 +33,7 @@ export class Project {
 
 export class Session {
     constructor(
-        public loggedInId: number = null,
+        public team: Team = null,
         public isLoggedIn: boolean = false,
         public loggedTeam: Team = null,
         public postedHackathons: Hackathon[] = [],

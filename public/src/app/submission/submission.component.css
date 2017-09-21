@@ -4,3 +4,17 @@ form {
     width: 50%;
     margin: 0 auto;
 }
+
+
+.timer {
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
+
+.hackTop h2{
+    display: inline-block;
+}
+
+button {
+    background-color: #06AAE2;
+}

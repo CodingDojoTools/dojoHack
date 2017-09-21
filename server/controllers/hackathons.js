@@ -30,6 +30,25 @@ module.exports = {
         });
     },
 
+    oneJoined: (req, res)=> {
+        let query = `
+            SELECT * FROM hackathons LEFT JOIN submissions on hackathons.id = submissions.hackathonId WHERE hackathons.id = ? AND deadline > NOW() AND submissions.teamId = ?
+        `;
+        data = [req.params.hackId, req.session.userId]
+        db.query(query, data, (err, hackathon) => {
+            if(err){
+                res.status(500).json(err)
+            }
+            else if(hackathon.length < 1) {
+                res.status(404).send({message: "You haven't joined this hackathon yet!"})
+            }
+            else {
+
+                res.status(200).send({hackathon: hackathon[0]})
+            }
+        })
+    },
+
     info: (req, res) => {
         let query = `
             SELECT * FROM hackathons
@@ -40,8 +59,11 @@ module.exports = {
             if(err) {
                 sendServerError(err, res);
             }
+            else if(hackathon.length < 1) {
+                res.status(404).send({message: "This hackathon does not exist"})
+            }
             else {
-                res.status(200).json({hackathon: hackathon});
+                res.status(200).json({hackathon: hackathon[0]});
             }
         })
     },

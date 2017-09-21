@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
 
   ngOnInit() {
-    this.getMembers();
+    // this.getMembers();
     this.proForm = this.fb.group({
       teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
       location: [''],
@@ -34,15 +34,15 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  getMembers(){
-    this.httpService.getTeamMembers((res)=>{
-      if(res.status){
-        this.members = res.members;
-      }
-      else {
-        console.log("Having trouble getting the team members");
-      } 
-    })
-  }
+  // getMembers(){
+  //   this.httpService.getTeamMembers((res)=>{
+  //     if(res.status){
+  //       this.members = res.members;
+  //     }
+  //     else {
+  //       console.log("Having trouble getting the team members");
+  //     } 
+  //   })
+  // }
 
 }
