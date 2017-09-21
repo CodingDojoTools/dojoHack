@@ -83,7 +83,7 @@ module.exports = {
         req.session.userId = null;
         req.session.admin = null;
         req.session.team = null;
-        res.status(200).send();
+        res.status(200).send({message: "You've been logged out"});
     },
 
     locations: (req, res) => {

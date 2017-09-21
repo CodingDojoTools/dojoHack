@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../http.service';import { Router } from '@angular/router';
+import { HttpService } from '../http.service';
+import { Router } from '@angular/router';
+import { CountdownService } from '../countdown.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Hackathon, Session } from '../models';
 
@@ -13,7 +15,7 @@ export class NavbarComponent implements OnInit {
   sessionSub: Subscription;
   session: Session;
 
-  constructor(private httpService: HttpService, private _router: Router) { 
+  constructor(private httpService: HttpService, private _router: Router, private count: CountdownService) { 
     this.sessionSub = this.httpService.session.subscribe(
       session => {
         console.log("Receiving from behavior subject", session)
@@ -24,11 +26,15 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {}
+
   logout(){
+    this._router.navigate(['/register'])
+    this.count.logoutMsg = "You've been logged out";
+    this.httpService.updateSession(new Session());
     this.httpService.getObs('/logout').subscribe(
       body => {
-        this.httpService.updateSession(new Session());
-        this._router.navigate(['/register'])
+        console.log("logout body", body)
+       
       },
       err => console.log("Error with trying to logout", err)
     )

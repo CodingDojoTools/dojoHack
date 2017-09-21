@@ -44,15 +44,12 @@ export class HttpService {
   login(): boolean {
     return this.isLoggedIn;
   }
-  // logout() {
-  //   this.loggedSession = new Session();
 
-  //   //redundant
-  // }
   startSession(teamid){
     this.loggedSession.loggedInId = teamid;
     this.loggedSession.isLoggedIn = true;
-    this.getAllData(teamid);
+    this.updateSession(this.loggedSession);
+    // this.getAllData(teamid);
   }
  
   getAllData(teamid){
@@ -85,11 +82,6 @@ export class HttpService {
     this.getObs('/hackathons/joined').subscribe(
       body => {
         this.loggedSession.joinedHackathons = body['hackathons'];
-        // if(body['hackathons']){
-        //   for(let hack of body['hackathons']){
-        //     this.getTimeLeft(hack);
-        //   }
-        // }
         this.updateSession(this.loggedSession);
       },
       error => this.errorMessage = <any>error

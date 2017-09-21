@@ -6,13 +6,11 @@ import { HttpService } from './http.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-  res: boolean = false;
+  // res: boolean = false;
 
   constructor(private httpService: HttpService, private router: Router) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
-    console.log("AuthGuard canActivate called");
     let url: string = state.url;
-    console.log("the url", url)
     return this.checkLogin(url);
     
   }
@@ -23,15 +21,17 @@ export class AuthGuardService implements CanActivate {
     }
     this.httpService.requestSession().subscribe(
       success => {
-        this.res = true;
+        // this.res = true;
         console.log("Success in the auth guard");
         this.router.navigate([url])
+        // return true;
         
       },
       err => {
         console.log("Failure in the auth guard");
-        this.res = false;
+        // this.res = false;
         this.router.navigate(['/register'])
+        // return false;
       }
     )
     

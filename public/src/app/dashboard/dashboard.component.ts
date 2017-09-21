@@ -27,16 +27,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
       session => {
         console.log("Receiving from behavior subject", session)
         this.session = session;
-        if(session){
-          this.joinedHackathons = session.joinedHackathons;
-          for(let hack of this.joinedHackathons){
-            this.count.getTimeLeft(hack);
-          }
-          this.pastHackathons = session.pastHackathons;
-          this.postedHackathons = session.postedHackathons;
-        }
+        this.getJoined();
+        this.getPosted();
+        this.getPast();
       },
       err => console.log("Error with subscribing to behavior subject",err)
+    )
+  }
+  getJoined(){
+    this.httpService.getObs('/hackathons/joined').subscribe(
+      body => this.joinedHackathons = body['hackathons'],
+      err => console.log("Could not get joined Hackathons")
+    )
+  }
+  getPosted(){
+    this.httpService.getObs('/hackathons/current').subscribe(
+      body => this.postedHackathons = body['hackathons'],
+      err => console.log("Could not get posted Hackathons")
+    )
+  }
+
+  getPast(){
+    this.httpService.getObs('/hackathons/past').subscribe(
+      body => this.pastHackathons = body['hackathons'],
+      err => console.log("Could not get past hackathons")
     )
   }
 
@@ -46,7 +60,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.postedHackathons.splice(index, 1);
     this.count.getTimeLeft(hackathon)
     this.joinedHackathons.push(hackathon);
-    this.httpService.updateSession(this.session);
 
   }
 

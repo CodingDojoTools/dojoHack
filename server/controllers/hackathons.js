@@ -89,7 +89,6 @@ module.exports = {
     },
 
     join: (req, res) => {
-        console.log("in the controller join", req.params);
         let exist = 'SELECT * FROM submissions WHERE teamID = ? AND hackathonId = ?';
         let query = 'INSERT INTO submissions (teamId, hackathonId) VALUES (?, ?)';
         let data = [req.session.userId, req.params.hackId]

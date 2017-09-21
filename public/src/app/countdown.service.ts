@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class CountdownService {
   submissionFlashMessage: string;
+  logoutMsg: string;
 
   constructor() { }
 

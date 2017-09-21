@@ -61,41 +61,11 @@ export class RegisterComponent implements OnInit {
         err => console.log("Got the register error", err)
       )
     }
-    //   this.httpService.registerTeam(this.newTeam, (res) => {
-    //     if(res.status){
-    //       for(let member of model.members){
-    //         this.regMember(member)
-    //       }
-    //       this.regForm.reset();
-    //       this.newTeam = new Team();
-    //       this._router.navigate(['/dashboard']);
-    //     }
-    //     else {
-    //       console.log("We'll have to handle error messages")
-    //     }
-    //     });
-    // }
-    // else {
-    //   console.log("nice try");
-    // }
 
   }
   cancel(){
     this.regForm.reset();
-    console.log("We're canceling")
   }
-
-  regMember(member){
-    this.httpService.registerMember(member, (res)=>{
-      if(res.status){
-        console.log("Added member")
-      }
-      else {
-        console.log("We'll have to handle error messages if we can't include the member on the team")
-      }
-    })
-  }
-
 
   ngOnInit() {
     this.regForm = this.fb.group({
@@ -111,10 +81,6 @@ export class RegisterComponent implements OnInit {
     })
     this.getLocations();
 
-    // this.httpService.retrieveLocations((locs)=> {
-    //   this.locations = locs;
-    //   console.log("We got the locations", locs)
-    // })
   }
 
   getLocations(){
@@ -175,7 +141,4 @@ export class RegisterComponent implements OnInit {
     let cp = this.confirmPassword;
     return this.passGroup.invalid && cp.touched
   }
-
-
-
 }

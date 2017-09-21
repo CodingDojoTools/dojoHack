@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../http.service';
+import { CountdownService } from '../countdown.service';
 import { Team } from '../models';
 
 
@@ -10,8 +11,9 @@ import { Team } from '../models';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
+  logoutMsg: string;
   logForm: FormGroup;
   tLen: boolean;
   tLenMax: boolean;
@@ -22,9 +24,10 @@ export class LoginComponent implements OnInit {
   serverError: boolean;
 
 
-  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) {}
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private count: CountdownService) {}
 
   ngOnInit() {
+    this.logoutMsg = this.count.logoutMsg;
 
     this.logForm = this.fb.group({
       teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
@@ -105,6 +108,10 @@ export class LoginComponent implements OnInit {
     this.tDanger = this.tLen || this.tReq || this.tLenMax || this.loginError;
 
     return newTeam;
+  }
+
+  ngOnDestroy(){
+    this.count.logoutMsg = null;
   }
 
 }
