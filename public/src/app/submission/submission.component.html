@@ -15,18 +15,17 @@
           </h2>
       <h2 class = "subtitle is-pulled-right" *ngIf="notJoinedMessage">{{notJoinedMessage}}</h2>
     </div>
-    <div *ngIf="doesNotExistMessage">
-      <h1 class="title">The hackathon you are looking for does not exist in our database.</h1>
+    <div *ngIf="unfoundMessage">
+      <h1 class="title">{{unfoundMessage}}</h1>
     </div>
   </div>
 </section>
 
-<section *ngIf="!canSubmit">
-<button class="button">Click here to join this hackathon!</button>
-
+<section *ngIf="canJoin" >
+  <app-quick-join [hackathonId]="hackathonId" (markAsJoined)="getJoinedHackathon($event)"></app-quick-join>
 </section>
 
-<section class="section" *ngIf="canSubmit" class="section">
+<section *ngIf="canSubmit" class="section">
   
  
 <form [formGroup]="projForm" (submit)='hackEntry()'>

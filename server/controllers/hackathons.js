@@ -62,6 +62,9 @@ module.exports = {
             else if(hackathon.length < 1) {
                 res.status(404).send({message: "This hackathon does not exist"})
             }
+            else if(hackathon[0].deadline < new Date()){
+                res.status(409).send({message: "This hackathon is over"})
+            }
             else {
                 res.status(200).json({hackathon: hackathon[0]});
             }

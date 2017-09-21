@@ -26,8 +26,10 @@ export function validYouTubeUrl(control: FormControl){
 export class SubmissionComponent implements OnInit, OnDestroy {
 
   canSubmit: boolean;
+  canJoin: boolean;
   update: boolean;
-  doesNotExistMessage: string;
+  
+  unfoundMessage: string;
   projForm: FormGroup;
   titleLen: boolean;
   titleReq: boolean;
@@ -63,7 +65,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
     this.projForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
       gitUrl: ['https://github.com/', [Validators.required, validGitUrl]],
       vidUrl: ['https://youtu.be/', [Validators.required, validYouTubeUrl]],
       description: ['', [Validators.required, Validators.minLength(30)]]
@@ -116,10 +118,13 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
         this.canSubmit = true;
+        this.canJoin = false;
+        this.unfoundMessage = null;
+        this.notJoinedMessage = null;
       },
       err => {
         console.log("Got an error fetching one hackathon", err);
-        this.notJoinedMessage = "You haven't joined this hackathon yet!";
+       
         this.getUnjoinedHackathon(id);
         this.canSubmit = false;
 
@@ -132,11 +137,22 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.httpService.getObs(`/hackathons/${this.hackathonId}`).subscribe(
         body => {
           console.log("Got the body from get unjoined", body)
+          this.notJoinedMessage = "You haven't joined this hackathon yet!";
           this.hackathon = body['hackathon'];
+          this.canJoin = true;
         },
         err => {
-          console.log("Got an error fetching one unjoined hackathon", err);
-          this.doesNotExistMessage = "This hackathon does not exist in our database";
+          if(err == "404 - Not Found"){
+            this.unfoundMessage = "This hackathon does not exist in our database";
+            this.canJoin = false;
+          }
+          else if(err == "409 - Conflict"){
+            this.unfoundMessage = "This hackathon is over!"
+            this.canJoin = false;;
+          }
+          else {
+            console.log("Some other error", err)
+          }
         }
       )
   }

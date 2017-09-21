@@ -21,6 +21,7 @@ import { SubmissionComponent } from './submission/submission.component';
 import { DetailsComponent } from './details/details.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { ProfileComponent } from './profile/profile.component';
+import { QuickJoinComponent } from './quick-join/quick-join.component';
 
 
 
@@ -41,6 +42,7 @@ import { ProfileComponent } from './profile/profile.component';
     DetailsComponent,
     GuidelinesComponent,
     ProfileComponent,
+    QuickJoinComponent,
     
   ],
   imports: [
