@@ -43,8 +43,8 @@
       <span *ngIf="title.valid" class="icon is-small is-right">
         <i class="fa fa-check"></i>
       </span>
-      <p *ngIf="titleReq" class="help is-danger">A project title is required</p>
-      <p *ngIf="titleLen" class="help is-danger">Project titles must consist of 5 - 50 characters</p>
+      <p *ngIf="titleReq" [@errorAnimation] class="help is-danger">A project title is required</p>
+      <p *ngIf="titleLen" [@errorAnimation] class="help is-danger">Project titles must consist of 5 - 50 characters</p>
     </div>
   </div>
 

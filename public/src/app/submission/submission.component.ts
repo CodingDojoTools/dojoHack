@@ -22,25 +22,25 @@ export function validYouTubeUrl(control: FormControl) {
   selector: 'app-submission',
   templateUrl: './submission.component.html',
   styleUrls: ['./submission.component.css'],
-  // animations: [
-  //   trigger(
-  //     'myAnimation',
-  //     [
-  //       transition(
-  //       ':enter', [
-  //         style({transform: 'translateX(100%)', opacity: 0}),
-  //         animate('500ms', style({transform: 'translateX(0)', 'opacity': 1}))
-  //       ]
-  //     ),
-  //     transition(
-  //       ':leave', [
-  //         style({transform: 'translateX(0)', 'opacity': 1}),
-  //         animate('500ms', style({transform: 'translateX(100%)', 'opacity': 0})),
-          
-  //       ]
-  //     )]
-  //   )
-  // ],
+  animations: [
+    trigger(
+      'errorAnimation',
+      [
+        transition(
+          ':enter', [
+            style({height: 0, opacity: 0}),
+            animate('300ms', style({height: 18, opacity: 1}))
+          ]
+        ),
+        transition(
+          ':leave', [
+            style({height: 18, opacity: 1}),
+            animate('300ms', style({height: 0, opacity: 0})),
+          ]
+        )
+      ]
+    )
+  ],
 })
 export class SubmissionComponent implements OnInit, OnDestroy {
 
