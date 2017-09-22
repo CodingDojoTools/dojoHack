@@ -67,7 +67,7 @@ module.exports = {
             bcrypt.compare(req.body.password, user.password, (err, status) => {
                 if (status) {
                     setSessionRole(req, role, user.id);
-                    res.json({'userId': user.id});
+                    res.status(200).send({'team': {id: user.id, name: user.name, location: user.location}});
                 } 
                 else res.status(409).send("Username or password invalid");
             });

@@ -74,7 +74,7 @@ export class HttpService {
     return this._http.post('/login', team).map(
       response => {
         const res = response.json();
-        this.startSession(res.userId);
+        this.startSession(res.team);
         return true
       },
       err => {

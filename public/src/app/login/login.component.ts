@@ -35,9 +35,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     })
     
     this.logForm.valueChanges.subscribe(data => {
-      if(this.loginError){
+      if(this.loginError || this.serverError){
         this.loginError = false;
+        this.serverError = false;
       }
+      this.logoutMsg = null;
     })
 
   }
@@ -68,35 +70,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       })
     }
       
-    //   (res) => {
-    //     if(res.status){
-    //       this._router.navigate(['/dashboard']);
-    //       this.logForm.reset();
-    //     }
-    //     else {
-    //       console.log("unsuccessful login")
-    //       if(res.message){
-    //         this.serverError = true;
-    //       }
-    //       else {
-    //         this.loginError = true;
-    //       }
-    //     }
-    //   });
-    // }
-    // else {
-    //   console.log("You're a stubborn one, aren't you?")
-    // }
+  
   }
 
-  fieldChanged(){
-    console.log("firing field changed")
-    if(this.serverError || this.loginError){
-      
-      this.serverError = false;
-      this.loginError = false;
-    }
-  }
 
   get teamName() {
     let newTeam = this.logForm.get('teamName');
