@@ -60,11 +60,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   moveToJoined(hackathon){
-    console.log("We'll move this hackathon", hackathon);
-    const index = this.postedHackathons.indexOf(hackathon);
-    this.postedHackathons.splice(index, 1);
-    this.count.getTimeLeft(hackathon)
-    this.joinedHackathons.push(hackathon);
+    this.getJoined();
+    this.getPosted();
+    // console.log("We'll move this hackathon", hackathon);
+    // const index = this.postedHackathons.indexOf(hackathon);
+    // this.postedHackathons.splice(index, 1);
+    // this.count.getTimeLeft(hackathon)
+    // this.joinedHackathons.push(hackathon);
 
   }
 

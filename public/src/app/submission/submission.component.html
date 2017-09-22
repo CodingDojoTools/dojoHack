@@ -1,20 +1,25 @@
 <app-navbar></app-navbar>
 
-{{project | json }}
-
 
 <section class="hero is-dark is-bold">
   <div class="hero-body">
     <div *ngIf="hackathon" class="container hackTop">
       <h1  class="title">{{hackathon.name}}</h1>
-      <h2 class="subtitle">
-          Deadline: {{hackathon.deadline | date: 'medium'}}
-        </h2>
-        <h2 *ngIf="hackathon.timeLeft && hackathon.timeLeft != 0" class="subtitle is-pulled-right">
-            Time left to submit your entry: <span class="timer">{{hackathon.timeLeft | async}}</span>
-          </h2>
-      <h2 class = "subtitle is-pulled-right" *ngIf="notJoinedMessage">{{notJoinedMessage}}</h2>
+      <h1 *ngIf="hackathon.timeLeft && hackathon.timeLeft != 0" class="realbig is-pulled-right timer">
+          {{hackathon.timeLeft | async}}
+      </h1>
     </div>
+    <div *ngIf="hackathon" class="container">
+      <h2 class = "subtitle is-pulled-right" *ngIf="notJoinedMessage">
+          {{notJoinedMessage}}
+      </h2>
+      <h2 class="subtitle">
+            Deadline: {{hackathon.deadline | date: 'medium'}}
+      </h2>
+      
+    </div>
+  
+    
     <div *ngIf="unfoundMessage">
       <h1 class="title">{{unfoundMessage}}</h1>
     </div>
@@ -52,8 +57,7 @@
       <span *ngIf="gitUrl.valid" class="icon is-small is-right">
         <i class="fa fa-check"></i>
       </span>
-      <p *ngIf="gitReq" class="help is-danger">A Github url is required</p>
-      <p *ngIf="gitMatch" class="help is-danger">A valid Github url is required</p>
+      <p *ngIf="gitMatch" [@errorAnimation] class="help is-danger">A valid Github url is required</p>
     </div>
   </div>
 
@@ -66,27 +70,25 @@
       <span *ngIf="vidUrl.valid" class="icon is-small is-right">
         <i class="fa fa-check"></i>
       </span>
-      <p *ngIf="vidReq" class="help is-danger">A YouTube url is required</p>
-      <p *ngIf="vidMatch" class="help is-danger">A valid YouTube url is required</p>    
+      <p *ngIf="vidMatch" [@errorAnimation] class="help is-danger">A valid YouTube url is required</p>    
     </div>
   </div>
 
   <div class="field">
     <div class="control">
       <textarea class="textarea" [ngClass]="{'is-success': description.valid, 'is-danger':descDanger}" formControlName="description" placeholder="Description"></textarea>
-      <p *ngIf="descReq" class="help is-danger">A description is required</p>
-      <p *ngIf="descLen" class="help is-danger">A description of at least 30 characters is required</p>    
+      <p *ngIf="descLen" [@errorAnimation] class="help is-danger">A description of at least 30 characters is required</p> 
     </div>
   </div>
 
   <div class="field is-grouped">
       <div class="control">
-        <button class="button is-medium is-dark" [disabled]="!projForm.valid"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
+        <button class="button is-medium" [disabled]="!projForm.valid"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
 
       </div>
       
       <div class="control">
-        <button class="button is-medium" type="button">Cancel</button>
+        <button class="button is-medium is-dark" type="button" (click)="cancel()">Cancel</button>
       </div>
     </div>
   

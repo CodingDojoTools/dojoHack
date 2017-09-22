@@ -125,6 +125,9 @@ module.exports = function(app) {
     
     app.get('/hackathons/joined',   (req, res) => { hackathons.joined(req, res); }),
 
+    app.get('/hackathons/any/:hackId', (req, res) => {
+        hackathons.anyhack(req, res); }),
+
     app.get('/hackathons/joined/:hackId', (req, res) => { hackathons.oneJoined(req, res);}),
     
     app.get('/hackathons/current',  (req, res) => { hackathons.current(req, res); }),

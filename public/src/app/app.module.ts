@@ -22,6 +22,7 @@ import { DetailsComponent } from './details/details.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { ProfileComponent } from './profile/profile.component';
 import { QuickJoinComponent } from './quick-join/quick-join.component';
+// import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 
 
 
@@ -51,7 +52,7 @@ import { QuickJoinComponent } from './quick-join/quick-join.component';
     ReactiveFormsModule,
     HttpModule,
     routing,
-  
+    // BrowserAnimationsModule,
   ],
   providers: [
     HttpService,

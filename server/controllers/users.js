@@ -76,7 +76,7 @@ module.exports = {
 
     isLoggedIn: (req, res) => {
         if (req.session.userId){
-            let query = 'SELECT * FROM teams WHERE id=?';
+            let query = 'SELECT id, name, location FROM teams WHERE id=?';
             let data = [req.session.userId];
             db.query(query, data, (err, team)=> {
                 if(err){

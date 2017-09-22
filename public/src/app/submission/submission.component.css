@@ -11,10 +11,21 @@ form {
 }
 
 
-.hackTop h2{
+.hackTop h1{
     display: inline-block;
+    vertical-align: bottom;
 }
 
 button {
     background-color: #06AAE2;
+    color: white;
+}
+button:disabled {
+    background-color: #C9C9C9;
+}
+button:hover {
+    color: white;
+}
+.realbig {
+    font-size: 3rem;
 }

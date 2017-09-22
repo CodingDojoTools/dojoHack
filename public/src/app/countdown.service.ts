@@ -1,12 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
 export class CountdownService {
   submissionFlashMessage: string;
   logoutMsg: string;
 
-  constructor() { }
+  previousUrl: string;
+  currentUrl: string;
+
+  constructor(private _router: Router) { 
+    this._router.events
+    .filter(event => event instanceof NavigationEnd)
+    .subscribe(e => {
+      console.log('prev:', this.previousUrl);
+      this.previousUrl = this.currentUrl;
+      this.currentUrl = e['url'];      
+    });
+  }
+
 
 
   getTimeLeft(hackathon){

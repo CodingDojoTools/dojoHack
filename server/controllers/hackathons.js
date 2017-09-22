@@ -16,6 +16,24 @@ function sendServerError(error, res){
 
 module.exports = {
 
+    anyhack: (req, res) => {
+        let query = `
+            SELECT * FROM hackathons WHERE id = ?
+        `;
+        data = [req.params.hackId];
+        db.query(query, data, (err, hackathon) => {
+            if(err) {
+                res.status(500).json(err)
+            }
+            else if(hackathon.length < 1) {
+                res.status(404).send({message: "We could not find this hackathon in our database"});
+            }
+            else {
+                res.status(200).send({hackathon: hackathon[0]})
+            }
+        })
+    },
+
     joined: (req, res) => {
         let query = `
             SELECT * FROM hackathons AS h 

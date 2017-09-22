@@ -64,14 +64,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   getHackathon(){
-    this.httpService.getObs(`hackathons/${this.hackathonId}`).subscribe(
+    this.httpService.getObs(`hackathons/any/${this.hackathonId}`).subscribe(
       body => {
         console.log("getting hackathon for details page", body)
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
         
       },
-      error => console.log("Can get a hackathon", error)
+      error => {
+        this._router.navigate(['/dashboard']); console.log("Can't get a hackathon", error)
+      }
     )
   }
 
