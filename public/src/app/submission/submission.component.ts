@@ -43,39 +43,37 @@ export function validYouTubeUrl(control: FormControl) {
   ],
 })
 export class SubmissionComponent implements OnInit, OnDestroy {
-
-  canSubmit: boolean;
+  allSubs: Subscription;
   canJoin: boolean;
-  update: boolean;
-
-  unfoundMessage: string;
-  projForm: FormGroup;
-  titleLen: boolean;
-  titleReq: boolean;
-  titleDanger: boolean;
-  invalidGit: boolean;
-  gitReq: boolean;
-  gitMatch: boolean;
-  gitDanger: boolean;
-  vidReq: boolean;
-  vidMatch: boolean;
-  vidDanger: boolean;
-  invalidVid: boolean;
+  canSubmit: boolean;
   descDanger: boolean;
-  descReq: boolean;
   descLen: boolean;
-  hackathonId: number;
-  paramSub: Subscription;
-  projectId: number;
-  project: Project;
-  sessionSub: Subscription;
-  session;
+  descReq: boolean;
+  gitDanger: boolean;
+  gitMatch: boolean;
+  gitReq: boolean;
   hackathon: Hackathon;
+  hackathonId: number;
+  hackOver: boolean;
+  invalidGit: boolean;
+  invalidVid: boolean;
   newProj = new Project();
   notJoinedMessage: string;
-
-  allSubs: Subscription;
-
+  paramSub: Subscription;
+  project: Project;
+  projectId: number;
+  projForm: FormGroup;
+  session;
+  sessionSub: Subscription;
+  timerSub: Subscription;
+  titleDanger: boolean;
+  titleLen: boolean;
+  titleReq: boolean;
+  unfoundMessage: string;
+  update: boolean;
+  vidDanger: boolean;
+  vidMatch: boolean;
+  vidReq: boolean;
 
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) {
 
@@ -100,11 +98,14 @@ export class SubmissionComponent implements OnInit, OnDestroy {
             this.hackathonId = results[1].id;
             this.getJoinedHackathon(results[1].id);
           }
-          else {
+          else if(results[1].purpose == "update") {
             this.update = true;
             this.projectId = results[1].id;
             this.getProject(results[1].id);
 
+          }
+          else {
+            this._router.navigate(['/dashboard']);
           }
         }
       },
@@ -138,6 +139,19 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         console.log("Got the body from get hack", body)
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
+        if(this.hackathon['secondsLeft']){
+          this.hackathon['secondsLeft'].subscribe(
+            data => {
+              console.log("getting stuff from timeleft", data)
+              if(data < 1){
+                this.hackOver = true;
+              }
+              else {
+                this.hackOver = false;
+              }
+            }
+          )
+        }
         this.canSubmit = true;
         this.canJoin = false;
         this.unfoundMessage = null;
@@ -164,8 +178,9 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       },
       err => {
         if (err == "404 - Not Found") {
-          this.unfoundMessage = "This hackathon does not exist in our database";
-          this.canJoin = false;
+          // this.unfoundMessage = "This hackathon does not exist in our database";
+          // this.canJoin = false;
+          this._router.navigate(['/dashboard']);
         }
         else if (err == "409 - Conflict") {
           this.unfoundMessage = "This hackathon is over!"
@@ -242,6 +257,10 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // this.paramSub.unsubscribe();
     this.allSubs.unsubscribe();
+    if(this.timerSub){
+
+      this.timerSub.unsubscribe();
+    }
   }
 
 }

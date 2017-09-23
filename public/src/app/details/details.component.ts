@@ -14,14 +14,16 @@ import { Hackathon, Project, Session } from '../models';
 })
 export class DetailsComponent implements OnInit, OnDestroy {
 
-  paramSub: Subscription;
-  hackathonId: number;
   hackathon: Hackathon;
-  submissions = [];
-  submissionMessage: string;
-  sessionSub: Subscription;
-  session: Session;
+  hackathonId: number;
   hackOver: boolean;
+  joined: boolean;
+  paramSub: Subscription;
+  session: Session;
+  sessionSub: Subscription;
+  submissionMessage: string;
+  submissions = [];
+  timerSub: Subscription;
 
 
   constructor(private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) { }
@@ -45,6 +47,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.paramSub.unsubscribe();
     this.count.submissionFlashMessage = null;
+    if(this.timerSub){
+
+      this.timerSub.unsubscribe();
+    }
   }
 
   getSubmissions(){
@@ -53,7 +59,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.submissions = body['submissions'];
         for(var i=0; i<this.submissions.length; i++){
           if(this.submissions[i].teamId == this.session.team.id){
-            console.log("moving to top", this.submissions[i])
+            this.joined = true;
             let temp = this.submissions[i];
             this.submissions[i] = this.submissions[0];
             this.submissions[0] = temp;
@@ -72,18 +78,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
         if(this.hackathon['secondsLeft']){
-          this.hackathon['secondsLeft'].subscribe(
-          data => {
-            console.log("getting stuff from timeleft", data)
-            if(data < 1){
-              this.hackOver = true;
-            }
-            else {
-              this.hackOver = false;
-            }
-          },
-          err => console.log("getting error from timeleft", err)
-        )}
+          this.timerSub = this.hackathon['secondsLeft'].subscribe(
+            data => {
+              if(data < 1){
+                this.hackOver = true;
+              }
+              else {
+                this.hackOver = false;
+              }
+            },
+            err => console.log("getting error from timeleft", err)
+          )}
         else {
           this.hackOver = true;
         }   

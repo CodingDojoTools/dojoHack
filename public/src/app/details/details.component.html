@@ -13,7 +13,7 @@
   <div class="hero-body">
     <div *ngIf="hackathon" class="container hackTop">
       <h1  class="title">{{hackathon.name}}</h1>
-      <h1 *ngIf="!hackOver" class="realbig is-pulled-right timer">
+      <h1 *ngIf="!hackOver && joined" class="realbig is-pulled-right timer">
           {{hackathon.timeLeft | async}}
         </h1>
         <h1 *ngIf="hackOver" class="realbig is-pulled-right timer">
@@ -29,7 +29,11 @@
       
   </div>
 </section>
-<section class="section">
+
+
+  <app-quick-join [hackathonId]="hackathonId" (markAsJoined)="getSubmissions()" *ngIf="!hackOver && !joined"></app-quick-join>
+
+<section [ngClass]="{'section': (joined || hackOver)}">
  
   <div class = "columns">
     <div class="column">

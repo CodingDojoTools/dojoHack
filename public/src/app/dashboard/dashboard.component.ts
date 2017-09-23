@@ -22,6 +22,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpService, private _router: Router, private count: CountdownService) { }
 
+  timerSub: Subscription;
+
   ngOnInit() {
     this.sessionSub = this.httpService.session.subscribe(
       session => {
@@ -40,7 +42,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.joinedHackathons = body['hackathons'];
         for(let hack of this.joinedHackathons){
           this.count.getTimeLeft(hack);
+          if(hack['secondsLeft']){
+            this.timerSub = hack['secondsLeft'].subscribe(
+              data => {
+                if(data <= 3600){
+                  hack['danger'] = true;
+                }
+                else {
+                  hack['danger'] = false;
+                }
+              },
+              err => {
+                console.log("Error with subscribing to timer");
+              }
+            )
+          }
         }
+        
       },
       err => console.log("Could not get joined Hackathons")
     )

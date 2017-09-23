@@ -21,10 +21,6 @@ table {
 .timer {
     font-family: "Lucida Console", Monaco, monospace;
 }
-.submitbtn {
-    background-color: #FF9B42;
-    color: white;
-}
 
 table td {
     vertical-align: inherit;
@@ -34,7 +30,9 @@ i {
 }
 .close {
     background-color: red;
+    color: white;
 }
 .far {
-    background-color: pink;
+    background-color: #FF9B42;
+    color: white;
 }
