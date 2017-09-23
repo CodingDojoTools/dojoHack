@@ -12,9 +12,17 @@
 }
 
 
-.hackTop h2{
+.hackTop h1{
     display: inline-block;
+    vertical-align: bottom;
 }
 .updateBtn {
     background-color: #06AAE2;
+}
+.realbig {
+    font-size: 3rem;
+}
+.submitbtn {
+    background-color: #FF9B42;
+    color: white;
 }

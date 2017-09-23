@@ -18,7 +18,12 @@
             <td><a [routerLink]="['/details', hack.id]">{{hack.name}} &nbsp; <i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
             <td>{{hack.deadline | date: 'medium'}}</td>
             <td class="timer">{{hack.timeLeft | async}}</td>
-            <td *ngIf="!hack.projectId"><button [routerLink]="['/hackathon', 'submit', hack.id]" class="submitbtn button" >Submit</button></td>
+
+
+
+            <td *ngIf="!hack.projectId"><button [routerLink]="['/hackathon', 'submit', hack.id]" class="submitbtn button" [ngClass]="{close: (hack.secondsLeft$ | async)<3600}" >Submit</button></td>
+
+
             <td *ngIf="hack.projectId"><button class="button is-outlined" [routerLink]="['/hackathon', 'update', hack.projectId]">Update</button></td>
           </tr>
         </tbody>

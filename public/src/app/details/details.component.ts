@@ -6,6 +6,7 @@ import { CountdownService } from '../countdown.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Hackathon, Project, Session } from '../models';
 
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -20,6 +21,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   submissionMessage: string;
   sessionSub: Subscription;
   session: Session;
+  hackOver: boolean;
 
 
   constructor(private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) { }
@@ -69,13 +71,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
         console.log("getting hackathon for details page", body)
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
-        
+        if(this.hackathon['secondsLeft']){
+          this.hackathon['secondsLeft'].subscribe(
+          data => {
+            console.log("getting stuff from timeleft", data)
+            if(data < 1){
+              this.hackOver = true;
+            }
+            else {
+              this.hackOver = false;
+            }
+          },
+          err => console.log("getting error from timeleft", err)
+        )}
+        else {
+          this.hackOver = true;
+        }   
       },
       error => {
         this._router.navigate(['/dashboard']); console.log("Can't get a hackathon", error)
       }
     )
   }
-
+  
 
 }

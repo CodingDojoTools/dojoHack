@@ -32,3 +32,9 @@ table td {
 i {
     color: #06AAE2;
 }
+.close {
+    background-color: red;
+}
+.far {
+    background-color: pink;
+}
