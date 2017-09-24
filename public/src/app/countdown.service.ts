@@ -4,11 +4,13 @@ import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable()
 export class CountdownService {
-  submissionFlashMessage: string;
-  logoutMsg: string;
 
-  previousUrl: string;
   currentUrl: string;
+  logoutMsg: string;
+  previousUrl: string;
+  submissionFlashMessage: string;
+  updateTeamMsg: string;
+
 
   constructor(private _router: Router) { 
     this._router.events

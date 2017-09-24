@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, trigger, transition, style, animate } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { HttpService } from '../http.service';
 import { Team } from '../models';
@@ -12,29 +12,48 @@ export function comparePassword(group: FormGroup){
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  animations: [
+    trigger(
+      'errorAnimation',
+      [
+        transition(
+          ':enter', [
+            style({height: 0, opacity: 0}),
+            animate('300ms', style({height: 18, opacity: 1}))
+          ]
+        ),
+        transition(
+          ':leave', [
+            style({height: 18, opacity: 1}),
+            animate('300ms', style({height: 0, opacity: 0})),
+          ]
+        )
+      ]
+    )
+  ],
 })
 export class RegisterComponent implements OnInit {
 
   
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
 
+  locations = [];
   newTeam = new Team();
+  pDanger: Boolean;
 
+  PError: Object;
+  pLen: Boolean;
+  pMatch: Boolean;
+  pR: Boolean;
+  pValid: Boolean = false;
   regForm: FormGroup;
   
 
-  locations = [];
+  teamValid: Boolean = false;
 
   TError: Object;
-  PError: Object;
-  pDanger: Boolean;
-  pLen: Boolean;
-  pR: Boolean;
-  pMatch: Boolean;
-  pValid: Boolean = false;
 
-  teamValid: Boolean = false;
 
  
   register(){
@@ -51,12 +70,15 @@ export class RegisterComponent implements OnInit {
           console.log("Got the register body", body)
           for(let member of model.members){
             this.httpService.postObs('/teams/addmember', member).subscribe(
-              body => console.log("got one member body", body),
+              body => {
+                console.log("got one member body", body);
+                this._router.navigate(['/dashboard'])
+              },
               err => console.log("Error with one member", err)
               
             )
           }
-          this._router.navigate(['/dashboard'])
+          
         },
         err => console.log("Got the register error", err)
       )
@@ -74,7 +96,7 @@ export class RegisterComponent implements OnInit {
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required]]
       }, {validator: comparePassword}),
-      location: [''],
+      location: ['', [Validators.required]],
       members: this.fb.array([
         this.initMember()
       ])
@@ -129,9 +151,17 @@ export class RegisterComponent implements OnInit {
 
     this.pDanger = this.pLen || this.pR;
 
-    // if (newPass.valid) this.confirmPassword.enable();
-
     return newPass;
+  }
+
+  get locReq(){
+    let loc = this.regForm.get('location');
+    let control = <FormArray>this.regForm.controls['members'];
+    let locError = loc.errors ? loc.errors : {};
+    if(locError["required"] && control["dirty"]){
+      return true;
+    }
+    return false;
   }
   get confirmPassword(){
     return this.passGroup.get('confirmPassword');

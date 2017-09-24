@@ -29,10 +29,14 @@ i {
     color: #06AAE2;
 }
 .close {
-    background-color: red;
+    background-color: #e23e06;
     color: white;
 }
 .far {
-    background-color: #FF9B42;
+    background-color: #0585b0;
     color: white;
+}
+.over {
+    background-color: gray;
+    
 }

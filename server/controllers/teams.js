@@ -49,8 +49,43 @@ module.exports = {
     members: (req, res) => {
         let query = "SELECT * FROM members WHERE team = ?";
         db.query(query, req.session.userId, (err, members) => {
-            res.json({"members": members});
+            res.status(200).send({members: members})
+            // res.json({"members": members});
         })
+    },
+    update: (req, res) => {
+        let query = "UPDATE teams SET name = ?, location = ? WHERE id = ?";
+        data = [req.body.teamName, req.body.location, req.session.userId];
+        db.query(query, data, (err, update) => {
+            if(err){
+                res.status(500).json({message: "We could not update"})
+            }
+            else {
+                res.status(200).send({update: update})
+            }
+        })
+    },
+
+    updateMembers: (req, res) => {
+        console.log("In the updateMembers");
+        var success = true;
+        for(let member of req.body.members){
+
+            let query = "UPDATE members SET firstName = ?, lastName = ? WHERE id = ? AND team = ?";
+            let data = [member.firstName, member.lastName, member.id, req.session.userId];
+            db.query(query, data, (err, update) => {
+                if(err){
+                    success = false;
+                }
+            })
+        }
+        if(success){
+            res.status(200).send({update: true})
+        }
+        else {
+            res.status(500).send({update: false})
+        }
     }
+
 
 }

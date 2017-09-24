@@ -19,9 +19,9 @@
           <span *ngIf="teamName.valid" class="icon is-small is-right">
             <i class="fa fa-check"></i>
           </span>
-          <p *ngIf="TError.required && teamName.touched" class="help is-danger">A team name is required</p>
-          <p *ngIf="TError.minlength && teamName.touched" class="help is-danger">Team names must consist of at least five characters</p>
-          <p *ngIf="TError.maxlength" class="help is-danger">Team names must not contain more than 32 characters</p>
+          <p *ngIf="TError.required && teamName.touched" [@errorAnimation] class="help is-danger">A team name is required</p>
+          <p *ngIf="TError.minlength && teamName.touched" [@errorAnimation] class="help is-danger">Team names must consist of at least five characters</p>
+          <p *ngIf="TError.maxlength" [@errorAnimation] class="help is-danger">Team names must not contain more than 32 characters</p>
         </div>
       </div>
 
@@ -41,9 +41,9 @@
                     <i class="fa fa-warning"></i>
                   </span>
               </div>
-              <p *ngIf="pR" class="help is-danger">Password is required</p>
+              <p *ngIf="pR" [@errorAnimation] class="help is-danger">Password is required</p>
       
-              <p *ngIf="pLen" class="help is-danger">Password must have at least 8 characters</p>
+              <p *ngIf="pLen" [@errorAnimation] class="help is-danger">Password must have at least 8 characters</p>
               
             </div>
             
@@ -64,7 +64,7 @@
                   <i class="fa fa-warning"></i>
                 </span>
               </div>
-              <p  *ngIf="CPDanger" class="help is-danger">Passwords do not match</p>
+              <p  *ngIf="CPDanger" [@errorAnimation] class="help is-danger">Passwords do not match</p>
             
       
             </div>
@@ -77,20 +77,12 @@
             <select formControlName="location">
                 <option value="" disabled="true">Location</option>
                 <option *ngFor="let loc of locations" value="{{loc.id}}">{{loc.name}}</option>
-              <!-- <option value="1">San Jose</option>
-              <option value="2">Burbank</option>
-              <option value="3">Seattle</option>
-              <option value="4">Chicago</option>
-              <option value="5">Dallas</option>
-              <option value="6">DC</option>
-              <option value="7">Tulsa</option>
-              <option value="8">Berkeley</option>
-              <option value="9">OC</option> -->
             </select>
           </div>
           <span class="icon is-small is-left">
             <i class="fa fa-map-marker"></i>
           </span>
+          <p  *ngIf="locReq" [@errorAnimation] class="help is-danger">A location is required</p>
         </div>
       </div>
       

@@ -9,3 +9,13 @@
 table {
     margin: 0 auto;
 }
+
+.is-success {
+    border-radius: 4px;
+    padding: 15px;
+    background: #75c575;
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+    width: 75%;
+}

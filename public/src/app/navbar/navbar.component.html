@@ -8,18 +8,20 @@
     <div class="navbar-menu">
       <div class="navbar-start">
         <div *ngIf = "session && session.team" class="navbar-item">
-          <a [routerLink]="['/guide']">{{session.team.name}}</a>
+          <a [routerLink]="['/profile']">{{session.team.name}}</a>
         </div>
         <div class="navbar-item">
           <a [routerLink]="['/guide']">Guidelines</a>
         </div>
       </div>
   
-      <div class="navbar-end"  *ngIf="session">
+      <div *ngIf="session && session.isLoggedIn" class="navbar-end">
         <div class="navbar-item">
           <a (click)="logout()">Logout</a>
         </div>
-        <div *ngIf="!session && !session.isLoggedIn" class="navbar-item">
+      </div>
+      <div *ngIf="!session || session.isLoggedIn == false" class="navbar-end">
+        <div class="navbar-item">
           <a [routerLink]="['/register']">Register or login</a>
         </div>
       </div>

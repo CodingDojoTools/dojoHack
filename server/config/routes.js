@@ -111,6 +111,10 @@ module.exports = function(app) {
     
     app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
 
+    app.post('/teams/update', (req, res) => {teams.update(req, res); }),
+
+    app.post('/teams/updateMembers', (req, res) => { teams.updateMembers(req, res); }),
+
 
     
     // =============================================================

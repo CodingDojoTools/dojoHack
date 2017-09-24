@@ -16,29 +16,38 @@ export class NavbarComponent implements OnInit {
   session: Session;
 
   constructor(private httpService: HttpService, private _router: Router, private count: CountdownService) { 
+    
+  }
+
+  ngOnInit() {
     this.sessionSub = this.httpService.session.subscribe(
       session => {
         console.log("Receiving from behavior subject", session)
         this.session = session;
+        if(this.session.isLoggedIn == false){
+          this.httpService.requestSession().subscribe(
+            success => console.log("request session success", this.session),
+            err =>console.log("request session error", err)
+          )
+        }
       },
       err => console.log("Error with subscribing to behavior subject",err)
     )
   }
 
-  ngOnInit() {}
-
   logout(){
-    this._router.navigate(['/register'])
+    
     this.count.logoutMsg = "You've been logged out";
-    this.httpService.updateSession(new Session());
+    
     this.httpService.getObs('/logout').subscribe(
       body => {
         console.log("logout body", body)
-       
+        this.httpService.updateSession(new Session());
+        this._router.navigate(['/register'])
       },
       err => console.log("Error with trying to logout", err)
     )
-    this._router.navigate(['/register'])
+    
   }
 
 }

@@ -82,15 +82,15 @@
   </div>
 
   <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-medium" [disabled]="!projForm.valid"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
+    <div class="control">
+      <button class="button is-medium" [disabled]="!projForm.valid"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
 
-      </div>
-      
-      <div class="control">
-        <button class="button is-medium is-dark" type="button" (click)="cancel()">Cancel</button>
-      </div>
     </div>
+    
+    <div class="control">
+      <button class="button is-medium is-dark" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
   
 
 

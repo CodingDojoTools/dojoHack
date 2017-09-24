@@ -15,16 +15,18 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   joinedHackathons = [];
-  postedHackathons = [];
   pastHackathons = [];
-  sessionSub: Subscription;
+  postedHackathons = [];
   session: Session;
+  sessionSub: Subscription;
 
   constructor(private httpService: HttpService, private _router: Router, private count: CountdownService) { }
 
-  timerSub: Subscription;
+  timerSub: Subscription[] = [];
+  updateTeamMsg: string;
 
   ngOnInit() {
+    this.updateTeamMsg = this.count.updateTeamMsg;
     this.sessionSub = this.httpService.session.subscribe(
       session => {
         console.log("Receiving from behavior subject", session)
@@ -43,19 +45,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
         for(let hack of this.joinedHackathons){
           this.count.getTimeLeft(hack);
           if(hack['secondsLeft']){
-            this.timerSub = hack['secondsLeft'].subscribe(
+            this.timerSub.push(hack['secondsLeft'].subscribe(
               data => {
-                if(data <= 3600){
-                  hack['danger'] = true;
+                if(data == 0){
+                  hack['status'] = 3;
+                }
+                else if(data <= 3600){
+                  hack['status'] = 2;
                 }
                 else {
-                  hack['danger'] = false;
+                  hack['status'] = 1;
                 }
               },
               err => {
                 console.log("Error with subscribing to timer");
               }
-            )
+            ))
           }
         }
         
@@ -80,17 +85,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   moveToJoined(hackathon){
     this.getJoined();
     this.getPosted();
-    // console.log("We'll move this hackathon", hackathon);
-    // const index = this.postedHackathons.indexOf(hackathon);
-    // this.postedHackathons.splice(index, 1);
-    // this.count.getTimeLeft(hackathon)
-    // this.joinedHackathons.push(hackathon);
 
   }
 
 
   ngOnDestroy(){
     this.sessionSub.unsubscribe();
+    if(this.timerSub.length > 0){
+      for(let sub of this.timerSub){
+        sub.unsubscribe();
+      }
+    }
+    this.count.updateTeamMsg = null;
   }
 
 }

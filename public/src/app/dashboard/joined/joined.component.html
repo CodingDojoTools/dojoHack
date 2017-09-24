@@ -21,10 +21,10 @@
 
 
 
-            <td *ngIf="!hack.projectId"><button [routerLink]="['/hackathon', 'submit', hack.id]" class="submitbtn button" [ngClass]="{'close': hack.danger, 'far': !hack.danger}" >Submit</button></td>
+            <td *ngIf="!hack.projectId"><button [routerLink]="['/hackathon', 'submit', hack.id]" class="submitbtn button" [ngClass]="{'close': hack.status == 2, 'far': hack.status == 1, 'over': hack.status == 3}" [disabled]="hack.status == 3" >Submit</button></td>
 
 
-            <td *ngIf="hack.projectId"><button class="button is-outlined" [routerLink]="['/hackathon', 'update', hack.projectId]">Update</button></td>
+            <td *ngIf="hack.projectId && hack.status != 3"><button class="button is-outlined" [routerLink]="['/hackathon', 'update', hack.projectId]">Update</button></td>
           </tr>
         </tbody>
       </table>
