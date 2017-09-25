@@ -51,7 +51,7 @@ export class WatchComponent implements OnInit {
   getProjects(){
     this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(
       body => {
-        this.projects = body['submissions'];
+        this.projects = body['projects'];
         // for(var i=0; i<this.submissions.length; i++){
         //   if(this.submissions[i].teamId == this.session.team.id){
         //     this.joined = true;
