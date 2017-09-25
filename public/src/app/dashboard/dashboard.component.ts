@@ -62,6 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               }
             ))
           }
+          hack['status'] = 3;
         }
         
       },

@@ -67,22 +67,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
         }
       )
-     
-      // this.httpService.loginTeam(login)
-      // .subscribe(success => {
-      //   console.log("team in", success);
-      //   this._router.navigate(['/dashboard'])
-      // }, 
-      // err=>{
-      //   console.log("failed logging in", err.status);
-      //   if(err.status == 409){
-      //     this.loginError = true;
-    
-      //   }
-      //   else {
-      //     this.serverError = true;
-      //   }
-      // })
     }
       
   
