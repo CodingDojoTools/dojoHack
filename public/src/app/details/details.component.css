@@ -10,6 +10,14 @@
 .timer {
     font-family: "Lucida Console", Monaco, monospace;
 }
+.pending {
+    color: gray;
+    font-style: italic;
+}
+
+.sidePad {
+    padding: 0 1.5rem;
+}
 
 
 .hackTop h1{
@@ -18,6 +26,7 @@
 }
 .updateBtn {
     background-color: #06AAE2;
+    color: white;
 }
 .realbig {
     font-size: 3rem;
@@ -25,4 +34,8 @@
 .submitbtn {
     background-color: #FF9B42;
     color: white;
+}
+
+table td {
+    vertical-align: inherit;
 }

@@ -40,19 +40,20 @@ export class RegisterComponent implements OnInit {
 
   locations = [];
   newTeam = new Team();
-  pDanger: Boolean;
+  pDanger: boolean;
 
-  PError: Object;
-  pLen: Boolean;
-  pMatch: Boolean;
-  pR: Boolean;
-  pValid: Boolean = false;
+  PError: object;
+  pLen: boolean;
+  pMatch: boolean;
+  pR: boolean;
+  pValid: boolean = false;
   regForm: FormGroup;
-  
+  serverRegError: string;
+  teamTaken: boolean; 
 
-  teamValid: Boolean = false;
+  teamValid: boolean = false;
 
-  TError: Object;
+  TError: object;
 
 
  
@@ -66,8 +67,7 @@ export class RegisterComponent implements OnInit {
       this.newTeam.location = model.location;
       console.log(this.newTeam);
       this.httpService.postObs('/register', this.newTeam).subscribe(
-        body => {
-          console.log("Got the register body", body)
+        data => {
           for(let member of model.members){
             this.httpService.postObs('/teams/addmember', member).subscribe(
               body => {
@@ -80,7 +80,15 @@ export class RegisterComponent implements OnInit {
           }
           
         },
-        err => console.log("Got the register error", err)
+        err => {
+          console.log("Got the register error", err)
+          this.serverRegError = err;
+          if(this.serverRegError == "This team name is already taken"){
+            console.log("mark in teeror");
+            
+            this.teamTaken = true;
+          }
+        }
       )
     }
 
@@ -102,7 +110,12 @@ export class RegisterComponent implements OnInit {
       ])
     })
     this.getLocations();
-
+    this.regForm.valueChanges.subscribe(
+      data => {
+        this.teamTaken = false;
+        this.serverRegError = null;
+      }
+    )
   }
 
   getLocations(){

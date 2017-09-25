@@ -37,9 +37,11 @@ module.exports = {
         let query = 'SELECT id FROM '+ role +' WHERE name = ?';
         db.query(query, req.body.name, (err, users) => {
             if(err) return sendServerError(err, res);
-            if (users.length > 0) errors.name = 'User name in already taken';
+            if (users.length > 0) errors.name = 'User name is already taken';
             if (Object.keys(errors).length == 0) createUser(req.body);
-            else res.status(409).json({'errors': errors});
+            else res.status(409).send("This team name is already taken");
+            // else res.send(409, {status: 409, message: "Team name is already taken"})
+            // else res.status(409).json({'errors': errors});
         });
         
 

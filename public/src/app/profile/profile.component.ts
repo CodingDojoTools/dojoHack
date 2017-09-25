@@ -97,7 +97,13 @@ export class ProfileComponent implements OnInit {
   }
 
   cancel(){
-    this.generateMembersForm();
+    if(this.proForm.pristine){
+      this._router.navigate(['/dashboard'])
+    }
+    else {
+      this.proForm.reset();
+      this.generateMembersForm();
+    }
   }
   updateTeam(){
     const model = this.proForm.value;

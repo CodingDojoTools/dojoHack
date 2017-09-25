@@ -212,7 +212,7 @@ module.exports = {
             LEFT JOIN teams ON sub.teamId = teams.id
             LEFT JOIN locations ON teams.location = locations.id
             LEFT JOIN projects ON sub.projectId = projects.id
-            WHERE sub.hackathonId = ?;
+            WHERE sub.hackathonId = ? ORDER BY teamLocation;
         `;
         db.query(query, req.params.hackId, (err, submissions) => {
             if (err) sendServerError(err, res);

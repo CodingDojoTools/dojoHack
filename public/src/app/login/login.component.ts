@@ -52,22 +52,37 @@ export class LoginComponent implements OnInit, OnDestroy {
       let login = {name: "", password: ""};
       login.name = model.teamName;
       login.password = model.password;
+
+      this.httpService.postObs('/login', login).subscribe(
+        data => {
+          this._router.navigate(['/dashboard'])
+        },
+        err => {
+          console.log("error", err);
+          if(err.status == 409){
+            this.loginError = true;
+          }
+          else {
+            this.serverError = true;
+          }
+        }
+      )
      
-      this.httpService.loginTeam(login)
-      .subscribe(success => {
-        console.log("team in", success);
-        this._router.navigate(['/dashboard'])
-      }, 
-      err=>{
-        console.log("failed logging in", err.status);
-        if(err.status == 409){
-          this.loginError = true;
+      // this.httpService.loginTeam(login)
+      // .subscribe(success => {
+      //   console.log("team in", success);
+      //   this._router.navigate(['/dashboard'])
+      // }, 
+      // err=>{
+      //   console.log("failed logging in", err.status);
+      //   if(err.status == 409){
+      //     this.loginError = true;
     
-        }
-        else {
-          this.serverError = true;
-        }
-      })
+      //   }
+      //   else {
+      //     this.serverError = true;
+      //   }
+      // })
     }
       
   

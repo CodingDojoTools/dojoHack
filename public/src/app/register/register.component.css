@@ -32,11 +32,21 @@
     margin-left: 2em;
     cursor: pointer;
 }
-.logo {
-    padding: 5% 10%;
+.logos {
+    padding: 8% 5%;
 }
-.logo img {
-    width: 70%;
+.logos img {
+    position: relative;
+}
+
+.vs {
+    width: 25%;
+    margin: 0 -9%;
+    z-index: 2;
+}
+.dojoLogo {
+    width: 41%;
+    z-index: 1;
 }
 a {
     color:  #06AAE2;

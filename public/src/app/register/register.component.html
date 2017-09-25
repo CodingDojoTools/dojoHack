@@ -2,17 +2,21 @@
 <app-login></app-login>
 <section class="container bottom">
   <div class="columns">
-    <div class="column logo">
+    <div class="column logos">
 
-      <img src="../assets/images/logo.png">
+      <img src="../assets/images/logo.png" class="dojoLogo">
+      <img src="../assets/images/versus.png" class="vs">
+      <img src="../assets/images/logo.png" class="dojoLogo two">
 
     </div>
     <div class="column">
       <h2 class="title">Register here</h2>
+      <p *ngIf="serverRegError" [@errorAnimation] class="help is-danger">{{serverRegError}}</p>
+
       <form [formGroup] = "regForm" (submit)="register()"> 
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger':((TError.minlength || TError.required)&& teamName.touched) || TError.maxlength }" type="text" formControlName="teamName" placeholder="Team Name" id="teamName">
+          <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger':((TError.minlength || TError.required)&& teamName.touched) || TError.maxlength || teamTaken }" type="text" formControlName="teamName" placeholder="Team Name" id="teamName">
           <span class="icon is-small is-left">
             <i class="fa fa-users"></i>
           </span>

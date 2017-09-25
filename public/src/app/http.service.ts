@@ -14,9 +14,9 @@ export class HttpService {
   }
   private handleError(error: any){
     console.log("error in the private error handler", error)
-    let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : "Server err";
+    let errMsg = (error._body) ? error._body : error.status ? `${error.status} - ${error.statusText}` : "Server error";
     console.error(errMsg);
-    return Observable.throw(errMsg);
+    return Observable.throw({status: error.status, message: errMsg});
   }
 
   updateSession(session: Session){

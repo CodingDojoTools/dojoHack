@@ -1,14 +1,5 @@
 <app-navbar></app-navbar>
 
-{{submissions | json}}
-
-
-
-{{session | json}}
-
-{{hackathon | json}}
-
-
 <section class="hero is-dark is-bold">
   <div class="hero-body">
     <div *ngIf="hackathon" class="container hackTop">
@@ -33,7 +24,7 @@
 
   <app-quick-join [hackathonId]="hackathonId" (markAsJoined)="getSubmissions()" *ngIf="!hackOver && !joined"></app-quick-join>
 
-<section [ngClass]="{'section': (joined || hackOver)}">
+<section [ngClass]="{'section': (joined || hackOver), 'sidePad': (!joined && !hackOver)}">
  
   <div class = "columns">
     <div class="column">
@@ -64,7 +55,7 @@
               <!-- logged team's project -->
               <td *ngIf="sub.projectTitle && sub.teamId==session.team.id"><button [routerLink]="['/hackathon', 'update', sub.projectId]" class="button updateBtn">{{sub.projectTitle}}</button></td>
               <!-- waiting for someone else -->
-              <td *ngIf="!sub.projectTitle && sub.teamId!=session.team.id && (hackathon.timeLeft && hackathon.timeLeft != 0)">Pending</td>
+              <td *ngIf="!sub.projectTitle && sub.teamId!=session.team.id && (hackathon.timeLeft && hackathon.timeLeft != 0)" class="pending">Pending</td>
               <!-- submit button for logged team -->
               <td *ngIf="!sub.projectTitle && sub.teamId==session.team.id && hackathon.timeLeft && hackathon.timeLeft != 0"><a [routerLink]="['/hackathon', 'submit', hackathonId]"><button class="button submitbtn" >Submit your entry</button></a></td>
               <td *ngIf="!sub.projectTitle && (!hackathon.timeLeft || hackathon.timeLeft == 0)">Incomplete</td>
