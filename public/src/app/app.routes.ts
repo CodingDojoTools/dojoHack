@@ -5,6 +5,7 @@ import { SubmissionComponent } from './submission/submission.component';
 import { DetailsComponent } from './details/details.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { ProfileComponent } from './profile/profile.component'; 
+import { WatchComponent } from './watch/watch.component';
 import { AuthGuardService } from './auth-guard.service';
 
 
@@ -17,6 +18,7 @@ const APP_ROUTES: Routes = [
     { path: 'hackathon/:purpose/:id', component: SubmissionComponent, canActivate: [AuthGuardService]},
     // { path: 'hackathon/update/:id', component: SubmissionComponent, canActivate: [AuthGuardService]},
     {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
+    {path: 'watch/:id', component: WatchComponent, canActivate: [AuthGuardService]},
     {path: '**', redirectTo: 'register'}
     
 ];

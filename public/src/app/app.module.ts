@@ -22,7 +22,8 @@ import { DetailsComponent } from './details/details.component';
 import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { ProfileComponent } from './profile/profile.component';
 import { QuickJoinComponent } from './quick-join/quick-join.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { WatchComponent } from './watch/watch.component'
 
 
 
@@ -44,6 +45,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
     GuidelinesComponent,
     ProfileComponent,
     QuickJoinComponent,
+    WatchComponent,
     
   ],
   imports: [
