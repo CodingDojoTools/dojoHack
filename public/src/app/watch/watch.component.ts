@@ -15,7 +15,7 @@ export class WatchComponent implements OnInit {
   paramSub: Subscription;
   session: Session;
   sessionSub: Subscription;
-  submissions: Project[] = [];
+  projects: Project[] = [];
 
   constructor(private httpService: HttpService, private _route: ActivatedRoute, private _router: Router) { }
 
@@ -36,7 +36,7 @@ export class WatchComponent implements OnInit {
         }
         else {
          this.hackathon = body['hackathon'];
-         this.getSubmissions();
+         this.getProjects();
           
         }
         
@@ -48,10 +48,10 @@ export class WatchComponent implements OnInit {
   }
 
 
-  getSubmissions(){
-    this.httpService.getObs(`/hackathons/${this.hackathonId}/submissions`).subscribe(
+  getProjects(){
+    this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(
       body => {
-        this.submissions = body['submissions'];
+        this.projects = body['submissions'];
         // for(var i=0; i<this.submissions.length; i++){
         //   if(this.submissions[i].teamId == this.session.team.id){
         //     this.joined = true;
