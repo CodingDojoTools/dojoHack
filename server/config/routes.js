@@ -83,40 +83,39 @@ module.exports = function(app) {
     // =============================================================
     //                          Admin
     // =============================================================
-    app.post('/login/admin',      (req, res) => { users.login(req, res); }),
+    app.post('/login/admin',            (req, res) => { users.login(req, res); }),
     
-    app.post('/register/admin',   (req, res) => { users.register(req, res); }),
+    app.post('/register/admin',         (req, res) => { users.register(req, res); }),
     
-    app.post('/admin/hackathons', (req, res) => { hackathons.create(req, res); }),
+    app.post('/admin/hackathons',       (req, res) => { hackathons.create(req, res); }),
 
-    app.post('/admin/score/:hackId',      (req, res) => { hackathons.score(req, res); }),
+    app.post('/admin/score/:hackId',    (req, res) => { hackathons.score(req, res); }),
 
     // =============================================================
     //                          Teams
     // =============================================================
     
-    app.post('/login',      (req, res) => { users.login(req, res, "teams"); }),
+    app.post('/login',                  (req, res) => { users.login(req, res, "teams"); }),
     
-    app.post('/register',   (req, res) => { users.register(req, res, "teams"); }),
+    app.post('/register',               (req, res) => { users.register(req, res, "teams"); }),
     
-    app.get('/logout',      (req, res) => { users.logout(req, res); }),
+    app.get('/logout',                  (req, res) => { users.logout(req, res); }),
     
-    app.get('/isLoggedIn',  (req, res) => { users.isLoggedIn(req, res); }),
+    app.get('/isLoggedIn',              (req, res) => { users.isLoggedIn(req, res); }),
 
-    app.get('/teams/members',  (req, res) => { teams.members(req, res); }),
+    app.get('/teams/members',           (req, res) => { teams.members(req, res); }),
     
-    app.get('/teams/logged',   (req, res) => { teams.get(req, res); }),
+    app.get('/teams/logged',            (req, res) => { teams.get(req, res); }),
 
-    app.post('/teams/addmember', (req, res) => { teams.addMember(req, res); }),
+    app.post('/teams/addmember',        (req, res) => { teams.addMember(req, res); }),
     
-    app.post('/teams/isValidMember', (req, res) => { teams.isValidMember(req, res); }),
+    app.post('/teams/isValidMember',    (req, res) => { teams.isValidMember(req, res); }),
 
-    app.post('/teams/update', (req, res) => {teams.update(req, res); }),
+    app.post('/teams/update',           (req, res) => {teams.update(req, res); }),
 
-    app.post('/teams/updateMembers', (req, res) => { teams.updateMembers(req, res); }),
+    app.post('/teams/updateMembers',    (req, res) => { teams.updateMembers(req, res); }),
 
 
-    
     // =============================================================
     //                          Locations
     // =============================================================
@@ -127,28 +126,28 @@ module.exports = function(app) {
     //                       Hackathons
     // =============================================================
     
-    app.get('/hackathons/joined',   (req, res) => { hackathons.joined(req, res); }),
-
-    app.get('/hackathons/any/:hackId', (req, res) => {
-        hackathons.anyhack(req, res); }),
-
-    app.get('/hackathons/joined/:hackId', (req, res) => { hackathons.oneJoined(req, res);}),
+    app.get('/hackathons/joined',               (req, res) => { hackathons.joined(req, res); }),
     
-    app.get('/hackathons/current',  (req, res) => { hackathons.current(req, res); }),
+    app.get('/hackathons/any/:hackId',          (req, res) => {hackathons.anyhack(req, res); }),
     
-    app.get('/hackathons/past',     (req, res) => { hackathons.past(req, res); }),
-
-    app.get('/hackathons/:hackId',  (req, res) => { hackathons.info(req, res); }),
-
-    app.get('/hackathons/:projectId/project', (req, res) => { hackathons.getProject(req, res);}),
-
+    app.get('/hackathons/joined/:hackId',       (req, res) => { hackathons.oneJoined(req, res);}),
+    
+    app.get('/hackathons/current',              (req, res) => { hackathons.current(req, res); }),
+    
+    app.get('/hackathons/past',                 (req, res) => { hackathons.past(req, res); }),
+    
+    app.get('/hackathons/:hackId',              (req, res) => { hackathons.info(req, res); }),
+    
+    app.get('/hackathons/:projectId/project',   (req, res) => { hackathons.getProject(req, res);}),
+    
     app.get('/hackathons/:hackId/submissions',  (req, res) => { hackathons.submissions(req, res); }),
     
     app.get('/hackathons/:hackId/join',         (req, res) => { hackathons.join(req, res); }),
     
     app.post('/hackathons/:hackId/addproject',  (req, res) => { hackathons.addProject(req, res); })
-
-
+    
+    app.get('/hackathons/:hackId/allprojects',  (req, res) => { hackathons.getAllProjects(req, res); }),
+    
 
 
     // =============================================================
