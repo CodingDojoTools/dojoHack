@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { HttpService } from '../http.service';
 import { CountdownService } from '../countdown.service';
 import { Team } from '../models';
@@ -13,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
+  location: string;
   logoutMsg: string;
   logForm: FormGroup;
   logFormChanges: Subscription;
@@ -27,9 +28,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private count: CountdownService) {}
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private count: CountdownService, private _loc: Location) {}
 
   ngOnInit() {
+    this.location = this._loc.path();
+    
     this.logoutMsg = this.count.logoutMsg;
 
     this.logForm = this.fb.group({
@@ -53,21 +56,33 @@ export class LoginComponent implements OnInit, OnDestroy {
       let login = {name: "", password: ""};
       login.name = model.teamName;
       login.password = model.password;
+      if(this.location == "/register/admin"){
+        this.httpService.postObs('/login/admin', login).subscribe(
+          data => {
+            console.log("Loggin in admin", data)
+          },
+          err => {
+            console.log("logging in admin error", err)
+          }
+        )
+      }
+      else {
 
-      this.httpService.postObs('/login', login).subscribe(
-        data => {
-          this._router.navigate(['/dashboard'])
-        },
-        err => {
-          console.log("error", err);
-          if(err.status == 409){
-            this.loginError = true;
+        this.httpService.postObs('/login', login).subscribe(
+          data => {
+            this._router.navigate(['/dashboard'])
+          },
+          err => {
+            console.log("error", err);
+            if(err.status == 409){
+              this.loginError = true;
+            }
+            else {
+              this.serverError = true;
+            }
           }
-          else {
-            this.serverError = true;
-          }
-        }
-      )
+        )
+      }
     }
       
   
