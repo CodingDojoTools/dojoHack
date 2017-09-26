@@ -6,8 +6,6 @@ import { routing } from './app.routes';
 import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { RegisterMembersComponent } from './register-members/register-members.component';
-import { DynamicComponent } from './dynamic/dynamic.component';
-import { AddressComponent } from './dynamic/address/address.component';
 import { HttpService } from './http.service';
 import { CountdownService } from './countdown.service';
 import { AuthGuardService } from './auth-guard.service';
@@ -35,8 +33,6 @@ import { SafePipe } from './watch/watch.component';
     AppComponent,
     RegisterComponent,
     RegisterMembersComponent,
-    DynamicComponent,
-    AddressComponent,
     LoginComponent,
     DashboardComponent,
     NavbarComponent,

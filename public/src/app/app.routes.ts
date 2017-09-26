@@ -11,6 +11,13 @@ import { AuthGuardService } from './auth-guard.service';
 
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'register', pathMatch: 'full' },
+    //**********************  ADMIN  ********************************
+    { path: 'register/admin', component: }
+
+
+
+    //**********************  TEAMS  ********************************
+
     { path: 'register', component: RegisterComponent},
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
     { path: 'guide', component: GuidelinesComponent},
