@@ -1,6 +1,30 @@
-#carousel h1 {
-    min-height: 200px;
+/* #carousel h1 {
+    min-height: 500px;
     background-color: #ccc;
     text-align: center;
     line-height: 200px;
+} */
+
+iframe {
+    min-height: 500px;
+}
+
+ngx-tile div {
+    display: block;
+}
+
+.info {
+    background-color: #2f2f2f;
+    min-height: 200px;
+    text-align: center;
+    color: white;
+   
+}
+
+.info .title, .info .subtitle {
+    color: #06AAE2
+}
+
+i {
+    color: #06AAE2;
 }

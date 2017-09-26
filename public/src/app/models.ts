@@ -62,7 +62,7 @@ export class Carousel {
     point?: boolean;
     type?: string;
     load?: number;
-    custom?: Custom;
+    custom?: string;
     loop?: boolean;
     easing: string;
     touch?: boolean;

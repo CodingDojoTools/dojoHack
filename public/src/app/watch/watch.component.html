@@ -1,5 +1,4 @@
 <app-navbar></app-navbar>
-{{projects | json}}
 
 
 <section class="hero is-dark is-bold">
@@ -9,27 +8,40 @@
         <h1  class="title">{{hackathon.name}}</h1>
         <h1 class="subtitle">Completed: {{hackathon.deadline | date: 'medium'}}</h1>
       </div>
-      <!-- <div *ngIf="hackathon" class="container">
-        <h2 class="subtitle">
-          Deadline: {{hackathon.deadline | date: 'medium'}}
-        </h2>
-       
-      </div> -->
         
     </div>
   </section>
 
-  <section class="section" id="carousel">
-      <ngx-carousel 
-      [inputs]="carouselTile" 
-      [inputsLength]="carouselTileItems.length"
-      (carouselLoad)="carouselTileLoad($event)">
+<section class="section">
+  <ngx-carousel
+  [inputs]="carouselBanner" 
+  [inputsLength]="carouselBannerItems.length">
   
-            <ngx-tile *ngFor="let Tile of carouselTileItems">
-                <h1>{{Tile + 1}}</h1>
-            </ngx-tile>
-  
-        <button class='leftRs'><</button>
-        <button class='rightRs'>></button>
-    </ngx-carousel>
-  </section>
+      <ngx-item class="bannerStyle" *ngFor="let project of projects">
+         
+          <iframe width="100%" [src]="project.safeurl | safe" frameborder="0" allowfullscreen></iframe>
+          <div class="info">
+            <div class="columns">
+              <div class="column">
+
+                <h1 class="subtitle">By {{project.teamName}}</h1>
+                <h1 class="subtitle">{{project.location}}</h1>
+                <a [href]="project.gitUrl"> <i class="fa fa-github fa-4x" aria-hidden="true"></i></a>
+
+              </div>
+              <div class="column is-three-quarters">
+                <h1 class="title">{{project.projectName}}</h1>
+                <p>{{project.description}}</p>
+              </div>
+
+            </div>
+
+          </div>
+      </ngx-item>
+
+    <button class='leftRs button'>Back</button>
+    <button class='rightRs button'>Next</button>
+</ngx-carousel>
+</section>
+
+  <!-- (carouselLoad)="carouselTileLoad($event)" -->

@@ -26,6 +26,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { WatchComponent } from './watch/watch.component'
 import { NgxCarouselModule } from 'ngx-carousel';
 import 'hammerjs';
+import { SafePipe } from './watch/watch.component';
 
 
 
@@ -48,6 +49,7 @@ import 'hammerjs';
     ProfileComponent,
     QuickJoinComponent,
     WatchComponent,
+    SafePipe
     
   ],
   imports: [

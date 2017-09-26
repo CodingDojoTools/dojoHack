@@ -4,6 +4,16 @@ import { HttpService } from '../http.service';
 import { Subscription } from 'rxjs/Subscription';
 import { NgxCarousel } from 'ngx-carousel';
 import { Hackathon, Project, Session, Carousel} from '../models';
+import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer} from '@angular/platform-browser';
+
+@Pipe({ name: 'safe' })
+export class SafePipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizer) {}
+  transform(url) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+} 
 
 @Component({
   selector: 'app-watch',
@@ -17,8 +27,9 @@ export class WatchComponent implements OnInit {
   session: Session;
   sessionSub: Subscription;
   projects: Project[] = [];
-  public carouselTileItems: Array<any>;
-  public carouselTile;
+ 
+  public carouselBannerItems: Array<any>;
+  public carouselBanner;
 
   constructor(private httpService: HttpService, private _route: ActivatedRoute, private _router: Router) { }
 
@@ -29,32 +40,26 @@ export class WatchComponent implements OnInit {
       
       // this.getSubmissions();
     })
-    this.carouselTileItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     
-    this.carouselTile = {
-         grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0},
-         slide: 1,
-         speed: 400,
-         animation: 'lazy',
-         point: true,
-         load: 2,
-         touch: true,
-         custom: 'tile',
-         dynamicLength: true
-       }
+
+
+
+       this.carouselBannerItems = [0, 1, 2, 3, 4];
+       
+          this.carouselBanner = {
+            grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0},
+            slide: 1,
+            speed: 400,
+            point: true,
+            load: 2,
+            loop: true,
+            custom: 'banner',
+            touch: true,
+            dynamicLength: false
+          }
   }
 
 
-  public carouselTileLoad(evt: any) {
-    
-       const len = this.carouselTileItems.length
-       if (len <= 30) {
-         for (let i = len; i < len + 10; i++) {
-           this.carouselTileItems.push(i);
-         }
-       }
-    
-     }
 
   getHackathon(){
     this.httpService.getObs(`hackathons/any/${this.hackathonId}`).subscribe(
@@ -81,6 +86,9 @@ export class WatchComponent implements OnInit {
     this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(
       body => {
         this.projects = body['projects'];
+        for(let project of this.projects){
+          project['safeurl'] = project.vidUrl.replace("watch?v=", "embed/");
+        }
         // for(var i=0; i<this.submissions.length; i++){
         //   if(this.submissions[i].teamId == this.session.team.id){
         //     this.joined = true;
