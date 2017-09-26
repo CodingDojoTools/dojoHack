@@ -7,12 +7,13 @@ import { GuidelinesComponent } from './guidelines/guidelines.component';
 import { ProfileComponent } from './profile/profile.component'; 
 import { WatchComponent } from './watch/watch.component';
 import { AuthGuardService } from './auth-guard.service';
+import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
 
 
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'register', pathMatch: 'full' },
     //**********************  ADMIN  ********************************
-    { path: 'register/admin', component: }
+    { path: 'register/admin', component: AdminSignInComponent},
 
 
 

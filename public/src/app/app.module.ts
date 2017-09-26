@@ -25,6 +25,7 @@ import { WatchComponent } from './watch/watch.component'
 import { NgxCarouselModule } from 'ngx-carousel';
 import 'hammerjs';
 import { SafePipe } from './watch/watch.component';
+import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
 
 
 
@@ -45,7 +46,8 @@ import { SafePipe } from './watch/watch.component';
     ProfileComponent,
     QuickJoinComponent,
     WatchComponent,
-    SafePipe
+    SafePipe,
+    AdminSignInComponent
     
   ],
   imports: [
