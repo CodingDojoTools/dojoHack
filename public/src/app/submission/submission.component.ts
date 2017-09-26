@@ -140,7 +140,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
         if(this.hackathon['secondsLeft']){
-          this.hackathon['secondsLeft'].subscribe(
+          this.timerSub = this.hackathon['secondsLeft'].subscribe(
             data => {
               console.log("getting stuff from timeleft", data)
               if(data < 1){

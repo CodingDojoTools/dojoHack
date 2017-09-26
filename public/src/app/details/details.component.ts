@@ -94,7 +94,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }   
       },
       error => {
-        this._router.navigate(['/dashboard']); console.log("Can't get a hackathon", error)
+        this._router.navigate(['/dashboard']); 
+        console.log("Can't get a hackathon", error)
       }
     )
   }

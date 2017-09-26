@@ -87,7 +87,9 @@ export class WatchComponent implements OnInit {
       body => {
         this.projects = body['projects'];
         for(let project of this.projects){
-          project['safeurl'] = project.vidUrl.replace("watch?v=", "embed/");
+          project['safeurl'] = project.vidUrl.replace("youtu.be", "www.youtube.com/embed");
+          console.log("scrubbed youtube url", project['safeurl']);
+          
         }
         // for(var i=0; i<this.submissions.length; i++){
         //   if(this.submissions[i].teamId == this.session.team.id){

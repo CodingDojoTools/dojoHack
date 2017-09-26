@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpService } from '../http.service';
 import { CountdownService } from '../countdown.service';
 import { Team } from '../models';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   logoutMsg: string;
   logForm: FormGroup;
+  logFormChanges: Subscription;
   tLen: boolean;
   tLenMax: boolean;
   tReq: boolean;
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   tDanger: boolean;
   loginError: boolean;
   serverError: boolean;
+
 
 
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private count: CountdownService) {}
@@ -34,11 +37,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: ['', [Validators.required]]
     })
     
-    this.logForm.valueChanges.subscribe(data => {
-      if(this.loginError || this.serverError){
-        this.loginError = false;
-        this.serverError = false;
-      }
+    this.logFormChanges = this.logForm.valueChanges.subscribe(data => {
+      this.loginError = false;
+      this.serverError = false;
       this.logoutMsg = null;
     })
 
@@ -87,6 +88,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.count.logoutMsg = null;
+    this.logFormChanges.unsubscribe();
   }
 
 }

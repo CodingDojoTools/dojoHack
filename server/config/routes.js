@@ -85,7 +85,7 @@ module.exports = function(app) {
     // =============================================================
     app.post('/login/admin',            (req, res) => { users.login(req, res); }),
     
-    app.post('/register/admin',         (req, res) => { users.register(req, res); }),
+    // app.post('/register/admin',         (req, res) => { users.register(req, res); }),
     
     app.post('/admin/hackathons',       (req, res) => { hackathons.create(req, res); }),
 

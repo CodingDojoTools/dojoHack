@@ -82,10 +82,13 @@ export class RegisterComponent implements OnInit {
         },
         err => {
           console.log("Got the register error", err)
-          this.serverRegError = err;
-          if(this.serverRegError == "This team name is already taken"){
-            console.log("mark in teeror");
-            
+          if(err.message){
+            this.serverRegError = err.message
+          }
+          else {
+            this.serverRegError = "We could not register your team at this time."
+          }
+          if(this.serverRegError == "This team name is already taken"){ 
             this.teamTaken = true;
           }
         }

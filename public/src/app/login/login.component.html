@@ -27,7 +27,7 @@
             </form>
             <p *ngIf="loginError" class="help is-danger">Sorry, invalid login! Try again?</p>
             <p *ngIf="serverError" class="help is-danger">Sorry, we're having trouble connecting to our database. Try again?</p>
-            <p *ngIf="logoutMsg">{{logoutMsg}}</p>
+            <p *ngIf="logoutMsg && !tDanger">{{logoutMsg}}</p>
           </div>
         </div>
       </div>
