@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Subscription } from 'rxjs/Subscription';
-import { Hackathon, Project, Session} from '../models';
+import { NgxCarousel } from 'ngx-carousel';
+import { Hackathon, Project, Session, Carousel} from '../models';
 
 @Component({
   selector: 'app-watch',
   templateUrl: './watch.component.html',
-  styleUrls: ['./watch.component.css']
+  styleUrls: ['./watch.component.css'],
 })
 export class WatchComponent implements OnInit {
   hackathon: Hackathon;
@@ -16,6 +17,8 @@ export class WatchComponent implements OnInit {
   session: Session;
   sessionSub: Subscription;
   projects: Project[] = [];
+  public carouselTileItems: Array<any>;
+  public carouselTile;
 
   constructor(private httpService: HttpService, private _route: ActivatedRoute, private _router: Router) { }
 
@@ -23,9 +26,35 @@ export class WatchComponent implements OnInit {
     this.paramSub = this._route.params.subscribe(param => {
       this.hackathonId = param.id;
       this.getHackathon();
+      
       // this.getSubmissions();
     })
+    this.carouselTileItems = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    
+    this.carouselTile = {
+         grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0},
+         slide: 1,
+         speed: 400,
+         animation: 'lazy',
+         point: true,
+         load: 2,
+         touch: true,
+         custom: 'tile',
+         dynamicLength: true
+       }
   }
+
+
+  public carouselTileLoad(evt: any) {
+    
+       const len = this.carouselTileItems.length
+       if (len <= 30) {
+         for (let i = len; i < len + 10; i++) {
+           this.carouselTileItems.push(i);
+         }
+       }
+    
+     }
 
   getHackathon(){
     this.httpService.getObs(`hackathons/any/${this.hackathonId}`).subscribe(

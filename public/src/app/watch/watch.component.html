@@ -18,3 +18,18 @@
         
     </div>
   </section>
+
+  <section class="section" id="carousel">
+      <ngx-carousel 
+      [inputs]="carouselTile" 
+      [inputsLength]="carouselTileItems.length"
+      (carouselLoad)="carouselTileLoad($event)">
+  
+            <ngx-tile *ngFor="let Tile of carouselTileItems">
+                <h1>{{Tile + 1}}</h1>
+            </ngx-tile>
+  
+        <button class='leftRs'><</button>
+        <button class='rightRs'>></button>
+    </ngx-carousel>
+  </section>

@@ -24,6 +24,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { QuickJoinComponent } from './quick-join/quick-join.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { WatchComponent } from './watch/watch.component'
+import { NgxCarouselModule } from 'ngx-carousel';
+import 'hammerjs';
 
 
 
@@ -55,6 +57,7 @@ import { WatchComponent } from './watch/watch.component'
     HttpModule,
     routing,
     BrowserAnimationsModule,
+    NgxCarouselModule
   ],
   providers: [
     HttpService,
