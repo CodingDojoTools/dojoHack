@@ -1,13 +1,22 @@
 export class Team {
     constructor(
-        public id: number = 0,
         public name: string = "",
         public password: string = "",
         public confirmPassword: string = "",
-        public location: number = 0
+        public location: number = 0,
+        public permission: string = ""
     ){}
 }
-
+export class Admin {
+    constructor(
+        public name: string = "",
+        public password: string = "",
+        public confirmPassword: string = "",
+        public location: number = 0,
+        public mattermost: string = "",
+        public permission: string = "",
+    ){}
+}
 
 export class Hackathon {
     constructor(

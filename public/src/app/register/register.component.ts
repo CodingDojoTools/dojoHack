@@ -1,8 +1,9 @@
-import { Component, OnInit, trigger, transition, style, animate } from '@angular/core';
+import { Component, OnInit, OnDestroy, trigger, transition, style, animate } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { HttpService } from '../http.service';
 import { Team } from '../models';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 export function comparePassword(group: FormGroup){
   const pass = group.value;
@@ -33,7 +34,7 @@ export function comparePassword(group: FormGroup){
     )
   ],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
@@ -48,6 +49,7 @@ export class RegisterComponent implements OnInit {
   pR: boolean;
   pValid: boolean = false;
   regForm: FormGroup;
+  regFormChanges: Subscription;
   serverRegError: string;
   teamTaken: boolean; 
 
@@ -75,10 +77,8 @@ export class RegisterComponent implements OnInit {
                 this._router.navigate(['/dashboard'])
               },
               err => console.log("Error with one member", err)
-              
             )
           }
-          
         },
         err => {
           console.log("Got the register error", err)
@@ -113,7 +113,7 @@ export class RegisterComponent implements OnInit {
       ])
     })
     this.getLocations();
-    this.regForm.valueChanges.subscribe(
+    this.regFormChanges = this.regForm.valueChanges.subscribe(
       data => {
         this.teamTaken = false;
         this.serverRegError = null;
@@ -143,7 +143,6 @@ export class RegisterComponent implements OnInit {
   }
 
   removeMember(index){
-    
     let control = <FormArray>this.regForm.controls['members'];
     control.removeAt(index);
   }
@@ -186,5 +185,8 @@ export class RegisterComponent implements OnInit {
   get CPDanger(){
     let cp = this.confirmPassword;
     return this.passGroup.invalid && cp.touched
+  }
+  ngOnDestroy(){
+    this.regFormChanges.unsubscribe();
   }
 }

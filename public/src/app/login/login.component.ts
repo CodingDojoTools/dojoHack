@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  admin: boolean;
   location: string;
   logoutMsg: string;
   logForm: FormGroup;
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   tLen: boolean;
   tLenMax: boolean;
   tReq: boolean;
+  placeholderText: string;
   pReq: boolean;
   tDanger: boolean;
   loginError: boolean;
@@ -32,6 +34,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.location = this._loc.path();
+    if(this.location == "/register/admin"){
+      this.admin = true;
+      this.placeholderText = "Admin username";
+    }
+    else {
+      this.admin = false;
+      this.placeholderText = "Team name";
+    }
     
     this.logoutMsg = this.count.logoutMsg;
 
@@ -56,7 +66,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       let login = {name: "", password: ""};
       login.name = model.teamName;
       login.password = model.password;
-      if(this.location == "/register/admin"){
+      if(this.admin){
         this.httpService.postObs('/login/admin', login).subscribe(
           data => {
             console.log("Loggin in admin", data)

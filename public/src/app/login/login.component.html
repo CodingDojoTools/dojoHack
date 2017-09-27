@@ -10,7 +10,7 @@
             <form [formGroup]="logForm" (submit)="loggingIn()" class="field is-horizontal">
               <div class="field-body">
                 <div class="field">
-                  <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger': tDanger}" formControlName="teamName" type="text" placeholder="Team name">
+                  <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger': tDanger}" formControlName="teamName" type="text" [placeholder]="placeholderText">
                   <p *ngIf="tReq" class="help is-danger">A team name is required</p>
                   <p *ngIf="tLen" class="help is-danger">Team name too short!</p>
                   <p *ngIf="tLenMax" class="help is-danger">Hint: team names contain at most 32 characters</p>
