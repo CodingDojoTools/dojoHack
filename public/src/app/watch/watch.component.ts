@@ -50,7 +50,7 @@ export class WatchComponent implements OnInit {
             grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0},
             slide: 1,
             speed: 400,
-            point: true,
+            point: false,
             load: 2,
             loop: true,
             custom: 'banner',
@@ -86,10 +86,11 @@ export class WatchComponent implements OnInit {
     this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(
       body => {
         this.projects = body['projects'];
+        // console.log(this.projects.length, "Project to watch");
+        
         for(let project of this.projects){
-          project['safeurl'] = project.vidUrl.replace("youtu.be", "www.youtube.com/embed");
-          console.log("scrubbed youtube url", project['safeurl']);
-          
+          project['safeurl'] = project.vidUrl.replace("youtu.be", "www.youtube.com/embed")+"?rel=0&enablejsapi=1";
+          // console.log("scrubbed youtube url", project['safeurl']);
         }
         // for(var i=0; i<this.submissions.length; i++){
         //   if(this.submissions[i].teamId == this.session.team.id){
@@ -104,5 +105,18 @@ export class WatchComponent implements OnInit {
       error => console.log("Can't seem to get submissions", error)
     )
   }
+    
+
+    // console.log("============= STOP ==============");
+    
+    // let vids = document.getElementsByClassName("video-stream")
+    // console.log(vids);
+
+
+    // Array.from(vids).forEach(vid => {
+    //   console.log(vid);
+      
+    // });
+  // }
 
 }
