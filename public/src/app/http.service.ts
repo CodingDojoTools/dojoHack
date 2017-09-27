@@ -65,8 +65,13 @@ export class HttpService {
       response => {
         console.log("got a response 200", response.json())
         const res = response.json();
-        this.startSession(res.team);
-        return true
+        if(res.team){
+          this.startTeamSession(res.team);
+          return true
+        }
+        else {
+          this.startAdminSession(res.user)
+        }
       },
       err => console.log("error", err)
     )
@@ -75,11 +80,17 @@ export class HttpService {
  
 
 
-  startSession(team){
+  startTeamSession(team){
     this.loggedSession.team = team;
     this.loggedSession.isLoggedIn = true;
     this.updateSession(this.loggedSession);
     
+  }
+  startAdminSession(admin){
+    console.log("someting about admin", admin)
+    this.loggedSession.isLoggedIn = true;
+    this.loggedSession.admin = admin;
+    this.updateSession(this.loggedSession);
   }
  
   getObs(url): Observable<Object>{
@@ -108,7 +119,7 @@ export class HttpService {
     return this._http.post('/login', team).map(
       response => {
         const res = response.json();
-        this.startSession(res.team);
+        this.startTeamSession(res.team);
         return true
       },
       err => {

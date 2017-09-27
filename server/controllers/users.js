@@ -115,14 +115,19 @@ module.exports = {
 
     isLoggedIn: (req, res) => {
         if (req.session.userId){
-            let query = 'SELECT id, name, location FROM teams WHERE id=?';
+            let table = req.session.admin ? "users" : "teams";
+            let query = 'SELECT id, name, location FROM '+table+' WHERE id=?';
+
             let data = [req.session.userId];
-            db.query(query, data, (err, team)=> {
+            db.query(query, data, (err, data)=> {
                 if(err){
                     res.status(500).json({'message': "Server error"})
                 }
                 else {
-                    res.status(200).json({'team': team[0]})
+                    let resData = {};
+                    table = table.slice(0, -1)
+                    resData[table] = data[0];
+                    res.status(200).json(resData);
                 }
             })
         } 

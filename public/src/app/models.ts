@@ -10,6 +10,7 @@ export class Team {
 }
 export class Admin {
     constructor(
+        public id: number = 0,
         public name: string = "",
         public password: string = "",
         public confirmPassword: string = "",
@@ -47,14 +48,7 @@ export class Session {
     constructor(
         public team: Team = null,
         public isLoggedIn: boolean = false,
-        public loggedTeam: Team = null,
-        public postedHackathons: Hackathon[] = [],
-        public pastHackathons: Hackathon[] = [],
-        public joinedHackathons: Hackathon[] = [],
-        public allHackathons = {},
-        public selectedHackathon: Hackathon = null,
-        public submissionFlashMessage: string = "",
-        public loggedMembers: Member[] = []
+        public admin: Admin = null
     ){}
 }
 
