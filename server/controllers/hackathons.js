@@ -16,7 +16,7 @@ function sendServerError(error, res){
 
 module.exports = {
 
-    anyhack: (req, res) => {
+    anyHack: (req, res) => {
         let query = `
             SELECT * FROM hackathons WHERE id = ?
         `;
@@ -122,7 +122,7 @@ module.exports = {
 
         if (name.length < 7 || name.length > 32) errors.name ='Name must be 7 to 32 characters';
         if (deadline < new Date()) errors.deadline = 'Deadline must be in the future';
-        if (theme.length < 3 || theme.length > 32) errors.theme = 'Theme must be 3 to 32 charactesr';
+        if (theme.length < 3 || theme.length > 32) errors.theme = 'Theme must be 3 to 32 characters';
 
         if (Object.keys(errors).length) res.status(409).json({errors:errors});
         else {
@@ -217,12 +217,12 @@ module.exports = {
                 if (err) sendServerError(err, res);
                 else {
                     let data = [packet.insertId, team, hackathon];
-                    updateSubmition(data);
+                    updateSubmission(data);
                 }
             });
         } else res.status(409).json({'errors': errors});
         
-        function updateSubmition(data){
+        function updateSubmission(data){
             let query = "UPDATE submissions SET projectId = ? WHERE (teamId = ? AND hackathonId = ?)";
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);

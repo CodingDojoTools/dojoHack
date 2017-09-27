@@ -24,17 +24,15 @@ module.exports = {
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
 
-        if (firstName == "" || lastName == "") {
-            return res.status(409).send("First and last name must be entered");
+        if (firstName == '' || lastName == '') {
+            return res.status(409).json({'error':"First and Last name are required"});
         }
 
-        let query = "INSERT INTO members (firstName, lastName, team) VALUES (?, ?, ?)";
+        let query = 'INSERT INTO members (firstName, lastName, team) VALUES (?, ?, ?)';
         let data = [firstName, lastName, req.session.userId];
         db.query(query, data, (err, packet) => {
-            if(err){
-                return res.status(500).json(err)
-            }
-            res.status(200).send({member: packet});
+            if(err) return res.status(500).json(err);
+            res.status(200).json({'member': packet});
         });
     },
 
@@ -42,49 +40,41 @@ module.exports = {
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
 
-        if (firstName != "" || lastName != "") res.status(200);
+        if (firstName != '' || lastName != '') res.status(200).send();
         else res.status(409).send();
     },
 
     members: (req, res) => {
-        let query = "SELECT * FROM members WHERE team = ?";
+        let query = 'SELECT * FROM members WHERE team = ?';
         db.query(query, req.session.userId, (err, members) => {
-            res.status(200).send({members: members})
-            // res.json({"members": members});
+            res.status(200).json({'members': members})
         })
     },
     update: (req, res) => {
-        let query = "UPDATE teams SET name = ?, location = ? WHERE id = ?";
+        let query = 'UPDATE teams SET name = ?, location = ? WHERE id = ?';
         data = [req.body.teamName, req.body.location, req.session.userId];
         db.query(query, data, (err, update) => {
             if(err){
-                res.status(500).json({message: "We could not update"})
+                res.status(500).json({'message': 'We could not update'});
             }
             else {
-                res.status(200).send({update: update})
+                res.status(200).json({'update': update});
             }
         })
     },
 
     updateMembers: (req, res) => {
-        console.log("In the updateMembers");
+        console.log('In the updateMembers');
         var success = true;
         for(let member of req.body.members){
-
-            let query = "UPDATE members SET firstName = ?, lastName = ? WHERE id = ? AND team = ?";
+            let query = 'UPDATE members SET firstName = ?, lastName = ? WHERE id = ? AND team = ?';
             let data = [member.firstName, member.lastName, member.id, req.session.userId];
             db.query(query, data, (err, update) => {
-                if(err){
-                    success = false;
-                }
+                if(err) success = false;
             })
         }
-        if(success){
-            res.status(200).send({update: true})
-        }
-        else {
-            res.status(500).send({update: false})
-        }
+        if(success) res.status(200).json({'update': true})
+        else res.status(500).json({'update': false})
     }
 
 
