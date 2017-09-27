@@ -1,9 +1,14 @@
+import { Injectable } from '@angular/core';
 import { Component, OnInit, OnDestroy, trigger, transition, style, animate } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { HttpService } from '../http.service';
 import { Team } from '../models';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import 'rxjs/add/observable/forkJoin'
+import 'rxjs';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 export function comparePassword(group: FormGroup){
   const pass = group.value;
@@ -39,7 +44,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
 
+  allMembersValid: boolean = true;
   locations = [];
+  validatedMemberCount: number = 0;
+
   newTeam = new Team();
   pDanger: boolean;
 
@@ -57,8 +65,41 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   TError: object;
 
-
+  validateMembers(members){
+    console.log("in the validate members")
+    let observableBatch = [];
+    members.forEach((member) => {
+      observableBatch.push(
+        this.httpService._http.post('/teams/isValidMember', member).map(
+          res => console.log("the res", res)
+        )
+      )
+    })
+    console.log("Observable Batch", observableBatch);
+    
+    return Observable.forkJoin(observableBatch);
+  }
  
+  // processStuff( inputObject ) {
+  //   let observableBatch = [];
+  
+  //   inputObject.forEach(( componentarray, key ) => {
+  //     observableBatch.push( this.httpService._http.post( key + '.json').map((res: Response) => res.json()) );
+  //   });
+  
+  //   return Observable.forkJoin(observableBatch);
+  // // }
+  
+  // elsewhere() {
+  //   this.processStuff( inputObject )
+  //     .subscribe()
+  // }
+  
+
+
+
+
+
   register(){
 
     const model = this.regForm.value;
@@ -67,32 +108,39 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.newTeam.password = model.passGroup.password;
       this.newTeam.confirmPassword = model.passGroup.confirmPassword;
       this.newTeam.location = model.location;
-      console.log(this.newTeam);
-      this.httpService.postObs('/register', this.newTeam).subscribe(
-        data => {
-          for(let member of model.members){
-            this.httpService.postObs('/teams/addmember', member).subscribe(
-              body => {
-                console.log("got one member body", body);
-                this._router.navigate(['/dashboard'])
-              },
-              err => console.log("Error with one member", err)
-            )
-          }
-        },
-        err => {
-          console.log("Got the register error", err)
-          if(err.message){
-            this.serverRegError = err.message
-          }
-          else {
-            this.serverRegError = "We could not register your team at this time."
-          }
-          if(this.serverRegError == "This team name is already taken"){ 
-            this.teamTaken = true;
-          }
-        }
-      )
+      console.log("the members", model.members);
+      
+
+      this.validateMembers(model.members).subscribe(
+        data => console.log("get some data?", data),
+        err => console.log("No data", err)
+      );
+      
+      // this.httpService.postObs('/register', this.newTeam).subscribe(
+      //   data => {
+      //     for(let member of model.members){
+      //       this.httpService.postObs('/teams/addmember', member).subscribe(
+      //         body => {
+      //           console.log("got one member body", body);
+      //           this._router.navigate(['/dashboard'])
+      //         },
+      //         err => console.log("Error with one member", err)
+      //       )
+      //     }
+      //   },
+      //   err => {
+      //     console.log("Got the register error", err)
+      //     if(err.message){
+      //       this.serverRegError = err.message
+      //     }
+      //     else {
+      //       this.serverRegError = "We could not register your team at this time."
+      //     }
+      //     if(this.serverRegError == "This team name is already taken"){ 
+      //       this.teamTaken = true;
+      //     }
+      //   }
+      // )
     }
 
   }

@@ -40,7 +40,7 @@ export class HttpService {
   loggedSession = new Session();
   session = new BehaviorSubject(this.loggedSession);
   
-  constructor(private _http: Http) { }
+  constructor(public _http: Http) { }
 
 
   startSession(team){
@@ -62,6 +62,8 @@ export class HttpService {
     .catch(this.handleError)
 
   }
+
+
 
 
   // DOWN THERE, THERE BE MONSTERS!!!

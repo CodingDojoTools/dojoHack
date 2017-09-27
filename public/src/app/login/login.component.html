@@ -11,9 +11,9 @@
               <div class="field-body">
                 <div class="field">
                   <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger': tDanger}" formControlName="teamName" type="text" [placeholder]="placeholderText">
-                  <p *ngIf="tReq" class="help is-danger">A team name is required</p>
-                  <p *ngIf="tLen" class="help is-danger">Team name too short!</p>
-                  <p *ngIf="tLenMax" class="help is-danger">Hint: team names contain at most 32 characters</p>
+                  <!-- <p *ngIf="tReq" class="help is-danger">A name is required</p> -->
+                  <p *ngIf="tLen || tReq" class="help is-danger">Name must be at least 5 characters!</p>
+                  <p *ngIf="tLenMax" class="help is-danger">Hint: names contain at most 32 characters</p>
                 </div>
 
                 <div class="field"> 

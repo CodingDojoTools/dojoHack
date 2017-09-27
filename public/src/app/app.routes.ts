@@ -8,12 +8,14 @@ import { ProfileComponent } from './profile/profile.component';
 import { WatchComponent } from './watch/watch.component';
 import { AuthGuardService } from './auth-guard.service';
 import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
+import { AdminDashComponent } from './admin-dash/admin-dash.component';
 
 
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'register', pathMatch: 'full' },
     //**********************  ADMIN  ********************************
     { path: 'register/admin', component: AdminSignInComponent},
+    { path: 'dashboard/admin', component: AdminDashComponent, canActivate: [AuthGuardService]},
 
 
 

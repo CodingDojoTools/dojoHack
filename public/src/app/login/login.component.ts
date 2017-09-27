@@ -70,9 +70,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.httpService.postObs('/login/admin', login).subscribe(
           data => {
             console.log("Loggin in admin", data)
+            this._router.navigate(['/dashboard', 'admin'])
           },
           err => {
             console.log("logging in admin error", err)
+            if(err.status == 409){
+              this.loginError = true;
+            }
+            else {
+              this.serverError = true;
+            }
           }
         )
       }
