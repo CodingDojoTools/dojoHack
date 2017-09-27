@@ -20,7 +20,9 @@
         "hackathon",
         "hackathons",
         "mattermost",
+        "safeurl",
         "uiux",
+        "vids",
         "youtu"
     ],
     // flagWords - list of words to be always considered incorrect

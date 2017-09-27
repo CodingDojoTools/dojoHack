@@ -1,47 +1,47 @@
 <app-navbar></app-navbar>
+  
+  <div id="background"></div>
 
-
-<section class="hero is-dark is-bold">
-    <div class="hero-body">
-      <div *ngIf="hackathon" class="container hackTop">
-       
-        <h1  class="title">{{hackathon.name}}</h1>
-        <h1 class="subtitle">Completed: {{hackathon.deadline | date: 'medium'}}</h1>
-      </div>
-        
-    </div>
-  </section>
-
-<section class="section">
   <ngx-carousel
   [inputs]="carouselBanner" 
   [inputsLength]="carouselBannerItems.length">
   
-      <ngx-item class="bannerStyle" *ngFor="let project of projects">
-         
-          <iframe width="100%" [src]="project.safeurl | safe" frameborder="0" allowfullscreen></iframe>
-          <div class="info">
-            <div class="columns">
+      <ngx-item class="bannerStyle" *ngFor="let project of projects; let i=index">
+        
+        <div id="vidBox">
+          <iframe width="100%" id="ytVid{{i}}" color="white" [src]="project.safeurl | safe" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+        <div class="info">
+          <div class="columns auto">
+
+            <div class="column ">
+
               <div class="column">
-
-                <h1 class="subtitle">By {{project.teamName}}</h1>
-                <h1 class="subtitle">{{project.location}}</h1>
-                <a [href]="project.gitUrl"> <i class="fa fa-github fa-4x" aria-hidden="true"></i></a>
-
+                
+                <h1  class="title">{{hackathon.name}}: {{project.location}}</h1>
+                <h1 class="subtitle">By {{project.teamName}}   <a [href]="project.gitUrl"> <i class="fa fa-github git" aria-hidden="true"></i></a></h1>
               </div>
-              <div class="column is-three-quarters">
-                <h1 class="title">{{project.projectName}}</h1>
-                <p>{{project.description}}</p>
-              </div>
+            </div>
 
+            <div class="column is-two-thirds">
+              <h1 class="title">{{project.projectName}}</h1>
+              <p>{{project.description}}</p>
             </div>
 
           </div>
+        </div>
+
       </ngx-item>
 
-    <button class='leftRs button'>Back</button>
-    <button class='rightRs button'>Next</button>
-</ngx-carousel>
-</section>
+    <button id="prev" class='leftRs button'>
+      <i class="noTouch fa fa-chevron-left fa-2x" aria-hidden="true"></i>
+    </button>
+
+    <button id="next" class='rightRs button'>
+      <i class="noTouch fa fa-chevron-right fa-2x" aria-hidden="true"></i>
+    </button>
+  </ngx-carousel>
+
 
   <!-- (carouselLoad)="carouselTileLoad($event)" -->
