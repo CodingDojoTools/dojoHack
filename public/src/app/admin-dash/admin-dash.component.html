@@ -1,1 +1,28 @@
 <app-navbar></app-navbar>
+<section class="hero is-dark is-bold">
+    <div class="hero-body">
+      <h1  class="title">Dashboard</h1>
+      <button class="button is-pulled-right is-success" [routerLink]="['/create']">Create a new hackathon</button>
+    </div>
+</section>
+<section class="section">
+
+<div class="box">
+  <table class="table table-striped is-fullwidth">
+    <thead>
+      <th>Hackathon</th>
+      <th>Winning team</th>
+      <th>Project</th>
+      <th>Deadline</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hack of hackathons">
+        <td>{{hack.hackathon}}</td>
+        <td>{{hack.team}}</td>
+        <td>{{hack.title}}</td>
+        <td>{{hack.deadline | date: 'medium' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>

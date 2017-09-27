@@ -123,6 +123,8 @@ module.exports = function(app) {
     // =============================================================
     //                       Hackathons
     // =============================================================
+
+    app.get('/hackathons/all',                 (req, res) => { hackathons.all(req, res); }),
     
     app.get('/hackathons/joined',               (req, res) => { hackathons.joined(req, res); }),
     

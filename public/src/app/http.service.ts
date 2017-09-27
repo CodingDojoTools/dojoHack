@@ -8,13 +8,19 @@ import 'rxjs';
 @Injectable()
 export class HttpService {
 
+  loggedSession = new Session();
+  session = new BehaviorSubject(this.loggedSession);
+  
+  constructor(private _http: Http) { }
+
   private extractData(res: Response){
     let body = res.json();
     return body || []; 
   }
   private handleError(error: any){
-    console.log("error in the private error handler", error)
-    let errMsg = (error._body) ? error._body : error.status ? `${error.status} - ${error.statusText}` : "Server error";
+    console.log("error in the private error handler", error.json())
+    let err = error.json();
+    let errMsg = err.errors ? err.errors : error.status ? `${error.status} - ${error.statusText}` : "Server error";
     console.error(errMsg);
     return Observable.throw({status: error.status, message: errMsg});
   }
@@ -22,6 +28,35 @@ export class HttpService {
   updateSession(session: Session){
     this.session.next(session);
     console.log("Just updated the session", this.session)
+  }
+
+  validateMembers(members){
+    console.log("in the validate members")
+    let observableBatch = [];
+    members.forEach((member) => {
+      observableBatch.push(
+        this._http.post('/teams/isValidMember', member).map(
+          res => console.log("the res", res)
+        )
+      )
+    })
+    console.log("Observable Batch", observableBatch);
+    
+    return Observable.forkJoin(observableBatch);
+  }
+
+  addMembersToTeam(members){
+    let observableBatch = [];
+    members.forEach((member) => {
+      observableBatch.push(
+        this._http.post('/teams/addmember', member).map(
+          res => console.log("the res", res)
+        )
+      )
+    })
+    console.log("Observable Batch", observableBatch);
+    
+    return Observable.forkJoin(observableBatch);
   }
 
   requestSession(){
@@ -37,10 +72,7 @@ export class HttpService {
     )
   }
   
-  loggedSession = new Session();
-  session = new BehaviorSubject(this.loggedSession);
-  
-  constructor(public _http: Http) { }
+ 
 
 
   startSession(team){

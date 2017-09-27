@@ -15,17 +15,19 @@
     <div class="column">
       <h2 class="title">Register here</h2>
       <p *ngIf="serverRegError" [@errorAnimation] class="help is-danger">{{serverRegError}}</p>
+      <p *ngIf="invalidMsg" [@errorAnimation] class="help is-danger">{{invalidMsg}}</p>
 
       <form [formGroup] = "regForm" (submit)="register()"> 
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger':((TError.minlength || TError.required)&& teamName.touched) || TError.maxlength || teamTaken }" type="text" formControlName="teamName" placeholder="Team Name" id="teamName">
+          <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger':((TError.minlength || TError.required)&& teamName.touched) || TError.maxlength || nameMsg }" type="text" formControlName="teamName" placeholder="Team Name" id="teamName">
           <span class="icon is-small is-left">
             <i class="fa fa-users"></i>
           </span>
           <span *ngIf="teamName.valid" class="icon is-small is-right">
             <i class="fa fa-check"></i>
           </span>
+          <p *ngIf="nameMsg" [@errorAnimation] class="help is-danger">{{nameMsg}}</p>
           <p *ngIf="TError.required && teamName.touched" [@errorAnimation] class="help is-danger">A team name is required</p>
           <p *ngIf="TError.minlength && teamName.touched" [@errorAnimation] class="help is-danger">Team names must consist of at least five characters</p>
           <p *ngIf="TError.maxlength" [@errorAnimation] class="help is-danger">Team names must not contain more than 32 characters</p>
@@ -37,7 +39,7 @@
           <div class="field">
               <div class="control has-icons-left has-icons-right">
                 
-                <input class="input" [ngClass]="{'is-success': password.valid, 'is-danger': pDanger }" type="password" formControlName="password" id="password" placeholder="Password">
+                <input class="input" [ngClass]="{'is-success': password.valid, 'is-danger': pDanger || pwdMsg }" type="password" formControlName="password" id="password" placeholder="Password">
                 <span class="icon is-small is-left">
                   <i class="fa fa-key"></i>
                 </span>
@@ -51,6 +53,9 @@
               <p *ngIf="pR" [@errorAnimation] class="help is-danger">Password is required</p>
       
               <p *ngIf="pLen" [@errorAnimation] class="help is-danger">Password must have at least 8 characters</p>
+
+
+              <p *ngIf="pwdMsg" [@errorAnimation] class="help is-danger">{{pwdMsg}}</p>
               
             </div>
             
@@ -92,7 +97,7 @@
           <p  *ngIf="locReq" [@errorAnimation] class="help is-danger">A location is required</p>
         </div>
       </div>
-      
+      <p *ngIf="memberValidationError" class="help is-danger">At least one of your members is not passing our validations. All members must have a first and a last name.</p>
       <!-- list of members -->
       <div formArrayName="members" class="field">
         <div>
