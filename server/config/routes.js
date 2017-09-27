@@ -17,7 +17,7 @@ var path = require('path')
 //                     Middleware routes
 // =============================================================
 // if you need a route to be checked for admin or team session,
-// add it to the coresponding array.
+// add it to the corresponding array.
 // If session is not found, {status: false} will be returned
 
 const safeForTeams = [
@@ -85,41 +85,39 @@ module.exports = function(app) {
     // =============================================================
     app.post('/login/admin',            (req, res) => { users.login(req, res); }),
     
-    // app.post('/register/admin',         (req, res) => { users.register(req, res); }),
+    app.post('/register/admin',         (req, res) => { users.registerAdmin(req, res); }),
     
     app.post('/admin/hackathons',       (req, res) => { hackathons.create(req, res); }),
 
     app.post('/admin/score/:hackId',    (req, res) => { hackathons.score(req, res); }),
-
+    
+    // =============================================================
+    //                      Users / Teams
+    // =============================================================
+   
+    app.get('/logout',                  (req, res) => { users.logout(req, res); }),
+    
+    app.get('/isLoggedIn',              (req, res) => { users.isLoggedIn(req, res); }),
+    
     // =============================================================
     //                          Teams
     // =============================================================
     
     app.post('/login',                  (req, res) => { users.login(req, res, "teams"); }),
     
-    app.post('/register',               (req, res) => { users.register(req, res, "teams"); }),
-    
-    app.get('/logout',                  (req, res) => { users.logout(req, res); }),
-    
-    app.get('/isLoggedIn',              (req, res) => { users.isLoggedIn(req, res); }),
+    app.post('/register',               (req, res) => { users.registerTeam(req, res); }),
 
+    app.get('/teams/logged',            (req, res) => { teams.get(req, res); }),
+    
     app.get('/teams/members',           (req, res) => { teams.members(req, res); }),
     
-    app.get('/teams/logged',            (req, res) => { teams.get(req, res); }),
+    app.post('/teams/update',           (req, res) => { teams.update(req, res); }),
 
     app.post('/teams/addmember',        (req, res) => { teams.addMember(req, res); }),
     
     app.post('/teams/isValidMember',    (req, res) => { teams.isValidMember(req, res); }),
 
-    app.post('/teams/update',           (req, res) => {teams.update(req, res); }),
-
     app.post('/teams/updateMembers',    (req, res) => { teams.updateMembers(req, res); }),
-
-
-    // =============================================================
-    //                          Locations
-    // =============================================================
-    app.get('/locations', (req, res) => { users.locations(req, res); }),
     
     
     // =============================================================
@@ -128,7 +126,7 @@ module.exports = function(app) {
     
     app.get('/hackathons/joined',               (req, res) => { hackathons.joined(req, res); }),
     
-    app.get('/hackathons/any/:hackId',          (req, res) => {hackathons.anyhack(req, res); }),
+    app.get('/hackathons/any/:hackId',          (req, res) => { hackathons.anyHack(req, res); }),
     
     app.get('/hackathons/joined/:hackId',       (req, res) => { hackathons.oneJoined(req, res);}),
     
@@ -148,6 +146,11 @@ module.exports = function(app) {
     
     app.get('/hackathons/:hackId/allprojects',  (req, res) => { hackathons.getAllProjects(req, res); }),
     
+
+    // =============================================================
+    //                          Locations
+    // =============================================================
+    app.get('/locations', (req, res) => { users.locations(req, res); }),
 
 
     // =============================================================
