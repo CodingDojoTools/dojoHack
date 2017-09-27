@@ -39,8 +39,7 @@ module.exports = {
     isValidMember: (req, res) => {
         let firstName = req.body.firstName;
         let lastName = req.body.lastName;
-
-        if (firstName != '' || lastName != '') res.status(200).send();
+        if (firstName != '' && lastName != '') res.status(200).send();
         else res.status(409).send();
     },
 
