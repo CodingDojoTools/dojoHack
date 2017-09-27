@@ -116,14 +116,21 @@ module.exports = {
     create: (req, res) => {
         let name = req.body['name'];
         let deadline = new Date(req.body['deadline']);
+        let theme = req.body['theme'];
+        let info = req.body['info'];
+        let errors = {};
 
-        if (deadline < new Date()) res.status(409).send('Deadline must be in the future');
+        if (name.length < 7 || name.length > 32) errors.name ='Name must be 7 to 32 characters';
+        if (deadline < new Date()) errors.deadline = 'Deadline must be in the future';
+        if (theme.length < 3 || theme.length > 32) errors.theme = 'Theme must be 3 to 32 charactesr';
+
+        if (Object.keys(errors).length) res.status(409).json({errors:errors});
         else {
             let query = `
-                INSERT INTO hackathons (name, deadline)
-                VALUES (?, ?)
+                INSERT INTO hackathons (name, deadline, theme, info)
+                VALUES (?, ?, ?, ?)
             `;
-            let data = [name, deadline];
+            let data = [name, deadline, theme, info];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
                 else res.json({'hackathonId': packet.insertId});

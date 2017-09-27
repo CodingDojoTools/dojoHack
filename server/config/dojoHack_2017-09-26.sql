@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.34)
 # Database: dojoHack
-# Generation Time: 2017-09-14 21:26:49 +0000
+# Generation Time: 2017-09-27 01:23:19 +0000
 # ************************************************************
 
 
@@ -30,6 +30,8 @@ CREATE TABLE `hackathons` (
   `name` varchar(32) NOT NULL DEFAULT '',
   `deadline` datetime NOT NULL,
   `winner` int(11) unsigned DEFAULT NULL,
+  `theme` varchar(32) NOT NULL DEFAULT '',
+  `info` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_hackathon_project` (`winner`),
   CONSTRAINT `fk_hackathon_project` FOREIGN KEY (`winner`) REFERENCES `projects` (`id`)
@@ -38,14 +40,15 @@ CREATE TABLE `hackathons` (
 LOCK TABLES `hackathons` WRITE;
 /*!40000 ALTER TABLE `hackathons` DISABLE KEYS */;
 
-INSERT INTO `hackathons` (`id`, `name`, `deadline`, `winner`)
+INSERT INTO `hackathons` (`id`, `name`, `deadline`, `winner`, `theme`, `info`)
 VALUES
-	(1,'hack1','2017-09-13 15:29:19',NULL),
-	(2,'hach2','2017-09-14 15:29:36',NULL),
-	(3,'hach3','2017-09-14 15:30:03',NULL),
-	(4,'hack4','2017-09-20 15:30:03',NULL),
-	(5,'hack5','2017-10-20 15:30:03',NULL),
-	(6,'hack6','2017-10-20 15:30:03',NULL);
+	(1,'hack1','2017-09-13 15:29:19',NULL,'',''),
+	(2,'hach2','2017-09-14 15:29:36',NULL,'',''),
+	(3,'hach3','2017-09-14 15:30:03',NULL,'',''),
+	(4,'hack4','2017-09-20 15:30:03',NULL,'',''),
+	(5,'hack5','2017-10-20 15:30:03',NULL,'',''),
+	(6,'hack6','2017-10-20 15:30:03',NULL,'',''),
+	(7,'iOS Map Hack','2017-10-20 15:30:03',NULL,'iOS','');
 
 /*!40000 ALTER TABLE `hackathons` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -101,7 +104,10 @@ LOCK TABLES `members` WRITE;
 
 INSERT INTO `members` (`id`, `firstName`, `lastName`, `team`)
 VALUES
-	(1,'Bob','Bobbers',5);
+	(1,'Bob','Bobbers',5),
+	(2,'Eli ','Byers',7),
+	(3,'Amy','Giver',7),
+	(4,'Bob','Bobbers',16);
 
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -132,7 +138,10 @@ LOCK TABLES `projects` WRITE;
 
 INSERT INTO `projects` (`id`, `title`, `gitUrl`, `vidUrl`, `description`, `teamId`, `hackathonId`)
 VALUES
-	(19,'project 1','https://github.com/eli-byers/dojoHack','https://youtube.com/asdfasdf','asdfasdf.',5,3);
+	(19,'project 1','https://github.com/eli-byers/dojoHack','https://youtube.com/asdfasdf','asdfasdf.',5,3),
+	(20,'Asdf asdf','https://github.com/asdf/asdf','https://youtu.be/asdf','asdf asdf asdf asdf asdf asdf asdf',7,5),
+	(21,'ASDasdf','https://github.com/asdf/asdf','https://youtu.be/asdf','asdf asdf asdf asdf asdf asdf asdf ',7,4),
+	(22,'asdfasdf','https://github.com/asdfasdf/asdf','https://youtu.be/asdf','asdf asdf asdf asdf asdf asdf asdf',7,4);
 
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -147,19 +156,28 @@ CREATE TABLE `scores` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uiux` int(1) NOT NULL DEFAULT '0',
   `pres` int(1) NOT NULL DEFAULT '0',
-  `idae` int(1) NOT NULL DEFAULT '0',
+  `idea` int(1) NOT NULL DEFAULT '0',
   `impl` int(1) NOT NULL DEFAULT '0',
   `extra` int(1) NOT NULL DEFAULT '0',
   `comment` text,
-  `user` int(11) unsigned NOT NULL,
-  `project` int(11) unsigned NOT NULL,
+  `userId` int(11) unsigned NOT NULL,
+  `projectId` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_score_user` (`user`),
-  KEY `fk_score_project` (`project`),
-  CONSTRAINT `fk_score_project` FOREIGN KEY (`project`) REFERENCES `projects` (`id`),
-  CONSTRAINT `fk_score_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`)
+  KEY `fk_score_user` (`userId`),
+  KEY `fk_score_project` (`projectId`),
+  CONSTRAINT `fk_score_project` FOREIGN KEY (`projectId`) REFERENCES `projects` (`id`),
+  CONSTRAINT `fk_score_user` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `scores` WRITE;
+/*!40000 ALTER TABLE `scores` DISABLE KEYS */;
+
+INSERT INTO `scores` (`id`, `uiux`, `pres`, `idea`, `impl`, `extra`, `comment`, `userId`, `projectId`)
+VALUES
+	(1,4,1,1,3,1,'Nice!',1,19);
+
+/*!40000 ALTER TABLE `scores` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table submissions
@@ -186,7 +204,9 @@ INSERT INTO `submissions` (`teamId`, `hackathonId`, `projectId`)
 VALUES
 	(5,2,NULL),
 	(6,2,NULL),
-	(5,3,19);
+	(5,4,19),
+	(7,5,20),
+	(7,4,22);
 
 /*!40000 ALTER TABLE `submissions` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -212,8 +232,12 @@ LOCK TABLES `teams` WRITE;
 
 INSERT INTO `teams` (`id`, `name`, `password`, `location`)
 VALUES
-	(5,'asdfasdf','$2a$10$5xBVhIZK.nmbJxKTA4J6meWuViLLfqOE.YAuBBhIrLmmWY9aAb0q6',1),
-	(6,'asdfasdfd','$2a$10$gBHZdXPqI3zwtWkWp3IXVuqszxF86d.XWkJOgK2u2sVyDNYyGME4C',1);
+	(5,'asdfasdff','$2a$10$5xBVhIZK.nmbJxKTA4J6meWuViLLfqOE.YAuBBhIrLmmWY9aAb0q6',1),
+	(6,'asdfasdfd','$2a$10$gBHZdXPqI3zwtWkWp3IXVuqszxF86d.XWkJOgK2u2sVyDNYyGME4C',1),
+	(7,'Bob is great','$2a$10$dGwlTB.7609Qsg244BVjZOWECZDo2eVaOnHYkweiu6zzLGrAMKh0y',1),
+	(14,'asdfasdf','$2a$10$BfAGaNcn7uGt08yYNqU.w.6K3Gq9G/Ldnhu93kHfdz/8ISjK0rUty',1),
+	(15,'qwerqwer','$2a$10$.WqxOo5mVJSA8iPE.8DxUOmkD3Y.YBUtQOT/yHKUAV0zPZ4/V4Nsu',1),
+	(16,'bobbob','$2a$10$iczoU0P/5VlQVAYfTwn63.XuHMMjnYh1KZPosjFq979Tq0xp7Wm.2',1);
 
 /*!40000 ALTER TABLE `teams` ENABLE KEYS */;
 UNLOCK TABLES;
