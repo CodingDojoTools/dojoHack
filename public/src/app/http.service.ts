@@ -101,6 +101,7 @@ export class HttpService {
   }
   
   postObs(url, data): Observable<Object>{
+    console.log("going to post to ", url, data)
     return this._http.post(url, data)
     .map(this.extractData)
     .catch(this.handleError)
