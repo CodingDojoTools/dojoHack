@@ -67,10 +67,11 @@ export class HttpService {
         const res = response.json();
         if(res.team){
           this.startTeamSession(res.team);
-          return true
+          return {"admin": false}
         }
         else {
           this.startAdminSession(res.user)
+          return {"admin": true};
         }
       },
       err => console.log("error", err)

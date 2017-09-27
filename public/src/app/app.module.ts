@@ -9,6 +9,8 @@ import { RegisterMembersComponent } from './register-members/register-members.co
 import { HttpService } from './http.service';
 import { CountdownService } from './countdown.service';
 import { AuthGuardService } from './auth-guard.service';
+import { AuthTeamGuard } from './auth-team.guard';
+import { AuthAdminGuardGuard } from './auth-admin-guard.guard';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -66,7 +68,9 @@ import { CreateHackComponent } from './create-hack/create-hack.component';
   providers: [
     HttpService,
     AuthGuardService,
-    CountdownService
+    CountdownService,
+    AuthAdminGuardGuard,
+    AuthTeamGuard
   ],
   bootstrap: [AppComponent]
 })

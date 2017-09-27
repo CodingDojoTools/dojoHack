@@ -59,14 +59,11 @@
               <p *ngIf="dateDanger" [@errorAnimation] class="help is-danger">Hackathon deadlines must be in the future</p>
             </div>
           </div>
-          {{date.errors | json}}
 <!-- Details -->
         <div class="field">
             <div class="control has-icons-left has-icons-right">
               <textarea class="textarea" type="text" formControlName="info" placeholder="Optional details about the hackathon"></textarea>
-              <span class="icon is-small is-left">
-                <i class="fa fa-users"></i>
-              </span>
+             
               
             </div>
           </div>

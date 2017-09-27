@@ -54,6 +54,11 @@ export class CreateHackComponent implements OnInit {
     })
   }
 
+  create(){
+    console.log("Creating a new hackathon");
+    
+  }
+
   get name() {
     let hackName = this.hackForm.get('name');
     let nameError = hackName.errors ? hackName.errors : {};

@@ -161,20 +161,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
     )
   }
 
-  // initMember(){
-  //   return this.fb.group({
-  //     firstName: ['', [Validators.required, Validators.minLength(3)]],
-  //     lastName: ['', [Validators.required, Validators.minLength(2)]]
-  //   })
-  // }
-
-
   initMember(){
     return this.fb.group({
-      firstName: ['', ],
-      lastName: ['', ]
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]]
     })
   }
+
+
+  // initMember(){
+  //   return this.fb.group({
+  //     firstName: ['', ],
+  //     lastName: ['', ]
+  //   })
+  // }
 
   addMember(){
     let control = <FormArray>this.regForm.controls['members'];
