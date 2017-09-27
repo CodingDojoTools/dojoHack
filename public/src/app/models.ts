@@ -25,7 +25,9 @@ export class Hackathon {
         public name: string = "",
         public deadline: Date = new Date(),
         public winner: number = 0,
-        public submitted: boolean = false
+        public submitted: boolean = false,
+        public theme: string = "",
+        public info: string = ""
     ){}
 }
 

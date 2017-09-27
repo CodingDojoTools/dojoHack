@@ -27,6 +27,7 @@ import 'hammerjs';
 import { SafePipe } from './watch/watch.component';
 import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
 import { AdminDashComponent } from './admin-dash/admin-dash.component';
+import { CreateHackComponent } from './create-hack/create-hack.component';
 
 
 
@@ -49,7 +50,8 @@ import { AdminDashComponent } from './admin-dash/admin-dash.component';
     WatchComponent,
     SafePipe,
     AdminSignInComponent,
-    AdminDashComponent
+    AdminDashComponent,
+    CreateHackComponent
     
   ],
   imports: [
