@@ -26,6 +26,7 @@ ngx-tile div {
 
 i {
     color: #06AAE2;
+    pointer-events: none;
 }
 
 #background {
@@ -59,9 +60,10 @@ i {
     padding: 10px 8px 10px 12px !important;
 }
 
-.noTouch {
-    pointer-events: none;
+.ngxcarouselPoint {
+    display: none !important;
 }
+
 
 
 /* #next {
