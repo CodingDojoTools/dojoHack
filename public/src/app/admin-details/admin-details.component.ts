@@ -101,7 +101,15 @@ export class AdminDetailsComponent implements OnInit {
 
   closeJudging(){
     if (confirm("Are you sure you want to close the judging? This will declare the winner of the hackathon!") == true) {
-      this.shutDown = true;
+      this.httpService.getObs(`/hackathons/${this.hackathonId}/closeJudging`).subscribe(
+        data => {
+          console.log("got close judging", data);
+          this.shutDown = true;
+        },
+        err => console.log("error closing", err)
+        
+      )
+     
     }
     
 

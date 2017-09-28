@@ -205,7 +205,7 @@ module.exports = {
     },
 
     getProject: (req, res) => {
-        let query = `SELECT projects.id, projects.title, projects.gitURL, projects.vidUrl,      projects.description, projects.hackathonId, teams.id AS teamId, teams.name AS teamName
+        let query = `SELECT projects.id, projects.title, projects.gitUrl, projects.vidUrl,      projects.description, projects.hackathonId, teams.id AS teamId, teams.name AS teamName
         FROM projects
         LEFT JOIN teams ON projects.teamId = teams.id
         WHERE projects.id = ?`;

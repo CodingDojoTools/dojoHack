@@ -39,3 +39,23 @@
 table td {
     vertical-align: inherit;
 }
+
+.theme {
+    -webkit-box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    border-radius: 5px; 
+    margin-bottom: 1rem;
+}
+
+.theme .column:first-child {
+    text-align: center;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    background: #97e4ff;
+    color: #3f3f3f;
+    font-weight: bold;
+}
+
+.blue {
+    background-color: #06AAE2;
+}

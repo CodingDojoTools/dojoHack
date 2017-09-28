@@ -57,6 +57,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.httpService.getObs(`/hackathons/${this.hackathonId}/submissions`).subscribe(
       body => {
         this.submissions = body['submissions'];
+        console.log("sumbjidsisons", this.submissions);
+        
         for(var i=0; i<this.submissions.length; i++){
           if(this.submissions[i].teamId == this.session.team.id){
             this.joined = true;
