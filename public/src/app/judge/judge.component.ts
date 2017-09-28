@@ -16,6 +16,7 @@ export class JudgeComponent implements OnInit {
   paramSub: Subscription;
   projects = [];
   judgeForm: FormGroup;
+  scores = [];
   
   
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute) {}
@@ -28,32 +29,42 @@ export class JudgeComponent implements OnInit {
     })
 
     this.judgeForm = this.fb.group({
-      teams: this.fb.array([])
+      scores: this.fb.array([])
     })
   }
   initTeam(project){
     return this.fb.group({
+      teamName: [project.teamName+"", []],
       projectId: [project.id+"", []],
       projectTitle: [project.title+"", []],
       ui: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       presentation: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       idea: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       implementation:  ['', [Validators.required, Validators.min(1), Validators.max(5)]],
-      extra:  ['', [Validators.required, Validators.min(0), Validators.max(5)]],
+      extra:  ['0', [Validators.required, Validators.min(0), Validators.max(5)]],
       comment:  ['', []],
     })
   }
 
   generateTeamsForm(){
-    var control = <FormArray>this.judgeForm.controls['teams'];
+    var control = <FormArray>this.judgeForm.controls['scores'];
     for(let project of this.projects){
       console.log("adding a control", project);
       
-      control.push(this.initTeam(project.id));
+      control.push(this.initTeam(project));
     }
    
   }
 
+  submitScores(){
+    console.log("sumbitting scores");
+    const model = this.judgeForm.value;
+    if(this.judgeForm.status == "VALID"){
+      console.log(model);
+      // this.httpService.postObs('/admin/score')
+    }
+    
+  }
 
   getProjects(){
     this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(

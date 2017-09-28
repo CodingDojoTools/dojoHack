@@ -8,10 +8,11 @@ import { FormGroup } from '@angular/forms';
 })
 export class TeamJudgeComponent implements OnInit {
   @Input('group')
+  
 
   public teamForm: FormGroup;
 
-  
+
   constructor() { }
 
   ngOnInit() {

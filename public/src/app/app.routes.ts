@@ -14,6 +14,7 @@ import { AdminDashComponent } from './admin-dash/admin-dash.component';
 import { CreateHackComponent } from './create-hack/create-hack.component';
 import { AdminDetailsComponent } from './admin-details/admin-details.component';
 import { JudgeComponent } from './judge/judge.component';
+import { ProjectScoresComponent } from './project-scores/project-scores.component';
 
 
 
@@ -25,6 +26,8 @@ const APP_ROUTES: Routes = [
     { path: 'create/admin', component: CreateHackComponent, canActivate: [AuthAdminGuardGuard]},
     { path: 'details/:id/admin', component: AdminDetailsComponent, canActivate: [AuthAdminGuardGuard]},
     { path: 'judge/:id/admin', component: JudgeComponent, canActivate: [AuthAdminGuardGuard]},
+    
+
 
 
 

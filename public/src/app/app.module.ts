@@ -33,6 +33,7 @@ import { CreateHackComponent } from './create-hack/create-hack.component';
 import { AdminDetailsComponent } from './admin-details/admin-details.component';
 import { JudgeComponent } from './judge/judge.component';
 import { TeamJudgeComponent } from './team-judge/team-judge.component';
+import { ProjectScoresComponent } from './project-scores/project-scores.component';
 
 
 
@@ -59,7 +60,8 @@ import { TeamJudgeComponent } from './team-judge/team-judge.component';
     CreateHackComponent,
     AdminDetailsComponent,
     JudgeComponent,
-    TeamJudgeComponent
+    TeamJudgeComponent,
+    ProjectScoresComponent
     
   ],
   imports: [

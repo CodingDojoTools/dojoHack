@@ -1,7 +1,12 @@
 <div [formGroup]="teamForm">
-  <input type="text" formControlName="project">
-  <p formControlName="projectTitle">{{projectTitle}} and {{projectTitle.value}}</p>
+  <input type="hidden" formControlName="projectId">
+ 
   <div class="field is-grouped columns">
+      <div class="column">
+          <div class="control">
+              <p><b>{{teamForm.get('teamName').value}}:</b> {{teamForm.get('projectTitle').value}}</p>
+          </div>
+        </div>
     <!-- UI -->
     <div class="column">
       <div class="control">
