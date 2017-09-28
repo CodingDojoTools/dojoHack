@@ -42,6 +42,7 @@ export class NavbarComponent implements OnInit {
     this.httpService.getObs('/logout').subscribe(
       body => {
         console.log("logout body", body)
+        this.httpService.loggedSession = new Session();
         this.httpService.updateSession(new Session());
         this._router.navigate(['/register'])
       },

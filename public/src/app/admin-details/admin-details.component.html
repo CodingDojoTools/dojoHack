@@ -1,10 +1,10 @@
 <app-navbar></app-navbar>
 <section class="hero is-dark is-bold">
-    <div class="hero-body">
-      <h1 *ngIf="hackathon" class="title">{{hackathon.name}}</h1>
+    <div class="hero-body"  *ngIf="hackathon">
+      <h1 class="title">{{hackathon.name}}</h1>
       <div class="options is-pulled-right">
 
-        <button class="button present">View presentations</button>
+        <button class="button present" [routerLink]="['/watch', hackathon.id]">View presentations</button>
         <button class="button is-success black" [routerLink]="['/judge',hackathon.id,'admin']">Judge this hackathon</button>
       </div>
     </div>

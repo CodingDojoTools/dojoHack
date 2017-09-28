@@ -32,6 +32,7 @@ import { AdminDashComponent } from './admin-dash/admin-dash.component';
 import { CreateHackComponent } from './create-hack/create-hack.component';
 import { AdminDetailsComponent } from './admin-details/admin-details.component';
 import { JudgeComponent } from './judge/judge.component';
+import { TeamJudgeComponent } from './team-judge/team-judge.component';
 
 
 
@@ -57,7 +58,8 @@ import { JudgeComponent } from './judge/judge.component';
     AdminDashComponent,
     CreateHackComponent,
     AdminDetailsComponent,
-    JudgeComponent
+    JudgeComponent,
+    TeamJudgeComponent
     
   ],
   imports: [

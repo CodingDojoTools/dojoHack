@@ -129,6 +129,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log("what's in teh service?", this.httpService.loggedSession)
 
     this.regForm = this.fb.group({
       teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],

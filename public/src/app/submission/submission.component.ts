@@ -116,7 +116,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   getProject(id) {
-    this.httpService.getObs(`hackathons/${id}/project`).subscribe(
+    this.httpService.getObs(`/projects/${id}`).subscribe(
       body => {
         this.project = body['project'][0];
         this.projForm.setValue({

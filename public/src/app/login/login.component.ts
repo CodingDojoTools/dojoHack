@@ -87,6 +87,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.httpService.postObs('/login', login).subscribe(
           data => {
+            console.log("navigating to team dashboard")
             this._router.navigate(['/dashboard'])
           },
           err => {

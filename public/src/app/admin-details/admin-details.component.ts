@@ -52,18 +52,6 @@ export class AdminDetailsComponent implements OnInit {
     )
   }
 
-  // getProjects(){
-  //   this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(
-  //     body => {
-  //       console.log("Got the body on admin details", body)
-  //       this.submissions = body["projects"]
-       
-        
-  //     },
-  //     err => {
-  //       console.log("Got the error on admin details", err)
-  //     }
-  //   )
-  // }
+ 
 
 }

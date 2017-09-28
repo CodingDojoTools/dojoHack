@@ -1,3 +1,46 @@
-<p>
-  judge works!
-</p>
+<app-navbar></app-navbar>
+<section class="hero is-dark is-bold">
+    <div class="hero-body"  *ngIf="hackathon">
+      <h1 class="title">{{hackathon.name}}</h1>
+      <!-- <div class="options is-pulled-right">
+
+        <button class="button present" [routerLink]="['/watch', hackathon.id]">View presentations</button>
+        <button class="button is-success black" [routerLink]="['/judge',hackathon.id,'admin']">Judge this hackathon</button>
+      </div> -->
+    </div>
+</section>
+
+
+<section class="section">
+    
+     <div class = "columns">
+       <div class="column">
+         
+         <p>A whole lotta text. We could include more information about the hackathon here. The theme, a description provided by whomever created the hackathon.</p>
+       </div>
+       <div class="column is-three-quarters">
+          <div class="box">
+            <form [formGroup]="judgeForm" (submit)="submitScores()">
+              
+              <div formArrayName="teams" class="field">
+                <div *ngFor="let team of judgeForm.controls.teams.controls; let i=index" class="field">
+                  <div>
+                    <span class="team"></span>
+                  </div>
+                  <div [formGroupName]="i">
+                      <app-team-judge [group]="judgeForm.controls.teams.controls[i]"></app-team-judge>
+                  </div>
+                </div>
+              </div>
+
+
+            </form>
+          
+           
+         </div>
+       </div>
+     </div>
+   
+   </section>
+
+{{projects | json}}
