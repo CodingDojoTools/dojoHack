@@ -89,7 +89,7 @@ module.exports = function(app) {
     
     app.post('/admin/hackathons',       (req, res) => { hackathons.create(req, res); }),
 
-    app.post('/admin/score/:hackId',    (req, res) => { hackathons.score(req, res); }),
+    app.post('/admin/score',            (req, res) => { hackathons.score(req, res); }),
     
     // =============================================================
     //                      Users / Teams
