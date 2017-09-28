@@ -142,6 +142,8 @@ module.exports = function(app) {
     app.get('/hackathons/:hackId/submissions',  (req, res) => { hackathons.submissions(req, res); }),
     
     app.get('/hackathons/:hackId/join',         (req, res) => { hackathons.join(req, res); }),
+
+    app.get('/hackathons/:hackId/closeJudging', (req, res) => { hackathons.closeJudging(req, res); }),
     
     app.post('/hackathons/:hackId/addproject',  (req, res) => { hackathons.addProject(req, res); })
     
