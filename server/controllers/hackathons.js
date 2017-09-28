@@ -199,8 +199,8 @@ module.exports = {
     getAllProjects: (req, res) => {
         let query = `
             SELECT 
-                tm.name as teamName, loc.name as location,
-                prj.title as projectName, prj.gitUrl, prj.vidUrl, prj.description 
+                tm.id as teamId, tm.name as teamName, loc.name as location, 
+                prj.id, prj.title, prj.gitUrl, prj.vidUrl, prj.description
             FROM submissions AS sub 
             JOIN hackathons AS hack on hack.id = sub.hackathonId
             JOIN projects AS prj on prj.id = sub.projectId
