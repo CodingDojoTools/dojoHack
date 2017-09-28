@@ -17,7 +17,7 @@
 </section>
 
 <section *ngIf="shutDown" class="section shut">
-  <p [@errorAnimation]>You just closed the judging! The winner is Bob is great!</p>
+  <p [@errorAnimation]>You just closed the judging!</p>
 </section>
 
 <section class="section">
@@ -53,7 +53,8 @@
                <th>Points</th>
              </thead>
              <tbody>
-               <tr *ngFor="let sub of submissions" [ngClass]="{'highlight':sub.teamId==winnerId}">
+               <tr *ngFor="let sub of submissions" [ngClass]="{'highlight':sub.id==winnerId}">
+
                  <td>{{sub.teamName}}</td>
                  <td *ngIf="sub.title"><a [routerLink]="['/score', sub.id, 'admin']"> {{sub.title}}</a></td>
                  <td *ngIf="!sub.title">Pending</td>

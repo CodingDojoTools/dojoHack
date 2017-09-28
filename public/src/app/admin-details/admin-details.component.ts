@@ -38,6 +38,7 @@ export class AdminDetailsComponent implements OnInit {
   readyToComplete: boolean = true;
   shutDown: boolean = false;
   submissions = [];
+  winnerId: number = 0;
 
   
 
@@ -63,7 +64,10 @@ export class AdminDetailsComponent implements OnInit {
           this.judgable = false;
           this.readyToComplete = false;
         }
-        if(this.hackathon['winner']) this.hackathonDone = true;
+        if(this.hackathon['winner']){
+          this.hackathonDone = true;
+          this.winnerId = this.hackathon['winner'];
+        }
       },
       err => console.log("Got an error fetching a hackathon", err)
     )
@@ -105,6 +109,9 @@ export class AdminDetailsComponent implements OnInit {
         data => {
           console.log("got close judging", data);
           this.shutDown = true;
+          this.winnerId = data['winnerId'];
+          this.hackathonDone = true;
+          this.judgable = false;
         },
         err => console.log("error closing", err)
         
