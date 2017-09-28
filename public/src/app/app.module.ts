@@ -31,6 +31,7 @@ import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
 import { AdminDashComponent } from './admin-dash/admin-dash.component';
 import { CreateHackComponent } from './create-hack/create-hack.component';
 import { AdminDetailsComponent } from './admin-details/admin-details.component';
+import { JudgeComponent } from './judge/judge.component';
 
 
 
@@ -55,7 +56,8 @@ import { AdminDetailsComponent } from './admin-details/admin-details.component';
     AdminSignInComponent,
     AdminDashComponent,
     CreateHackComponent,
-    AdminDetailsComponent
+    AdminDetailsComponent,
+    JudgeComponent
     
   ],
   imports: [

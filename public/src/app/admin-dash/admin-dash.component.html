@@ -17,7 +17,8 @@
     </thead>
     <tbody>
       <tr *ngFor="let hack of hackathons">
-        <td>{{hack.hackathon}}</td>
+
+        <td><a [routerLink]="['/details', hack.id, 'admin']">{{hack.hackathon}}</a></td>
         <td>{{hack.team}}</td>
         <td>{{hack.title}}</td>
         <td>{{hack.deadline | date: 'medium' }}</td>

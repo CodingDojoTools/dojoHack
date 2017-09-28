@@ -18,11 +18,11 @@ module.exports = {
 
     all: (req, res) => {
         let query = `
-            SELECT hackathons.name AS hackathon, hackathons.deadline, projects.title, teams.name AS team
+            SELECT hackathons.name AS hackathon, hackathons.id, hackathons.deadline, projects.title, teams.name AS team
             FROM hackathons
             LEFT JOIN projects ON hackathons.winner = projects.id
             LEFT JOIN teams ON projects.teamId = teams.id
-            ORDER BY hackathons.deadline;
+            ORDER BY hackathons.deadline DESC;
         `
         db.query(query, (err, data) => {
             if(err){
