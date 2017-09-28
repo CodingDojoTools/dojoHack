@@ -13,9 +13,13 @@
 
       <form [formGroup] = "regForm" (submit)="register()"> 
 
+        
+          <p *ngIf="serverRegError" [@errorAnimation] class="help is-danger">{{serverRegError}}</p>
+        
+
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input class="input" [ngClass]="{'is-success':name.valid, 'is-danger': nameDanger}"   type="text" formControlName="name" placeholder="Admin Name" id="name">
+          <input class="input" [ngClass]="{'is-success':name.valid && !nameMessage, 'is-danger': nameDanger || nameMessage}"   type="text" formControlName="name" placeholder="Admin Name" id="name">
           <span class="icon is-small is-left">
             <i class="fa fa-users"></i>
           </span>
@@ -26,7 +30,9 @@
               <i class="fa fa-warning"></i>
           </span>
     
-          <p *ngIf="nameDanger" [@errorAnimation] class="help is-danger">Usernames must consist of 5 - 32 characters</p>
+          <p *ngIf="nameDanger && !nameMessage" [@errorAnimation] class="help is-danger">Usernames must consist of 5 - 32 characters</p>
+
+          <p *ngIf="nameMessage" [@errorAnimation] class="help is-danger">{{nameMessage}}</p>
         </div>
       </div>
 
@@ -55,7 +61,7 @@
           <div class="field">
               <div class="control has-icons-left has-icons-right">
                 
-                <input class="input" [ngClass]="{'is-success': password.valid, 'is-danger': pDanger }" type="password" formControlName="password" id="password" placeholder="Password">
+                <input class="input" [ngClass]="{'is-success': password.valid && !pwMessage, 'is-danger': pDanger || pwMessage}" type="password" formControlName="password" id="password" placeholder="Password">
                 <span class="icon is-small is-left">
                   <i class="fa fa-key"></i>
                 </span>
@@ -68,6 +74,8 @@
               </div>
       
               <p *ngIf="pLen || pR" [@errorAnimation] class="help is-danger">Password must have at least 8 characters</p>
+
+              <p *ngIf="pwMessage" [@errorAnimation] class="help is-danger">{{pwMessage}}</p>
               
             </div>
             
@@ -76,7 +84,7 @@
 
                 <input *ngIf="password.invalid" disabled type="password" class="input" placeholder="Confirm Password" value="{{confirmPassword.value}}">
                  
-                <input *ngIf="password.valid" class="input" [ngClass]="{'is-success': passGroup.valid, 'is-danger': CPDanger }" type="password" formControlName="confirmPassword" placeholder="Confirm Password" >
+                <input *ngIf="password.valid" class="input" [ngClass]="{'is-success': passGroup.valid && !pwMessage, 'is-danger': CPDanger || pwMessage }" type="password" formControlName="confirmPassword" placeholder="Confirm Password" >
 
                 <span class="icon is-small is-left">
                   <i class="fa fa-key"></i>
@@ -99,13 +107,14 @@
 
       <div class="field">
         <div class="control has-icons-left has-icons-right">
-          <input class="input" [ngClass]="{'is-success':permission.valid, 'is-danger': permDanger}" type="password" formControlName="permission" placeholder="Secret key">
+          <input class="input" [ngClass]="{'is-success':permission.valid && !permissionMessage, 'is-danger': permDanger || permissionMessage}" type="password" formControlName="permission" placeholder="Secret key">
           <span class="icon is-small is-left">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
           </span>
           <span *ngIf="permDanger" class="icon is-small is-right">
               <i class="fa fa-warning"></i>
           </span>
+          <p  *ngIf="permissionMessage" [@errorAnimation] class="help is-danger">{{permissionMessage}}</p>
         </div>
       </div>
       

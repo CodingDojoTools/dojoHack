@@ -53,9 +53,11 @@ module.exports = {
                 let query = 'INSERT INTO users (name, password, location, mattermost) VALUES (?, ?, ?, ?)';
                 let userData = [user.name, hash, user.location, user.mattermost];
                 db.query(query, userData, (err, packet) => {
-                    console.log(err);
-                    setSessionRole(req, role, packet.insertId);
-                    res.json({'userId': packet.insertId});
+                    if(err) return sendServerError(err, res);
+                    else {
+                        setSessionRole(req, role, packet.insertId);
+                        res.json({'userId': packet.insertId});
+                    }
                 });
             });                
         }
@@ -87,8 +89,11 @@ module.exports = {
                 let query = 'INSERT INTO teams (name, password, location) VALUES (?, ?, ?)';
                 let userData = [user.name, hash, user.location];
                 db.query(query, userData, (err, packet) => {
-                    setSessionRole(req, "teams", packet.insertId);
-                    res.json({'userId': packet.insertId});
+                    if(err) return sendServerError(err, res);
+                    else {
+                        setSessionRole(req, "teams", packet.insertId);
+                        res.json({'userId': packet.insertId});
+                    }
                 });
             });                
         }
@@ -120,9 +125,7 @@ module.exports = {
 
             let data = [req.session.userId];
             db.query(query, data, (err, data)=> {
-                if(err){
-                    res.status(500).json({'message': "Server error"})
-                }
+                if(err) res.status(500).json({'message': "Server error"})
                 else {
                     let resData = {};
                     table = table.slice(0, -1)
@@ -144,7 +147,8 @@ module.exports = {
     locations: (req, res) => {
         let query = 'SELECT * FROM locations';
 		db.query(query, (err, locations) => {
-            res.json({'locations': locations});
+            if(err) return sendServerError(err, res);
+            else res.json({'locations': locations});
         });
     }
     

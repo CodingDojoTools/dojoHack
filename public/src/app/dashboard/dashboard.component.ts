@@ -43,6 +43,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       body => {
         this.joinedHackathons = body['hackathons'];
         for(let hack of this.joinedHackathons){
+          this.convertToLocalTime(hack.deadline);
+          
           this.count.getTimeLeft(hack);
           if(hack['secondsLeft']){
             this.timerSub.push(hack['secondsLeft'].subscribe(
@@ -98,6 +100,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     }
     this.count.updateTeamMsg = null;
+  }
+
+  convertToLocalTime(utc){
+  //   Date.prototype.addHours = function(h) {    
+  //     this.setTime(this.getTime() + (h*60*60*1000)); 
+  //     return this;   
+  //  }
+    var currentTimeZoneOffsetInHours = new Date().getTimezoneOffset() / 60;
+    var deadline = new Date(utc);
+    deadline.setTime(deadline.getTime() + (currentTimeZoneOffsetInHours*60*60*1000));
+    console.log("deadine", deadline)
+    
+    
+
+
+    // console.log("what's the utc", utc)
+    // var x = new Date(utc);
+    // var currentTimeZoneOffsetInHours = x.getTimezoneOffset() / 60;
+    
+    // // Get timezone offset for International Labour Day (May 1) in 2016
+    // // Be careful, the Date() constructor uses 0-indexed month so May is
+    // // represented with 4 (and not 5)
+    // var labourDay = new Date(2016, 4, 1)
+    // var labourDayOffset = labourDay.getTimezoneOffset() / 60;
+    // console.log("LDO", labourDayOffset)
+
+    // console.log(x + currentTimeZoneOffsetInHours)
   }
 
 }
