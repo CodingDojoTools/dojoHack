@@ -133,6 +133,28 @@ module.exports = {
             else res.json({'hackathons': hackathons});
         });
     },
+
+    closeJudging: (req, res) => {
+        let query = `
+            SELECT 
+                sub.projectId id, 
+                SUM(s.uiux + s.pres + s.idea + s.impl + s.extra) total
+            FROM submissions sub 
+            JOIN scores s ON sub.projectId = s.projectId
+            WHERE sub.hackathonId = ?
+            GROUP BY sub.projectId;
+        `;
+        db.query(query, req.params.hackId, (err, projects) => {
+            if (err) sendServerError(err, res);
+            else {
+                let max = projects[0];
+                for (let hack in projects){
+                    if (hack.total > max.total) max = hack;
+                }
+                setWinner(res, req.params.hackId, max.id);
+            }
+        });
+    },
     
     create: (req, res) => {
         let name = req.body['name'];
@@ -354,4 +376,13 @@ function scoreResponse(req, res) {
     if (req.body.scored == req.body.scores.length){
         res.status(200).json({});
     }
+}
+
+function setWinner(res, hackId, winnerId){
+    let query = 'UPDATE hackathons SET winner = ? WHERE id = ?';
+    let data = [winnerId, hackId];
+    db.query(query, data, (err, packet) => {
+        if (err) sendServerError(err, res);
+        else res.status(200).json({});
+    });
 }
