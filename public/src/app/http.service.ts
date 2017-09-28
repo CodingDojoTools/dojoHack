@@ -8,13 +8,19 @@ import 'rxjs';
 @Injectable()
 export class HttpService {
 
+  loggedSession = new Session();
+  session = new BehaviorSubject(this.loggedSession);
+  
+  constructor(private _http: Http) { }
+
   private extractData(res: Response){
     let body = res.json();
     return body || []; 
   }
   private handleError(error: any){
-    console.log("error in the private error handler", error)
-    let errMsg = (error._body) ? error._body : error.status ? `${error.status} - ${error.statusText}` : "Server error";
+    console.log("error in the private error handler", error.json())
+    let err = error.json();
+    let errMsg = err.errors ? err.errors : error.status ? `${error.status} - ${error.statusText}` : "Server error";
     console.error(errMsg);
     return Observable.throw({status: error.status, message: errMsg});
   }
@@ -24,30 +30,68 @@ export class HttpService {
     console.log("Just updated the session", this.session)
   }
 
+  validateMembers(members){
+    console.log("in the validate members")
+    let observableBatch = [];
+    members.forEach((member) => {
+      observableBatch.push(
+        this._http.post('/teams/isValidMember', member).map(
+          res => console.log("the res", res)
+        )
+      )
+    })
+    console.log("Observable Batch", observableBatch);
+    
+    return Observable.forkJoin(observableBatch);
+  }
+
+  addMembersToTeam(members){
+    let observableBatch = [];
+    members.forEach((member) => {
+      observableBatch.push(
+        this._http.post('/teams/addmember', member).map(
+          res => console.log("the res", res)
+        )
+      )
+    })
+    console.log("Observable Batch", observableBatch);
+    
+    return Observable.forkJoin(observableBatch);
+  }
+
   requestSession(){
     console.log("in the request session")
     return this._http.get('/isLoggedIn').map(
       response => {
         console.log("got a response 200", response.json())
         const res = response.json();
-        this.startSession(res.team);
-        return true
+        if(res.team){
+          this.startTeamSession(res.team);
+          return {"admin": false}
+        }
+        else {
+          this.startAdminSession(res.user)
+          return {"admin": true};
+        }
       },
       err => console.log("error", err)
     )
   }
   
-  loggedSession = new Session();
-  session = new BehaviorSubject(this.loggedSession);
-  
-  constructor(private _http: Http) { }
+ 
 
 
-  startSession(team){
+  startTeamSession(team){
     this.loggedSession.team = team;
     this.loggedSession.isLoggedIn = true;
     this.updateSession(this.loggedSession);
     
+  }
+  startAdminSession(admin){
+    console.log("someting about admin", admin)
+    this.loggedSession.isLoggedIn = true;
+    this.loggedSession.admin = admin;
+    this.updateSession(this.loggedSession);
   }
  
   getObs(url): Observable<Object>{
@@ -57,11 +101,14 @@ export class HttpService {
   }
   
   postObs(url, data): Observable<Object>{
+    console.log("going to post to ", url, data)
     return this._http.post(url, data)
     .map(this.extractData)
     .catch(this.handleError)
 
   }
+
+
 
 
   // DOWN THERE, THERE BE MONSTERS!!!
@@ -74,7 +121,7 @@ export class HttpService {
     return this._http.post('/login', team).map(
       response => {
         const res = response.json();
-        this.startSession(res.team);
+        this.startTeamSession(res.team);
         return true
       },
       err => {

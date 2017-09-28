@@ -1,0 +1,9 @@
+.hero-body h1, .hero-body button {
+    display: inline-block;
+}
+.black {
+    color: black;
+}
+a {
+    color: #06AAE2; 
+}

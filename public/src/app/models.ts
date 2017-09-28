@@ -4,10 +4,21 @@ export class Team {
         public name: string = "",
         public password: string = "",
         public confirmPassword: string = "",
-        public location: number = 0
+        public location: number = 0,
+        public permission: string = ""
     ){}
 }
-
+export class Admin {
+    constructor(
+        public id: number = 0,
+        public name: string = "",
+        public password: string = "",
+        public confirmPassword: string = "",
+        public location: number = 0,
+        public mattermost: string = "",
+        public permission: string = "",
+    ){}
+}
 
 export class Hackathon {
     constructor(
@@ -15,7 +26,9 @@ export class Hackathon {
         public name: string = "",
         public deadline: Date = new Date(),
         public winner: number = 0,
-        public submitted: boolean = false
+        public submitted: boolean = false,
+        public theme: string = "",
+        public info: string = ""
     ){}
 }
 
@@ -26,8 +39,7 @@ export class Project {
         public gitUrl: string = "",
         public vidUrl: string = "",
         public description: string = "",
-        public hackathonId: number = 0
-
+        public hackathonId: number = 0,
     ){}
 }
 
@@ -35,14 +47,7 @@ export class Session {
     constructor(
         public team: Team = null,
         public isLoggedIn: boolean = false,
-        public loggedTeam: Team = null,
-        public postedHackathons: Hackathon[] = [],
-        public pastHackathons: Hackathon[] = [],
-        public joinedHackathons: Hackathon[] = [],
-        public allHackathons = {},
-        public selectedHackathon: Hackathon = null,
-        public submissionFlashMessage: string = "",
-        public loggedMembers: Member[] = []
+        public admin: Admin = null
     ){}
 }
 

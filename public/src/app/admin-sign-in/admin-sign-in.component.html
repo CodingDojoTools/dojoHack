@@ -1,1 +1,149 @@
 <app-login></app-login>
+
+<section class="container bottom">
+  <div class="columns">
+    <div class="column logos center">
+      <img src="../assets/images/dojovdojo.png" class="dojovdojo">
+      <h1>Hackathons</h1>
+
+    </div>
+    <div class="column">
+      <h2 class="title">Admin register here</h2>
+      <p *ngIf="serverRegError" [@errorAnimation] class="help is-danger">{{serverRegError}}</p>
+
+      <form [formGroup] = "regForm" (submit)="register()"> 
+
+      <div class="field">
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" [ngClass]="{'is-success':name.valid, 'is-danger': nameDanger}"   type="text" formControlName="name" placeholder="Admin Name" id="name">
+          <span class="icon is-small is-left">
+            <i class="fa fa-users"></i>
+          </span>
+          <span *ngIf="name.valid" class="icon is-small is-right">
+            <i class="fa fa-check"></i>
+          </span>
+          <span *ngIf="nameDanger" class="icon is-small is-right">
+              <i class="fa fa-warning"></i>
+          </span>
+    
+          <p *ngIf="nameDanger" [@errorAnimation] class="help is-danger">Usernames must consist of 5 - 32 characters</p>
+        </div>
+      </div>
+
+      <div class="field">
+          <div class="control has-icons-left has-icons-right">
+              <input class="input" [ngClass]="{'is-success':mattermost.valid, 'is-danger': mmDanger}" (focus)="greyDarken()" (focusout)="greyLighten()" type="text" formControlName="mattermost" placeholder="Mattermost handle">
+              <span *ngIf="greyDark" class="icon is-small is-left">
+                <img class="mmimg" src="../assets/images/mattermost_dark.png">
+              </span>
+              <span *ngIf="!greyDark" class="icon is-small is-left">
+                  <img class="mmimg" src="../assets/images/mattermost_light.png">
+                </span>
+              <span *ngIf="mattermost.valid" class="icon is-small is-right">
+                <i class="fa fa-check"></i>
+              </span>
+              <span *ngIf="mmDanger" class="icon is-small is-right">
+                  <i class="fa fa-warning"></i>
+              </span>
+        
+              <p *ngIf="mmDanger" [@errorAnimation] class="help is-danger">Mattermost handles must consists of 5 - 32 characters</p>
+            </div>
+      </div>
+
+
+      <div class="field" formGroupName = 'passGroup'>
+          <div class="field">
+              <div class="control has-icons-left has-icons-right">
+                
+                <input class="input" [ngClass]="{'is-success': password.valid, 'is-danger': pDanger }" type="password" formControlName="password" id="password" placeholder="Password">
+                <span class="icon is-small is-left">
+                  <i class="fa fa-key"></i>
+                </span>
+                <span *ngIf="password.valid" class="icon is-small is-right">
+                  <i class="fa fa-check"></i>
+                </span>
+                <span *ngIf="pDanger" class="icon is-small is-right">
+                    <i class="fa fa-warning"></i>
+                </span>
+              </div>
+      
+              <p *ngIf="pLen || pR" [@errorAnimation] class="help is-danger">Password must have at least 8 characters</p>
+              
+            </div>
+            
+            <div class="field">
+              <div class="control has-icons-left has-icons-right" >
+
+                <input *ngIf="password.invalid" disabled type="password" class="input" placeholder="Confirm Password" value="{{confirmPassword.value}}">
+                 
+                <input *ngIf="password.valid" class="input" [ngClass]="{'is-success': passGroup.valid, 'is-danger': CPDanger }" type="password" formControlName="confirmPassword" placeholder="Confirm Password" >
+
+                <span class="icon is-small is-left">
+                  <i class="fa fa-key"></i>
+                </span>
+                <span *ngIf="passGroup.valid" class="icon is-small is-right">
+                    <i class="fa fa-check"></i>
+                </span>
+                <span *ngIf="CPDanger" class="icon is-small is-right">
+                  <i class="fa fa-warning"></i>
+                </span>
+              </div>
+              <p  *ngIf="CPDanger" [@errorAnimation] class="help is-danger">Passwords do not match</p>
+            
+      
+            </div>
+
+      </div>
+
+
+
+      <div class="field">
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" [ngClass]="{'is-success':permission.valid, 'is-danger': permDanger}" type="password" formControlName="permission" placeholder="Secret key">
+          <span class="icon is-small is-left">
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="permDanger" class="icon is-small is-right">
+              <i class="fa fa-warning"></i>
+          </span>
+        </div>
+      </div>
+      
+      <div class="field">
+        <div class="control has-icons-left">
+          <div class="select">
+            <select formControlName="location">
+                <option value="" disabled="true">Location</option>
+                <option *ngFor="let loc of locations" value="{{loc.id}}">{{loc.name}}</option>
+            </select>
+          </div>
+          <span class="icon is-small is-left">
+            <i class="fa fa-map-marker"></i>
+          </span>
+        </div>
+      </div>
+
+      
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-medium is-dark" [disabled]="!regForm.valid">Become an admin</button>
+  
+        </div>
+        
+        <div class="control">
+          <button class="button is-medium" type="button" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+      
+      </form>
+      
+      
+
+
+    </div>
+
+  </div>
+  
+
+</section>

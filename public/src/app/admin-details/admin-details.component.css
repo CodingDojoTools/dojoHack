@@ -1,0 +1,9 @@
+.hero-body h1, .hero-body .options{
+    display: inline-block;
+}
+.present {
+    background-color: white;
+}
+.black {
+    color: #393937;
+}

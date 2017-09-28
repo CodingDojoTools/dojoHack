@@ -16,6 +16,27 @@ function sendServerError(error, res){
 
 module.exports = {
 
+    all: (req, res) => {
+        let query = `
+            SELECT hackathons.name AS hackathon, hackathons.id, hackathons.deadline, projects.title, teams.name AS team
+            FROM hackathons
+            LEFT JOIN projects ON hackathons.winner = projects.id
+            LEFT JOIN teams ON projects.teamId = teams.id
+            ORDER BY hackathons.deadline DESC;
+        `
+        db.query(query, (err, data) => {
+            if(err){
+                res.status(500).json(err);
+            }
+            else if(data.length < 1){
+                res.status(404).json({error: "No hackathons found"});
+            }
+            else {
+                res.status(200).json({hackathons: data});
+            }
+        })
+    },
+
     anyHack: (req, res) => {
         let query = `
             SELECT * FROM hackathons WHERE id = ?

@@ -9,6 +9,8 @@ import { RegisterMembersComponent } from './register-members/register-members.co
 import { HttpService } from './http.service';
 import { CountdownService } from './countdown.service';
 import { AuthGuardService } from './auth-guard.service';
+import { AuthTeamGuard } from './auth-team.guard';
+import { AuthAdminGuardGuard } from './auth-admin-guard.guard';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -26,6 +28,10 @@ import { NgxCarouselModule } from 'ngx-carousel';
 import 'hammerjs';
 import { SafePipe } from './watch/watch.component';
 import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
+import { AdminDashComponent } from './admin-dash/admin-dash.component';
+import { CreateHackComponent } from './create-hack/create-hack.component';
+import { AdminDetailsComponent } from './admin-details/admin-details.component';
+import { JudgeComponent } from './judge/judge.component';
 
 
 
@@ -47,7 +53,11 @@ import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
     QuickJoinComponent,
     WatchComponent,
     SafePipe,
-    AdminSignInComponent
+    AdminSignInComponent,
+    AdminDashComponent,
+    CreateHackComponent,
+    AdminDetailsComponent,
+    JudgeComponent
     
   ],
   imports: [
@@ -62,7 +72,9 @@ import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
   providers: [
     HttpService,
     AuthGuardService,
-    CountdownService
+    CountdownService,
+    AuthAdminGuardGuard,
+    AuthTeamGuard
   ],
   bootstrap: [AppComponent]
 })

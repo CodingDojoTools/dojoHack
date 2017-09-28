@@ -45,7 +45,7 @@ module.exports = function(app) {
     })
 
     // session check for all routes but /login, /register & /
-    app.all(/^\/(?!login|register|locations|$).*$/, (req, res, next) => {
+    app.all(/^\/(?!login|register|teams\/isValidMember|locations|$).*$/, (req, res, next) => {
         if (req.session.userId) {
             console.log('user '+req.session.userId+' is logged in');
             next();
@@ -123,6 +123,8 @@ module.exports = function(app) {
     // =============================================================
     //                       Hackathons
     // =============================================================
+
+    app.get('/hackathons/all',                 (req, res) => { hackathons.all(req, res); }),
     
     app.get('/hackathons/joined',               (req, res) => { hackathons.joined(req, res); }),
     

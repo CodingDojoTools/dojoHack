@@ -1,8 +1,14 @@
-import { Component, OnInit, trigger, transition, style, animate } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Component, OnInit, OnDestroy, trigger, transition, style, animate } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { HttpService } from '../http.service';
 import { Team } from '../models';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import 'rxjs/add/observable/forkJoin'
+import 'rxjs';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 export function comparePassword(group: FormGroup){
   const pass = group.value;
@@ -33,12 +39,15 @@ export function comparePassword(group: FormGroup){
     )
   ],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
 
+  invalidMsg: string;
   locations = [];
+  memberValidationError: boolean = false;
+  nameMsg: string;
   newTeam = new Team();
   pDanger: boolean;
 
@@ -47,7 +56,9 @@ export class RegisterComponent implements OnInit {
   pMatch: boolean;
   pR: boolean;
   pValid: boolean = false;
+  pwdMsg: string;
   regForm: FormGroup;
+  regFormChanges: Subscription;
   serverRegError: string;
   teamTaken: boolean; 
 
@@ -55,8 +66,6 @@ export class RegisterComponent implements OnInit {
 
   TError: object;
 
-
- 
   register(){
 
     const model = this.regForm.value;
@@ -64,43 +73,63 @@ export class RegisterComponent implements OnInit {
       this.newTeam.name = model.teamName;
       this.newTeam.password = model.passGroup.password;
       this.newTeam.confirmPassword = model.passGroup.confirmPassword;
-      this.newTeam.location = model.location;
-      console.log(this.newTeam);
-      this.httpService.postObs('/register', this.newTeam).subscribe(
+      this.newTeam.location = model.location;      
+
+      this.httpService.validateMembers(model.members).subscribe(
         data => {
-          for(let member of model.members){
-            this.httpService.postObs('/teams/addmember', member).subscribe(
-              body => {
-                console.log("got one member body", body);
-                this._router.navigate(['/dashboard'])
-              },
-              err => console.log("Error with one member", err)
-              
-            )
-          }
-          
+          this.createTeam(model.members);
         },
         err => {
-          console.log("Got the register error", err)
-          if(err.message){
-            this.serverRegError = err.message
+          console.log("No data", err)
+          this.memberValidationError = true;
+        }
+      ); 
+    }
+  }
+
+  createTeam(members){
+    this.httpService.postObs('/register', this.newTeam).subscribe(
+      data => {
+        this.httpService.addMembersToTeam(members).subscribe(
+          info => {
+            console.log("teams and members are fine", info);
+            this._router.navigate(['/dashboard'])
+            
+          },
+          err => {
+            console.log("error when trying to add members to team", err);
           }
-          else {
-            this.serverRegError = "We could not register your team at this time."
+        )
+      },
+      err => {
+        console.log("Got the register error", err)
+        if(err.message){
+          console.log("Got a message", err.message)
+          if(err.message.name){
+            this.nameMsg = err.message.name;
           }
-          if(this.serverRegError == "This team name is already taken"){ 
-            this.teamTaken = true;
+          if(err.message.password){
+            this.pwdMsg = err.message.password;
+          }
+          if(!err.message.name && !err.message.password) {
+            this.invalidMsg = err.message;
           }
         }
-      )
-    }
+        else {
+          this.serverRegError = "We could not register your team at this time."
+        }
+      }
+    )
 
   }
+
+
   cancel(){
     this.regForm.reset();
   }
 
   ngOnInit() {
+
     this.regForm = this.fb.group({
       teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
       passGroup: this.fb.group({
@@ -113,10 +142,14 @@ export class RegisterComponent implements OnInit {
       ])
     })
     this.getLocations();
-    this.regForm.valueChanges.subscribe(
+    this.regFormChanges = this.regForm.valueChanges.subscribe(
       data => {
         this.teamTaken = false;
         this.serverRegError = null;
+        this.memberValidationError = false;
+        this.invalidMsg = null;
+        this.nameMsg = null;
+        this.pwdMsg = null;
       }
     )
   }
@@ -135,6 +168,14 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+
+  // initMember(){
+  //   return this.fb.group({
+  //     firstName: ['', ],
+  //     lastName: ['', ]
+  //   })
+  // }
+
   addMember(){
     let control = <FormArray>this.regForm.controls['members'];
     if(control.length < 5){
@@ -143,7 +184,6 @@ export class RegisterComponent implements OnInit {
   }
 
   removeMember(index){
-    
     let control = <FormArray>this.regForm.controls['members'];
     control.removeAt(index);
   }
@@ -186,5 +226,8 @@ export class RegisterComponent implements OnInit {
   get CPDanger(){
     let cp = this.confirmPassword;
     return this.passGroup.invalid && cp.touched
+  }
+  ngOnDestroy(){
+    this.regFormChanges.unsubscribe();
   }
 }
