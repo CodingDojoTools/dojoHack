@@ -26,11 +26,8 @@ const APP_ROUTES: Routes = [
     { path: 'create/admin', component: CreateHackComponent, canActivate: [AuthAdminGuardGuard]},
     { path: 'details/:id/admin', component: AdminDetailsComponent, canActivate: [AuthAdminGuardGuard]},
     { path: 'judge/:id/admin', component: JudgeComponent, canActivate: [AuthAdminGuardGuard]},
+    {path: 'score/:id/admin', component: ProjectScoresComponent, canActivate: [AuthAdminGuardGuard]},
     
-
-
-
-
 
     //**********************  TEAMS  ********************************
 

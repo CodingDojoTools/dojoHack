@@ -32,11 +32,11 @@
              <tbody>
                <tr *ngFor="let sub of submissions">
                  <td>{{sub.teamName}}</td>
-                 <td *ngIf="sub.projectTitle">{{sub.projectTitle}}</td>
-                 <td *ngIf="!sub.projectTitle">Pending</td>
-                 <td>{{sub.teamLocation}}</td>
-                 <td>4</td>
-                 <td>230</td>
+                 <td *ngIf="sub.title"><a [routerLink]="['/score', sub.id, 'admin']"> {{sub.title}}</a></td>
+                 <td *ngIf="!sub.title">Pending</td>
+                 <td>{{sub.location}}</td>
+                 <td>{{sub.judgedBy}}</td>
+                 <td>{{sub.total}}</td>
                </tr>
 
              </tbody>

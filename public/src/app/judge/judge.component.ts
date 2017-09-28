@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Subscription } from 'rxjs/Subscription';
+import { CountdownService } from '../countdown.service';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
@@ -19,7 +20,7 @@ export class JudgeComponent implements OnInit {
   scores = [];
   
   
-  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute) {}
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) {}
 
   ngOnInit() {
     this.paramSub = this._route.params.subscribe(param => {
@@ -49,8 +50,7 @@ export class JudgeComponent implements OnInit {
   generateTeamsForm(){
     var control = <FormArray>this.judgeForm.controls['scores'];
     for(let project of this.projects){
-      console.log("adding a control", project);
-      
+     
       control.push(this.initTeam(project));
     }
    
@@ -62,11 +62,24 @@ export class JudgeComponent implements OnInit {
     if(this.judgeForm.status == "VALID"){
       console.log(model);
       this.httpService.postObs('/admin/score', model).subscribe(
-        data => console.log("success scoring", data),
+        data => {
+          if(this.count.previousUrl){
+
+            this._router.navigate([this.count.previousUrl])
+          }
+          else {
+            this._router.navigate(['/details', this.hackathonId, 'admin'])
+          }
+  
+        },
         err => console.log("failure scoring", err)
       )
     }
     
+  }
+  cancel(){
+    this.judgeForm.reset();
+    this._router.navigate(['/details', this.hackathonId, 'admin'])
   }
 
   getProjects(){

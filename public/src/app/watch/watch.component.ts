@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -6,6 +6,7 @@ import { NgxCarousel } from 'ngx-carousel';
 import { Hackathon, Project, Session, Carousel} from '../models';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer} from '@angular/platform-browser';
+import { CountdownService } from '../countdown.service';
 
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
@@ -20,7 +21,7 @@ export class SafePipe implements PipeTransform {
   templateUrl: './watch.component.html',
   styleUrls: ['./watch.component.css'],
 })
-export class WatchComponent implements OnInit {
+export class WatchComponent implements OnInit, OnDestroy {
   hackathon: Hackathon;
   hackathonId: number;
   paramSub: Subscription;
@@ -31,9 +32,18 @@ export class WatchComponent implements OnInit {
   public carouselBannerItems: Array<any>;
   public carouselBanner;
 
-  constructor(private httpService: HttpService, private _route: ActivatedRoute, private _router: Router) { }
+  constructor(private httpService: HttpService, private _route: ActivatedRoute, private _router: Router, private count: CountdownService) { }
 
   ngOnInit() {
+
+    this.sessionSub = this.httpService.session.subscribe(
+      session => {
+        console.log("Receiving from behavior subject", session)
+        this.session = session;
+      },
+      err => console.log("Error with subscribing to behavior subject",err)
+    )
+
     this.paramSub = this._route.params.subscribe(param => {
       this.hackathonId = param.id;
       this.getHackathon();
@@ -66,7 +76,16 @@ export class WatchComponent implements OnInit {
       body => {
         this.hackathon = body['hackathon'];
         if(new Date(this.hackathon.deadline) > new Date()){
-          this._router.navigate(['/dashboard'])
+          if(this.count.previousUrl){
+            this._router.navigate([this.count.previousUrl]);
+          }
+          else if(this.session.admin){
+            this._router.navigate(['/dashboard', 'admin'])
+          }
+          else {
+
+            this._router.navigate(['/dashboard'])
+          }
         }
         else {
          this.hackathon = body['hackathon'];
@@ -105,18 +124,9 @@ export class WatchComponent implements OnInit {
       error => console.log("Can't seem to get submissions", error)
     )
   }
-    
-
-    // console.log("============= STOP ==============");
-    
-    // let vids = document.getElementsByClassName("video-stream")
-    // console.log(vids);
-
-
-    // Array.from(vids).forEach(vid => {
-    //   console.log(vid);
-      
-    // });
-  // }
+  ngOnDestroy(){
+    this.paramSub.unsubscribe();
+    this.sessionSub.unsubscribe();
+  }
 
 }
