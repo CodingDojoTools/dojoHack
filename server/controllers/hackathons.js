@@ -233,13 +233,18 @@ module.exports = {
 
     submissions: (req, res) => {
         let query = `
-            SELECT sub.teamId, hackathons.name as hackName, teams.name as teamName, locations.name as teamLocation, projectId, projects.title AS projectTitle 
+            SELECT sub.teamId as teamId, teams.name as teamName, 
+                locations.name as location, projects.id, projects.title,
+                SUM(s.uiux + s.pres + s.idea + s.impl + s.extra) as total,
+                COUNT(s.id) as judgedBy
             FROM submissions AS sub 
-            LEFT JOIN hackathons ON sub.hackathonId = hackathons.id
+            LEFT JOIN hackathons AS hack ON hack.id = sub.hackathonId
             LEFT JOIN teams ON sub.teamId = teams.id
             LEFT JOIN locations ON teams.location = locations.id
             LEFT JOIN projects ON sub.projectId = projects.id
-            WHERE sub.hackathonId = ? ORDER BY teamLocation;
+            LEFT JOIN scores AS s ON projects.id = s.projectId
+            WHERE sub.hackathonId = ?
+            GROUP BY teams.id;
         `;
         db.query(query, req.params.hackId, (err, submissions) => {
             if (err) sendServerError(err, res);
