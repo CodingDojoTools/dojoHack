@@ -332,6 +332,6 @@ function updateScore(req, res, data){
 function scoreResponse(req, res) {
     req.body.scored++;
     if (req.body.scored == req.body.scores.length){
-        res.status(200).send();
+        res.status(200).json({});
     }
 }
