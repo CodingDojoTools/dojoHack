@@ -183,7 +183,10 @@ module.exports = {
     },
 
     getProject: (req, res) => {
-        let query = `SELECT * FROM projects WHERE id = ?`;
+        let query = `SELECT projects.id, projects.title, projects.gitURL, projects.vidUrl,      projects.description, projects.hackathonId, teams.id AS teamId, teams.name AS teamName
+        FROM projects
+        LEFT JOIN teams ON projects.teamId = teams.id
+        WHERE projects.id = ?`;
         db.query(query, req.params.projectId, (err, project) => {
             if(err) {
                 sendServerError(err, res);

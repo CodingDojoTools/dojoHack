@@ -9,3 +9,13 @@ a {
     color: #06AAE2; 
     margin-right: 1.2rem;
 }
+.desc {
+    text-align: right;
+}
+.members {
+    font-size: 0.9rem;
+}
+#teamName {
+    margin-bottom: 1.5rem;
+    font-weight: bolder;
+}

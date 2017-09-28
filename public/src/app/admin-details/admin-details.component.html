@@ -1,23 +1,46 @@
 <app-navbar></app-navbar>
 <section class="hero is-dark is-bold">
     <div class="hero-body"  *ngIf="hackathon">
-      <h1 class="title">{{hackathon.name}}</h1>
-      <div class="options is-pulled-right">
+      <div *ngIf="hackathon" class="heroblock">
 
-        <button class="button present" [routerLink]="['/watch', hackathon.id]">View presentations</button>
-        <button class="button is-success black" [routerLink]="['/judge',hackathon.id,'admin']">Judge this hackathon</button>
+        <h1 class="title">{{hackathon.name}}</h1>
+        <h1 class="subtitle">{{hackathon.deadline | date: 'medium'}}</h1>
+      </div>
+      <div class="options is-pulled-right heroblock">
+
+        <button *ngIf="readyToComplete" class="button black blue" (click)="closeJudging()" >Close judging</button>
+        <button class="button present" [routerLink]="['/watch', hackathon.id]" [disabled]="!presentable">View presentations</button>
+        <button *ngIf="!hackathonDone" class="button is-success black" [routerLink]="['/judge',hackathon.id,'admin']" [disabled]="!judgable">Judge this hackathon</button>
+        
       </div>
     </div>
 </section>
 
+<section *ngIf="shutDown" class="section shut">
+  <p [@errorAnimation]>You just closed the judging! The winner is Bob is great!</p>
+</section>
 
 <section class="section">
     
      <div class = "columns">
+
        <div class="column">
+
+          <div class = "column theme">
+              <div class = "columns">
+                <div class="column">
+                    <p>Theme</p>
+                </div>
+                  
+                <div class="column is-three-quarters">
+                    <p *ngIf="hackathon">{{hackathon.theme}}</p>
+                </div>
+              </div>
+          </div>
          
-         <p>A whole lotta text. We could include more information about the hackathon here. The theme, a description provided by whomever created the hackathon.</p>
+         <p *ngIf="hackathon">{{hackathon.info}}</p>
        </div>
+
        <div class="column is-three-quarters">
           <div *ngIf="submissions" class="box">
           

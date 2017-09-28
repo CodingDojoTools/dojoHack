@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, trigger, transition, style, animate } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -6,15 +6,40 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-admin-details',
   templateUrl: './admin-details.component.html',
-  styleUrls: ['./admin-details.component.css']
+  styleUrls: ['./admin-details.component.css'],
+  animations: [
+    trigger(
+      'errorAnimation',
+      [
+        transition(
+          ':enter', [
+            style({height: 0, opacity: 0}),
+            animate('300ms', style({height: 18, opacity: 1}))
+          ]
+        ),
+        transition(
+          ':leave', [
+            style({height: 18, opacity: 1}),
+            animate('300ms', style({height: 0, opacity: 0})),
+          ]
+        )
+      ]
+    )
+  ],
 })
 export class AdminDetailsComponent implements OnInit {
   
   hackathon: object;
+  hackathonDone: boolean = false;
   hackathonId: number;
+  judgable: boolean = true;
   paramSub: Subscription;
-  
+  presentable: boolean = true;
+  readyToComplete: boolean = true;
+  shutDown: boolean = false;
   submissions = [];
+
+  
 
 
 
@@ -34,6 +59,11 @@ export class AdminDetailsComponent implements OnInit {
       data => {
         console.log("got the hackathon", data);
         this.hackathon = data["hackathon"];
+        if(new Date(this.hackathon['deadline']) > new Date()){
+          this.judgable = false;
+          this.readyToComplete = false;
+        }
+        if(this.hackathon['winner']) this.hackathonDone = true;
       },
       err => console.log("Got an error fetching a hackathon", err)
     )
@@ -44,12 +74,37 @@ export class AdminDetailsComponent implements OnInit {
       body => {
         console.log("Got body on admin details", body);
         this.submissions = body["submissions"];
+        let submitted = false;
+        for(let sub of this.submissions){
+          if(sub.title){
+            submitted = true;
+
+            if(sub.judgedBy == 0) this.readyToComplete = false;
+          }
+        }
+        if(!submitted) {
+          this.judgable = false;
+          this.presentable = false;
+        }
+        if (this.submissions.length == 0 || !submitted) {
+          this.readyToComplete = false;
+        }
+        
+        
       },
       err => {
         console.log("Got an error on admin details", err);
         
       }
     )
+  }
+
+  closeJudging(){
+    if (confirm("Are you sure you want to close the judging? This will declare the winner of the hackathon!") == true) {
+      this.shutDown = true;
+    }
+    
+
   }
 
  
