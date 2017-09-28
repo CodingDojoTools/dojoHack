@@ -277,14 +277,29 @@ module.exports = {
     },
 
     score: (req, res) => {
+        let scores = req.body.scores;
+        req.body.scored = 0;
+        for (let score in scores){
+            scoreOne(req, res, score);
+        }
+    },
+
+    scoreResponse: (req, res) => {
+        req.body.scored++;
+        if (req.body.scored == req.body.scores.length){
+            res.status(200).send();
+        }
+    },
+
+    scoreOne: (req, res, score) => {
         let userId = req.session.userId;
-        let projectId = req.body.projectId;
-        let uiux = req.body.uiux;
-        let pres = req.body.pres;
-        let idea = req.body.idea;
-        let impl = req.body.impl;
-        let extra = req.body.extra;
-        let comment = req.body.comment;
+        let projectId = score.projectId;
+        let uiux = score.ui;
+        let pres = score.presentation;
+        let idea = score.idea;
+        let impl = score.implementation;
+        let extra = score.extra;
+        let comment = score.comment;
     
         let query = 'SELECT id FROM scores WHERE userId = ? AND projectId = ?'
         let data = [userId, projectId];
@@ -302,7 +317,7 @@ module.exports = {
             let data = [userId, projectId, uiux, pres, idea, impl, extra, comment];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.status(200).send();
+                else scoreResponse(req, res);
             });
         }
 
@@ -314,7 +329,7 @@ module.exports = {
             let data = [uiux, pres, idea, impl, extra, comment, userId, projectId];
             db.query(query, data, (err, packet) => {
                 if (err) sendServerError(err, res);
-                else res.status(200).send();
+                else scoreResponse(req, res);
             });
         }
         
