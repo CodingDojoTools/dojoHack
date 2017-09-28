@@ -148,7 +148,7 @@ module.exports = {
             if (err) sendServerError(err, res);
             else {
                 let max = projects[0];
-                for (let hack in projects){
+                for (let hack of projects){
                     if (hack.total > max.total) max = hack;
                 }
                 setWinner(res, req.params.hackId, max.id);
@@ -383,6 +383,6 @@ function setWinner(res, hackId, winnerId){
     let data = [winnerId, hackId];
     db.query(query, data, (err, packet) => {
         if (err) sendServerError(err, res);
-        else res.status(200).json({});
+        else res.status(200).json({"winnerId": winnerId});
     });
 }
