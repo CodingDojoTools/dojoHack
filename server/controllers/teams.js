@@ -16,7 +16,8 @@ module.exports = {
             WHERE teams.id = ?
         `;
         db.query(query, req.session.userId, (err, data) => {
-            res.json({'team': data[0]});
+            if(err) sendServerError(err, res);
+            else res.json({'team': data[0]});
         })
     },
     
@@ -31,7 +32,7 @@ module.exports = {
         let query = 'INSERT INTO members (firstName, lastName, team) VALUES (?, ?, ?)';
         let data = [firstName, lastName, req.session.userId];
         db.query(query, data, (err, packet) => {
-            if(err) return res.status(500).json(err);
+            if(err) sendServerError(err, res);
             res.status(200).json({'member': packet});
         });
     },
@@ -43,22 +44,27 @@ module.exports = {
         else res.status(409).send();
     },
 
+    membersById: (req, res) => {
+        let query = 'SELECT * FROM members WHERE team = ?';
+        db.query(query, req.params.teamId, (err, members) => {
+            if(err) sendServerError(err, res);
+            else res.status(200).json({'members': members})
+        })
+    },
+
     members: (req, res) => {
         let query = 'SELECT * FROM members WHERE team = ?';
         db.query(query, req.session.userId, (err, members) => {
-            res.status(200).json({'members': members})
+            if(err) sendServerError(err, res);
+            else res.status(200).json({'members': members})
         })
     },
     update: (req, res) => {
         let query = 'UPDATE teams SET name = ?, location = ? WHERE id = ?';
         data = [req.body.teamName, req.body.location, req.session.userId];
         db.query(query, data, (err, update) => {
-            if(err){
-                res.status(500).json({'message': 'We could not update'});
-            }
-            else {
-                res.status(200).json({'update': update});
-            }
+            if(err) res.status(500).json({'message': 'We could not update'});
+            else res.status(200).json({'update': update});
         })
     },
 
@@ -72,6 +78,7 @@ module.exports = {
                 if(err) success = false;
             })
         }
+        // TODO: make async
         if(success) res.status(200).json({'update': true})
         else res.status(500).json({'update': false})
     }

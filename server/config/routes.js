@@ -112,13 +112,14 @@ module.exports = function(app) {
     app.get('/teams/members',           (req, res) => { teams.members(req, res); }),
     
     app.post('/teams/update',           (req, res) => { teams.update(req, res); }),
-
+    
     app.post('/teams/addmember',        (req, res) => { teams.addMember(req, res); }),
     
     app.post('/teams/isValidMember',    (req, res) => { teams.isValidMember(req, res); }),
-
+    
     app.post('/teams/updateMembers',    (req, res) => { teams.updateMembers(req, res); }),
     
+    app.get('/teams/:teamId/members',   (req, res) => { teams.membersById(req, res); }),
     
     // =============================================================
     //                       Hackathons
@@ -147,6 +148,8 @@ module.exports = function(app) {
     app.get('/hackathons/:hackId/allprojects',  (req, res) => { hackathons.getAllProjects(req, res); }),
     
     app.get('/projects/:projectId',             (req, res) => { hackathons.getProject(req, res);}),
+    
+    app.get('/projects/:projectId/scores',      (req, res) => { hackathons.getProjectScores(req, res);}),
 
     // =============================================================
     //                          Locations
