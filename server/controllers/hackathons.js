@@ -183,15 +183,35 @@ module.exports = {
     },
 
     getProject: (req, res) => {
-        let query = `SELECT * FROM projects WHERE id = ? AND teamID = ?`;
-        let data = [req.params.projectId, req.session.userId];
-        db.query(query, data, (err, project) => {
+        let query = `SELECT * FROM projects WHERE id = ?`;
+        db.query(query, req.params.projectId, (err, project) => {
             if(err) {
                 sendServerError(err, res);
             }
             else {
                 res.status(200).json({project: project});
             }
+        })
+
+    },
+
+    getProjectScores: (req, res) => {
+        let query = `
+            SELECT 
+                users.name as judge, locations.name as locations,
+                uiux, pres, idea, impl, extra, comment,
+                SUM(uiux + pres + idea + impl + extra) as total
+            FROM projects
+            LEFT JOIN scores on scores.projectId = projects.id
+            LEFT JOIN users on users.id = scores.userId
+            LEFT JOIN locations on users.location = locations.id
+            WHERE projects.id = 19
+            group by uiux, pres, idea, impl, extra;
+        `;
+        let data = [req.params.projectId, req.session.userId];
+        db.query(query, data, (err, scores) => {
+            if(err) sendServerError(err, res);
+            else res.status(200).json({'scores': scores});
         })
 
     },
