@@ -61,7 +61,10 @@ export class JudgeComponent implements OnInit {
     const model = this.judgeForm.value;
     if(this.judgeForm.status == "VALID"){
       console.log(model);
-      // this.httpService.postObs('/admin/score')
+      this.httpService.postObs('/admin/score', model).subscribe(
+        data => console.log("success scoring", data),
+        err => console.log("failure scoring", err)
+      )
     }
     
   }
