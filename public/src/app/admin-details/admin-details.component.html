@@ -8,7 +8,7 @@
       </div>
       <div class="options is-pulled-right heroblock">
 
-        <button *ngIf="readyToComplete" class="button black blue" (click)="closeJudging()" >Close judging</button>
+        <button *ngIf="readyToComplete && !hackathonDone" class="button black blue" (click)="closeJudging()" >Close judging</button>
         <button class="button present" [routerLink]="['/watch', hackathon.id]" [disabled]="!presentable">View presentations</button>
         <button *ngIf="!hackathonDone" class="button is-success black" [routerLink]="['/judge',hackathon.id,'admin']" [disabled]="!judgable">Judge this hackathon</button>
         
@@ -53,7 +53,7 @@
                <th>Points</th>
              </thead>
              <tbody>
-               <tr *ngFor="let sub of submissions">
+               <tr *ngFor="let sub of submissions" [ngClass]="{'highlight':sub.teamId==winnerId}">
                  <td>{{sub.teamName}}</td>
                  <td *ngIf="sub.title"><a [routerLink]="['/score', sub.id, 'admin']"> {{sub.title}}</a></td>
                  <td *ngIf="!sub.title">Pending</td>

@@ -148,7 +148,7 @@ module.exports = {
             if (err) sendServerError(err, res);
             else {
                 let max = projects[0];
-                for (let hack in projects){
+                for (let hack of projects){
                     if (hack.total > max.total) max = hack;
                 }
                 setWinner(res, req.params.hackId, max.id);

@@ -39,3 +39,7 @@ a {
     text-align: center;
     background-color: #EDC257;
 }
+
+.highlight {
+    background-color: lightgreen;
+}
