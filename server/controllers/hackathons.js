@@ -277,61 +277,61 @@ module.exports = {
     },
 
     score: (req, res) => {
-        let scores = req.body.scores;
         req.body.scored = 0;
-        for (let score in scores){
+        for (let score of req.body.scores){
             scoreOne(req, res, score);
         }
-    },
+    }
 
-    scoreResponse: (req, res) => {
-        req.body.scored++;
-        if (req.body.scored == req.body.scores.length){
-            res.status(200).send();
-        }
-    },
+}
 
-    scoreOne: (req, res, score) => {
-        let userId = req.session.userId;
-        let projectId = score.projectId;
-        let uiux = score.ui;
-        let pres = score.presentation;
-        let idea = score.idea;
-        let impl = score.implementation;
-        let extra = score.extra;
-        let comment = score.comment;
-    
-        let query = 'SELECT id FROM scores WHERE userId = ? AND projectId = ?'
-        let data = [userId, projectId];
-        db.query(query, data, (err, scores) => {
-            if (err) sendServerError(err, res);
-            else if (scores.length) updateScore()
-            else addScore()
-        });
+function scoreOne(req, res, score) {
+    console.log(score);
+    let userId = req.session.userId;
+    let projectId = score.projectId;
+    let uiux = score.ui;
+    let pres = score.presentation;
+    let idea = score.idea;
+    let impl = score.implementation;
+    let extra = score.extra;
+    let comment = score.comment;
 
-        function addScore(){
-            let query = `
-                INSERT INTO scores (userId, projectId, uiux, pres, idea, impl, extra, comment)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            `;
-            let data = [userId, projectId, uiux, pres, idea, impl, extra, comment];
-            db.query(query, data, (err, packet) => {
-                if (err) sendServerError(err, res);
-                else scoreResponse(req, res);
-            });
-        }
+    let query = 'SELECT id FROM scores WHERE userId = ? AND projectId = ?'
+    let data = [userId, projectId];
+    db.query(query, data, (err, scores) => {
+        let data = [uiux, pres, idea, impl, extra, comment, userId, projectId];   
+        if (err) sendServerError(err, res);
+        else if (scores.length) updateScore(req, res, data);
+        else addScore(req, res, data);
+    });
+}
 
-        function updateScore(){
-            let query = `
-                UPDATE scores SET uiux = ?, pres = ?, idea = ?, impl = ?, extra = ?, comment = ?
-                WHERE userId = ? AND projectId = ?
-            `;
-            let data = [uiux, pres, idea, impl, extra, comment, userId, projectId];
-            db.query(query, data, (err, packet) => {
-                if (err) sendServerError(err, res);
-                else scoreResponse(req, res);
-            });
-        }
-        
+function addScore(req, res, data){
+    let query = `
+        INSERT INTO scores (uiux, pres, idea, impl, extra, comment, userId, projectId)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    db.query(query, data, (err, packet) => {
+        if (err) sendServerError(err, res);
+        else scoreResponse(req, res);
+    });
+}
+
+function updateScore(req, res, data){
+    let query = `
+        UPDATE scores SET uiux = ?, pres = ?, idea = ?, impl = ?, extra = ?, comment = ?
+        WHERE userId = ? AND projectId = ?
+    `;
+    db.query(query, data, (err, packet) => {
+        if (err) sendServerError(err, res);
+        else scoreResponse(req, res);
+    });
+}
+
+
+function scoreResponse(req, res) {
+    req.body.scored++;
+    if (req.body.scored == req.body.scores.length){
+        res.status(200).send();
     }
 }
