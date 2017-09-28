@@ -39,8 +39,7 @@ export class Project {
         public gitUrl: string = "",
         public vidUrl: string = "",
         public description: string = "",
-        public hackathonId: number = 0
-
+        public hackathonId: number = 0,
     ){}
 }
 

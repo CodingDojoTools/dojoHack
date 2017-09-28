@@ -30,6 +30,7 @@ import { SafePipe } from './watch/watch.component';
 import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
 import { AdminDashComponent } from './admin-dash/admin-dash.component';
 import { CreateHackComponent } from './create-hack/create-hack.component';
+import { AdminDetailsComponent } from './admin-details/admin-details.component';
 
 
 
@@ -53,7 +54,8 @@ import { CreateHackComponent } from './create-hack/create-hack.component';
     SafePipe,
     AdminSignInComponent,
     AdminDashComponent,
-    CreateHackComponent
+    CreateHackComponent,
+    AdminDetailsComponent
     
   ],
   imports: [

@@ -12,6 +12,8 @@ import { AuthTeamGuard } from './auth-team.guard';
 import { AdminSignInComponent } from './admin-sign-in/admin-sign-in.component';
 import { AdminDashComponent } from './admin-dash/admin-dash.component';
 import { CreateHackComponent } from './create-hack/create-hack.component';
+import { AdminDetailsComponent } from './admin-details/admin-details.component';
+
 
 
 const APP_ROUTES: Routes = [
@@ -20,6 +22,7 @@ const APP_ROUTES: Routes = [
     { path: 'register/admin', component: AdminSignInComponent},
     { path: 'dashboard/admin', component: AdminDashComponent, canActivate: [AuthAdminGuardGuard]},
     { path: 'create/admin', component: CreateHackComponent, canActivate: [AuthAdminGuardGuard]},
+    { path: 'details/:id/admin', component: AdminDetailsComponent, canActivate: [AuthAdminGuardGuard]},
 
 
 

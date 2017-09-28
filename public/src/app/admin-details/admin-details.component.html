@@ -1,0 +1,43 @@
+<app-navbar></app-navbar>
+<section class="hero is-dark is-bold">
+    <div class="hero-body">
+      <h1 *ngIf="hackathon" class="title">{{hackathon.name}}</h1>
+    </div>
+</section>
+
+
+<section class="section">
+    
+     <div class = "columns">
+       <div class="column">
+         
+         <p>A whole lotta text. We could include more information about the hackathon here. The theme, a description provided by whomever created the hackathon.</p>
+       </div>
+       <div class="column is-three-quarters">
+          <div *ngIf="submissions" class="box">
+          
+           <table class="table is-striped is-fullwidth">
+             <thead>
+               <th>Team</th>
+               <th>Project</th>
+               <th>Location</th>      
+               <th>Judged by</th>
+               <th>Points</th>
+             </thead>
+             <tbody>
+               <tr *ngFor="let sub of submissions">
+                 <td>{{sub.teamName}}</td>
+                 <td *ngIf="sub.projectTitle">{{sub.projectTitle}}</td>
+                 <td *ngIf="!sub.projectTitle">Pending</td>
+                 <td>{{sub.teamLocation}}</td>
+                 <td>4</td>
+                 <td>230</td>
+               </tr>
+
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+   
+   </section>
