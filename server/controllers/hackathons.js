@@ -310,7 +310,8 @@ module.exports = {
             LEFT JOIN projects ON sub.projectId = projects.id
             LEFT JOIN scores AS s ON projects.id = s.projectId
             WHERE sub.hackathonId = ?
-            GROUP BY teams.id;
+            GROUP BY teams.id
+            ORDER BY total DESC;
         `;
         db.query(query, req.params.hackId, (err, submissions) => {
             if (err) sendServerError(err, res);
@@ -386,6 +387,6 @@ function setWinner(res, hackId, winnerId){
     let data = [winnerId, hackId];
     db.query(query, data, (err, packet) => {
         if (err) sendServerError(err, res);
-        else res.status(200).json({});
+        else res.status(200).json({"winnerId": winnerId});
     });
 }
