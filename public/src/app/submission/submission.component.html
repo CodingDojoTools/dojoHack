@@ -83,7 +83,7 @@
 
   <div class="field is-grouped">
     <div class="control">
-      <button class="button is-medium" [disabled]="!projForm.valid"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
+      <button class="button is-medium" [disabled]="!projForm.valid || hackOver"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
 
     </div>
     

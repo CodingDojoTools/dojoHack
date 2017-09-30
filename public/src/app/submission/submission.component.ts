@@ -14,7 +14,7 @@ export function validGitUrl(control: FormControl) {
 }
 export function validYouTubeUrl(control: FormControl) {
   const yturl = control.value;
-  const ytRegex = /https:\/\/youtu\.be\/\w+$/;
+  const ytRegex = /https:\/\/youtu\.be\/[\w\-]+$/;
   return ytRegex.test(yturl) ? null : { match: true }
 }
 
@@ -119,7 +119,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.httpService.getObs(`/projects/${id}`).subscribe(
       body => {
         this.project = body['project'][0];
-        console.log("getting project", this.project)
+       
         this.projForm.setValue({
           title: this.project.title,
           gitUrl: this.project.gitUrl,
@@ -134,11 +134,12 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   getJoinedHackathon(id) {
-    console.log("asking the service for", id);
+    
     this.httpService.getObs(`/hackathons/joined/${id}`).subscribe(
       body => {
-        console.log("Got the body from get hack", body)
+       
         this.hackathon = body['hackathon'];
+        // this.hackathon.deadline = this.count.convertToLocalTime(this.hackathon.deadline);
         this.count.getTimeLeft(this.hackathon);
         if(this.hackathon['secondsLeft']){
           this.timerSub = this.hackathon['secondsLeft'].subscribe(
@@ -178,17 +179,15 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         this.canJoin = true;
       },
       err => {
-        if (err == "404 - Not Found") {
-          // this.unfoundMessage = "This hackathon does not exist in our database";
-          // this.canJoin = false;
-          this._router.navigate(['/dashboard']);
+        console.log("Error here", err)
+        if(err.message){
+          this.unfoundMessage = err.message.over ? err.message.over : err.message.dne ? err.message.dne : null
+        
         }
-        else if (err == "409 - Conflict") {
-          this.unfoundMessage = "This hackathon is over!"
-          this.canJoin = false;;
-        }
+       
         else {
-          console.log("Some other error", err)
+          this.unfoundMessage = "Nothing to see. Let's go back to the dashboard."
+
         }
       }
     )
@@ -209,8 +208,11 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           this.count.submissionFlashMessage = "You successfully submitted your project!";
           this._router.navigate(['/details', this.hackathon.id]);
         },
-        err => console.log("handle the error on failed submission")
-        )
+        err => {
+          console.log("handle the error on failed submission")
+          
+        }
+      )
     }
   }
 

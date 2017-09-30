@@ -63,6 +63,18 @@ i {
 .ngxcarouselPoint {
     display: none !important;
 }
+.oops {
+    padding: 3rem;
+    text-align: center;
+}
+.oops h1 {
+    color: #ACA8A8;
+    
+}
+.boring {
+    background-color: #404668;
+    color: white;
+}
 
 
 

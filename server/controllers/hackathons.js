@@ -1,6 +1,6 @@
 const db = require('../config/mysql.js');
 const GIT_REGEX = /https:\/\/github\.com\/[\w\\-]+\/[\w\\-]+$/;
-const YT_REGEX = /https:\/\/youtu\.be\/\w+$/;
+const YT_REGEX = /https:\/\/youtu\.be\/[\w\-]+$/;
 
 function sendServerError(error, res){
 	console.log('[SQL error]', error);
@@ -99,16 +99,17 @@ module.exports = {
                 sendServerError(err, res);
             }
             else if(hackathon.length < 1) {
-                res.status(404).send({message: "This hackathon does not exist"})
+                res.status(404).json({errors: {"dne":"This hackathon does not exist"}})
             }
             else if(hackathon[0].deadline < new Date()){
-                res.status(409).send({message: "This hackathon is over"})
+                res.status(409).json({errors: {"over": "This hackathon is over"}})
             }
             else {
                 res.status(200).json({hackathon: hackathon[0]});
             }
         })
     },
+
     
     current: (req, res) => {
         let query = `
@@ -162,6 +163,8 @@ module.exports = {
         let theme = req.body['theme'];
         let info = req.body['info'];
         let errors = {};
+        console.log("server side deadline received", deadline)
+        console.log("server thinks now is", new Date())
 
         if (name.length < 7 || name.length > 32) errors.name ='Name must be 7 to 32 characters';
         if (deadline < new Date()) errors.deadline = 'Deadline must be in the future';
