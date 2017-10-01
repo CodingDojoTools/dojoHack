@@ -48,9 +48,12 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   canSubmit: boolean;
   descDanger: boolean;
   descLen: boolean;
+  descMsg: string;
   descReq: boolean;
+  formChanges: Subscription;
   gitDanger: boolean;
   gitMatch: boolean;
+  gitMsg: string;
   gitReq: boolean;
   hackathon: Hackathon;
   hackathonId: number;
@@ -68,12 +71,14 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   timerSub: Subscription;
   titleDanger: boolean;
   titleLen: boolean;
+  titleMsg: string;
   titleReq: boolean;
   unfoundMessage: string;
   update: boolean;
   vidDanger: boolean;
   vidMatch: boolean;
   vidReq: boolean;
+  ytMsg: string;
 
   constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) {
 
@@ -87,6 +92,23 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       vidUrl: ['https://youtu.be/', [Validators.required, validYouTubeUrl]],
       description: ['', [Validators.required, Validators.minLength(30)]]
     })
+
+
+    // this.projForm = this.fb.group({
+    //   title: ['', []],
+    //   gitUrl: ['https://github.com/', []],
+    //   vidUrl: ['https://youtu.be/', []],
+    //   description: ['', []]
+    // })
+
+    this.formChanges = this.projForm.valueChanges.subscribe(
+      data => {
+        this.titleMsg = null;
+        this.gitMsg = null;
+        this.ytMsg = null;
+        this.descMsg = null;
+      }
+    )
 
     this.allSubs = Observable.combineLatest(
       [this.httpService.session, this._route.params.take(1)]).subscribe(
@@ -209,8 +231,13 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           this._router.navigate(['/details', this.hackathon.id]);
         },
         err => {
-          console.log("handle the error on failed submission")
-          
+          console.log("handle the error on failed submission", err)
+          if(err.message){
+            if(err.message.title) this.titleMsg = err.message.title;
+            if(err.message.git) this.gitMsg = err.message.git;
+            if(err.message.yt) this.ytMsg = err.message.yt;
+            if(err.message.desc) this.descMsg = err.message.desc;
+          }
         }
       )
     }
@@ -264,6 +291,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
       this.timerSub.unsubscribe();
     }
+    this.formChanges.unsubscribe();
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { CountdownService } from '../countdown.service';
 import { HttpService } from '../http.service';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   formSubs: Subscription;
   location;
   locations = [];
@@ -48,6 +48,11 @@ export class ProfileComponent implements OnInit {
       err => console.log("Got form subs error", err)
     )
     
+  }
+
+  ngOnDestroy(){
+    this.formSubs.unsubscribe();
+    this.sessionSub.unsubscribe();
   }
 
   generateMembersForm(){

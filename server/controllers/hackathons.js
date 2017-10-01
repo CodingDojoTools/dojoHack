@@ -277,7 +277,8 @@ module.exports = {
 
         if (title.length < 5 || title.length > 32) errors.title = "Title must be from 5 to 32 characters";
         if (!GIT_REGEX.test(gitUrl)) errors.git = "Git url invalid";
-        if (!YT_REGEX.test(vidUrl)) errors.git = "YouTube url invalid";
+        if (!YT_REGEX.test(vidUrl)) errors.yt = "YouTube url invalid";
+        if(description.length < 30) errors.desc = "Description must contain at least 30 characters";
 
         if (Object.keys(errors).length == 0){
             let query = "INSERT INTO projects (title, gitUrl, vidUrl, description, teamId, hackathonId) VALUES (?, ?, ?, ?, ?, ?)";
