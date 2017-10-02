@@ -99,7 +99,6 @@ module.exports = function(app) {
     
     app.get('/isLoggedIn',              (req, res) => { users.isLoggedIn(req, res); }),
 
-    app.get('/changepw', (req, res) => {users. updatePw(req, res);}),
     
     // =============================================================
     //                          Teams

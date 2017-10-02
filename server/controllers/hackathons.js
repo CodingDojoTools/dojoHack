@@ -128,7 +128,10 @@ module.exports = {
     },
     
     past: (req, res) => {
-        let query = 'SELECT * FROM hackathons WHERE deadline < NOW()';
+        let query = `SELECT hackathons.id, hackathons.name, hackathons.winner, hackathons.theme, hackathons.info, projects.title AS title
+        FROM hackathons
+        LEFT JOIN projects ON hackathons.winner = projects.id
+        WHERE deadline < NOW();`;
         db.query(query, (err, hackathons) => {
             if (err) sendServerError(err, res);
             else res.json({'hackathons': hackathons});
