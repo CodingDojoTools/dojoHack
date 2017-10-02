@@ -112,7 +112,7 @@ export class WatchComponent implements OnInit, OnDestroy {
         }
         for(let project of this.projects){
           project['safeurl'] = project.vidUrl.replace("youtu.be", "www.youtube.com/embed")+"?rel=0&enablejsapi=1";
-          // console.log("scrubbed youtube url", project['safeurl']);
+          console.log("project", project)
         }
       
       },
