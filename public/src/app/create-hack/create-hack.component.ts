@@ -57,19 +57,19 @@ export class CreateHackComponent implements OnInit {
   }
 
   create(){
-    console.log("Creating a new hackathon");
+    
     const model = this.hackForm.value;
-    console.log("model status", this.hackForm.status)
+   
     if(this.hackForm.status == "VALID"){
       this.newHack.name = model.name;
       this.newHack.deadline = new Date(model.date);
 
       this.newHack.theme = model.theme;
       this.newHack.info = model.info;
-      console.log("this.newHack", this.newHack);
+   
       this.httpService.postObs('/admin/hackathons', this.newHack).subscribe(
         data => {
-          console.log("Got data from posting hack", data)
+         
           this._router.navigate(['/dashboard', 'admin'])
         },
         err => console.log("Got error while making new hack", err)

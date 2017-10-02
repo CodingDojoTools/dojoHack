@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       session => {
         this.session = session;
       },
-      err => console.log("Error geting session", err)
+      err => console.log(err)
     )
     
     this.proForm = this.fb.group({
@@ -59,7 +59,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     
     
     var control = <FormArray>this.proForm.controls['members'];
-    console.log("control", control)
+   
     while(control.controls.length > 0){
       control.controls.pop();
     }
@@ -97,7 +97,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         
         this.generateMembersForm();
       },
-      err => console.log("getting err from trying to fetch members", err)
+      err => console.log(err)
     )
   }
 
@@ -127,22 +127,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
               this._router.navigate(['/dashboard'])
             },
             err => {
-              console.log("Error from updating members", err);
+              console.log(err);
               
             }
           )
         },
-        err => console.log("Got error from update", err)
+        err => console.log(err)
         
         
       )
-      
-      console.log("valid", model);
+    
     }
-    else {
-      console.log("Not valid", model);
-      
-    }
+    
   }
 
 }

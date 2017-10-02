@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.createTeam(model.members);
         },
         err => {
-          console.log("No data", err)
+        
           this.memberValidationError = true;
         }
       ); 
@@ -92,19 +92,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
       data => {
         this.httpService.addMembersToTeam(members).subscribe(
           info => {
-            console.log("teams and members are fine", info);
+           
             this._router.navigate(['/dashboard'])
             
           },
           err => {
-            console.log("error when trying to add members to team", err);
+            console.log(err);
           }
         )
       },
       err => {
-        console.log("Got the register error", err)
+       
         if(err.message){
-          console.log("Got a message", err.message)
+       
           if(err.message.name){
             this.nameMsg = err.message.name;
           }
@@ -129,7 +129,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("what's in teh service?", this.httpService.loggedSession)
+   
 
     this.regForm = this.fb.group({
       teamName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(32)]],
@@ -158,7 +158,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   getLocations(){
     this.httpService.getObs('/locations').subscribe(
       body => this.locations = body['locations'],
-      err => console.log("locations error", err)
+      err => console.log(err)
     )
   }
 
@@ -169,13 +169,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     })
   }
 
-
-  // initMember(){
-  //   return this.fb.group({
-  //     firstName: ['', ],
-  //     lastName: ['', ]
-  //   })
-  // }
 
   addMember(){
     let control = <FormArray>this.regForm.controls['members'];

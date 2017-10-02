@@ -18,29 +18,29 @@ export class HttpService {
     return body || []; 
   }
   private handleError(error: any){
-    console.log("error in the private error handler", error.json())
+   
     let err = error.json();
     let errMsg = err.errors ? err.errors : error.status ? `${error.status} - ${error.statusText}` : "Server error";
-    console.error(errMsg);
+ 
     return Observable.throw({status: error.status, message: errMsg});
   }
 
   updateSession(session: Session){
     this.session.next(session);
-    console.log("Just updated the session", this.session)
+   
   }
 
   validateMembers(members){
-    console.log("in the validate members")
+  
     let observableBatch = [];
     members.forEach((member) => {
       observableBatch.push(
         this._http.post('/teams/isValidMember', member).map(
-          res => console.log("the res", res)
+          res => console.log(res)
         )
       )
     })
-    console.log("Observable Batch", observableBatch);
+    
     
     return Observable.forkJoin(observableBatch);
   }
@@ -50,20 +50,20 @@ export class HttpService {
     members.forEach((member) => {
       observableBatch.push(
         this._http.post('/teams/addmember', member).map(
-          res => console.log("the res", res)
+          res => console.log(res)
         )
       )
     })
-    console.log("Observable Batch", observableBatch);
+  
     
     return Observable.forkJoin(observableBatch);
   }
 
   requestSession(){
-    console.log("in the request session")
+  
     return this._http.get('/isLoggedIn').map(
       response => {
-        console.log("got a response 200", response.json())
+       
         const res = response.json();
         if(res.team){
           this.startTeamSession(res.team);
@@ -74,7 +74,7 @@ export class HttpService {
           return {"admin": true};
         }
       },
-      err => console.log("error", err)
+      err => console.log(err)
     )
   }
   
@@ -88,7 +88,7 @@ export class HttpService {
     
   }
   startAdminSession(admin){
-    console.log("someting about admin", admin)
+  
     this.loggedSession.isLoggedIn = true;
     this.loggedSession.admin = admin;
     this.updateSession(this.loggedSession);
@@ -101,7 +101,7 @@ export class HttpService {
   }
   
   postObs(url, data): Observable<Object>{
-    console.log("going to post to ", url, data)
+    
     return this._http.post(url, data)
     .map(this.extractData)
     .catch(this.handleError)
@@ -117,7 +117,7 @@ export class HttpService {
   
 
   loginTeam(team){
-    console.log("in the service about to login a team", team)
+   
     return this._http.post('/login', team).map(
       response => {
         const res = response.json();
@@ -125,7 +125,7 @@ export class HttpService {
         return true
       },
       err => {
-        console.log(err.status)
+        
         return err
       }
     )

@@ -57,10 +57,10 @@ export class JudgeComponent implements OnInit {
   }
 
   submitScores(){
-    console.log("sumbitting scores");
+   
     const model = this.judgeForm.value;
     if(this.judgeForm.status == "VALID"){
-      console.log(model);
+      
       this.httpService.postObs('/admin/score', model).subscribe(
         data => {
           if(this.count.previousUrl){
@@ -85,7 +85,7 @@ export class JudgeComponent implements OnInit {
   getProjects(){
     this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(
       body => {
-        console.log("Got the body on admin details", body)
+        
         this.projects = body["projects"]
         this.generateTeamsForm();
       },
@@ -98,7 +98,7 @@ export class JudgeComponent implements OnInit {
   getHackathon(){
     this.httpService.getObs(`/hackathons/any/${this.hackathonId}`).subscribe(
       data => {
-        console.log("got the hackathon", data);
+       
         this.hackathon = data["hackathon"];
       },
       err => console.log("Got an error fetching a hackathon", err)

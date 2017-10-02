@@ -22,7 +22,7 @@ export class JoinedComponent implements OnInit, OnDestroy {
   }
 
   submitEntry(hackId){
-    console.log("Submitting for hack", hackId)
+   
     this._router.navigate(['entry', hackId])
   }
 

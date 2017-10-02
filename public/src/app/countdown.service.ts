@@ -16,7 +16,7 @@ export class CountdownService {
     this._router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(e => {
-        console.log('prev:', this.previousUrl);
+       
         this.previousUrl = this.currentUrl;
         this.currentUrl = e['url'];
       });
@@ -29,7 +29,7 @@ export class CountdownService {
     const due = new Date(hackathon.deadline).getTime();
     const now = new Date().getTime();
     const left = Math.trunc((due - now) / 1000);
-    console.log("left", left);
+  
     if (left <= 0) {
       hackathon['over'] = true;
     }

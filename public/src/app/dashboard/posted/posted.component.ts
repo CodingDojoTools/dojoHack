@@ -25,7 +25,7 @@ export class PostedComponent implements OnInit, OnDestroy {
     
     this.httpService.getObs(`/hackathons/${hack.id}/join`).subscribe(
       body => {
-        console.log("We joined!", body);
+       
         this.markAsJoined.emit(hack)
       },
       err => console.log("We have an error trying to join a hackathon!", err)
