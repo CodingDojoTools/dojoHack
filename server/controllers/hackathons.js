@@ -314,7 +314,7 @@ module.exports = {
             LEFT JOIN projects ON sub.projectId = projects.id
             LEFT JOIN scores AS s ON projects.id = s.projectId
             WHERE sub.hackathonId = ?
-            GROUP BY sub.teamId
+            GROUP BY sub.teamId, projects.id, projects.title
             ORDER BY total DESC;
         `;
         db.query(query, req.params.hackId, (err, submissions) => {
