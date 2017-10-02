@@ -41,7 +41,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         
         this.session = session;
       },
-      err => console.log("Error with subscribing to behavior subject",err)
+      err => console.log(err)
     )
   }
   ngOnDestroy(){
@@ -68,7 +68,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           }
         }
       },
-      error => console.log("Can't seem to get submissions", error)
+      error => console.log(error)
     )
   }
 
@@ -88,7 +88,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 this.hackOver = false;
               }
             },
-            err => console.log("getting error from timeleft", err)
+            err => console.log(err)
           )}
         else {
           this.hackOver = true;
