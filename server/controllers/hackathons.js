@@ -234,7 +234,7 @@ module.exports = {
             LEFT JOIN users on users.id = scores.userId
             LEFT JOIN locations on users.location = locations.id
             WHERE projects.id = 19
-            group by uiux, pres, idea, impl, extra, users.name;
+            group by uiux, pres, idea, impl, extra, users.name, locations.name;
         `;
         let data = [req.params.projectId, req.session.userId];
         db.query(query, data, (err, scores) => {
