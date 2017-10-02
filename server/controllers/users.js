@@ -63,6 +63,19 @@ module.exports = {
         }
     },
 
+    updatePw(req, res){
+        bcrypt.hash("3loverats", saltRounds, (err, hash) => {
+            let query = "UPDATE teams SET password = ?WHERE id = 1";
+            let data = [hash];
+            db.query(query, data, (err, team)=>{
+                if(err) return sendServerError(err, res);
+                else {
+                    res.json({'team': team});
+                }
+            })
+        })
+    },
+
     registerTeam: (req, res) => {
         let errors = {};
         let name = req.body['name'];
