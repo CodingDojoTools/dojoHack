@@ -18,7 +18,8 @@ export class PastComponent implements OnInit, OnDestroy {
     
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
   ngOnDestroy(){
     // this.sessionSub.unsubscribe();
   }
