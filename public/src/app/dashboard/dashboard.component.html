@@ -1,12 +1,15 @@
 <app-navbar></app-navbar>
+<div id="dash">
 
-<section *ngIf="updateTeamMsg" class="container section">
+<section *ngIf="updateTeamMsg" class="container section ">
         <p class="subtitle is-success">{{updateTeamMsg}}</p>
 </section>
 <section class="container">
 <app-joined [joinedHackathons]="joinedHackathons"></app-joined>
 <app-posted [postedHackathons]="postedHackathons" (markAsJoined)="moveToJoined($event)"></app-posted>
+
 <app-past [pastHackathons]="pastHackathons"></app-past>
 
     
 </section>
+</div>

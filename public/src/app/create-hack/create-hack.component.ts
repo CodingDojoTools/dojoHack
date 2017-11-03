@@ -3,6 +3,7 @@ import { Validators, FormGroup, FormArray, FormBuilder, FormControl } from '@ang
 import { HttpService } from '../http.service';
 import { Router } from '@angular/router';
 import { Hackathon } from '../models';
+import { CountdownService } from '../countdown.service';
 
 
 export function deadlineFuture(control: FormControl){
@@ -36,7 +37,7 @@ export function deadlineFuture(control: FormControl){
 })
 export class CreateHackComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router) { }
+  constructor(private fb: FormBuilder, private httpService: HttpService, private _router: Router, private count: CountdownService) { }
 
   dateDanger: boolean;
   dateFuture: boolean;
@@ -61,7 +62,8 @@ export class CreateHackComponent implements OnInit {
     console.log("model status", this.hackForm.status)
     if(this.hackForm.status == "VALID"){
       this.newHack.name = model.name;
-      this.newHack.deadline = model.date;
+      this.newHack.deadline = new Date(model.date);
+
       this.newHack.theme = model.theme;
       this.newHack.info = model.info;
       console.log("this.newHack", this.newHack);

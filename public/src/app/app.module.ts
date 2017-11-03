@@ -37,6 +37,7 @@ import { ProjectScoresComponent } from './project-scores/project-scores.componen
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,7 +72,8 @@ import { ProjectScoresComponent } from './project-scores/project-scores.componen
     HttpModule,
     routing,
     BrowserAnimationsModule,
-    NgxCarouselModule
+    NgxCarouselModule,
+    
   ],
   providers: [
     HttpService,

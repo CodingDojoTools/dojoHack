@@ -24,6 +24,7 @@ export class SafePipe implements PipeTransform {
 export class WatchComponent implements OnInit, OnDestroy {
   hackathon: Hackathon;
   hackathonId: number;
+  noneMessage: string;
   paramSub: Subscription;
   session: Session;
   sessionSub: Subscription;
@@ -106,23 +107,23 @@ export class WatchComponent implements OnInit, OnDestroy {
       body => {
         this.projects = body['projects'];
         // console.log(this.projects.length, "Project to watch");
-        
+        if(this.projects.length < 1){
+          this.noneMessage = "Oops, no one submitted to this hackathon!"
+        }
         for(let project of this.projects){
           project['safeurl'] = project.vidUrl.replace("youtu.be", "www.youtube.com/embed")+"?rel=0&enablejsapi=1";
           // console.log("scrubbed youtube url", project['safeurl']);
         }
-        // for(var i=0; i<this.submissions.length; i++){
-        //   if(this.submissions[i].teamId == this.session.team.id){
-        //     this.joined = true;
-        //     let temp = this.submissions[i];
-        //     this.submissions[i] = this.submissions[0];
-        //     this.submissions[0] = temp;
-        //     break;
-        //   }
-        // }
+      
       },
       error => console.log("Can't seem to get submissions", error)
     )
+  }
+
+  goback(){
+    if(this.count.previousUrl) this._router.navigate([this.count.previousUrl]);
+    else if(this.session.admin) this._router.navigate(['/dashboard', 'admin']);
+    else this._router.navigate(['/dashboard'])
   }
   ngOnDestroy(){
     this.paramSub.unsubscribe();

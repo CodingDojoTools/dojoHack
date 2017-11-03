@@ -5,6 +5,7 @@ import { Admin } from '../models';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
+
 export function comparePassword(group: FormGroup) {
   const pass = group.value;
   return (pass.password === pass.confirmPassword) ? null : { invalid: true }

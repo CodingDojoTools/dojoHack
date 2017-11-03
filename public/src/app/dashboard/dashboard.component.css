@@ -19,3 +19,9 @@ table {
     margin: 0 auto;
     width: 75%;
 }
+.topdash {
+    margin-top: 300px;
+}
+#dash {
+    margin-top: 3rem;
+}

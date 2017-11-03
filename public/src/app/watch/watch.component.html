@@ -1,8 +1,9 @@
 <app-navbar></app-navbar>
+<div id="watch">
   
   <div id="background"></div>
 
-  <ngx-carousel
+  <ngx-carousel *ngIf="!noneMessage"
   [inputs]="carouselBanner" 
   [inputsLength]="carouselBannerItems.length">
   
@@ -38,6 +39,14 @@
 
     <button id="next" class='rightRs button'><i class="fa fa-chevron-right fa-2x" aria-hidden="true"></i></button>
   </ngx-carousel>
+
+  <section *ngIf="noneMessage" class="oops">
+    <h1 class="title">{{noneMessage}}</h1>
+    <button class="button boring" (click)="goback()">Let's go, nothing to see here.</button>
+
+  </section>
+</div>
+
 
 
   <!-- (carouselLoad)="carouselTileLoad($event)" -->

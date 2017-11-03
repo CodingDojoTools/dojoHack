@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+<div id="submission">
 
 
 <section class="hero is-dark is-bold">
@@ -36,13 +37,14 @@
 <form [formGroup]="projForm" (submit)='hackEntry()'>
   <div class="field">
     <div class="control has-icons-left has-icons-right">
-      <input class="input" [ngClass]="{'is-success':title.valid, 'is-danger': titleDanger}" type="text"  formControlName="title" placeholder="Project title" id="title">
+      <input class="input" [ngClass]="{'is-success':title.valid, 'is-danger': titleDanger || titleMsg}" type="text"  formControlName="title" placeholder="Project title" id="title">
       <span class="icon is-small is-left">
         <i class="fa fa-cubes"></i>
       </span>
       <span *ngIf="title.valid" class="icon is-small is-right">
         <i class="fa fa-check"></i>
       </span>
+      <p *ngIf="titleMsg" [@errorAnimation] class="help is-danger">{{titleMsg}}</p>
       <p *ngIf="titleReq" [@errorAnimation] class="help is-danger">A project title is required</p>
       <p *ngIf="titleLen" [@errorAnimation] class="help is-danger">Project titles must consist of 5 - 50 characters</p>
     </div>
@@ -50,40 +52,43 @@
 
   <div class="field">
     <div class="control has-icons-left has-icons-right">
-      <input class="input" [ngClass]="{'is-success':gitUrl.valid, 'is-danger': gitDanger}" type="text" formControlName="gitUrl" placeholder="Github url" value="https://github.com/">
+      <input class="input" [ngClass]="{'is-success':gitUrl.valid, 'is-danger': gitDanger || gitMsg }" type="text" formControlName="gitUrl" placeholder="Github url" value="https://github.com/">
       <span class="icon is-small is-left">
         <i class="fa fa-github"></i>
       </span>
       <span *ngIf="gitUrl.valid" class="icon is-small is-right">
         <i class="fa fa-check"></i>
       </span>
+      <p *ngIf="gitMsg"  [@errorAnimation] class="help is-danger">{{gitMsg}}</p>
       <p *ngIf="gitMatch" [@errorAnimation] class="help is-danger">A valid Github url is required</p>
     </div>
   </div>
 
   <div class="field">
     <div class="control has-icons-left has-icons-right">
-      <input class="input" [ngClass]="{'is-success':vidUrl.valid, 'is-danger':vidDanger}" type="text" formControlName="vidUrl"  placeholder="Video url" value="https://youtu.be/">
+      <input class="input" [ngClass]="{'is-success':vidUrl.valid, 'is-danger':vidDanger || ytMsg}" type="text" formControlName="vidUrl"  placeholder="Video url" value="https://youtu.be/">
       <span class="icon is-small is-left">
         <i class="fa fa-youtube"></i>
       </span>
       <span *ngIf="vidUrl.valid" class="icon is-small is-right">
         <i class="fa fa-check"></i>
       </span>
+      <p *ngIf="ytMsg" [@errorAnimation] class="help is-danger">{{ytMsg}}</p>
       <p *ngIf="vidMatch" [@errorAnimation] class="help is-danger">A valid YouTube url is required</p>    
     </div>
   </div>
 
   <div class="field">
     <div class="control">
-      <textarea class="textarea" [ngClass]="{'is-success': description.valid, 'is-danger':descDanger}" formControlName="description" placeholder="Description"></textarea>
+      <textarea class="textarea" [ngClass]="{'is-success': description.valid, 'is-danger':descDanger || descMsg}" formControlName="description" placeholder="Description"></textarea>
+      <p *ngIf="descMsg" [@errorAnimation] class="help is-danger">{{descMsg}}</p> 
       <p *ngIf="descLen" [@errorAnimation] class="help is-danger">A description of at least 30 characters is required</p> 
     </div>
   </div>
 
   <div class="field is-grouped">
     <div class="control">
-      <button class="button is-medium" [disabled]="!projForm.valid"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
+      <button class="button is-medium" [disabled]="!projForm.valid || hackOver"><span *ngIf="update">Update project</span><span *ngIf="!update">Submit project</span></button>
 
     </div>
     
@@ -97,3 +102,4 @@
 </form>
 
 </section>
+</div>
