@@ -113,7 +113,7 @@ module.exports = {
     
     current: (req, res) => {
         let query = `
-            SELECT h.id, h.name, h.deadline FROM hackathons AS h 
+            SELECT h.id, h.name, h.deadline, h.theme FROM hackathons AS h 
             LEFT JOIN submissions AS s 
             ON (h.id = s.hackathonId and s.teamId = ?)
             WHERE deadline > NOW()
