@@ -58,7 +58,7 @@ export class AdminDetailsComponent implements OnInit {
   getHackathon(){
     this.httpService.getObs(`/hackathons/any/${this.hackathonId}`).subscribe(
       data => {
-        console.log("got the hackathon", data);
+        
         this.hackathon = data["hackathon"];
         if(new Date(this.hackathon['deadline']) > new Date()){
           this.judgable = false;
@@ -76,7 +76,7 @@ export class AdminDetailsComponent implements OnInit {
   getSubmissions(){
     this.httpService.getObs(`/hackathons/${this.hackathonId}/submissions`).subscribe(
       body => {
-        console.log("Got body on admin details", body);
+       
         this.submissions = body["submissions"];
         let submitted = false;
         for(let sub of this.submissions){
@@ -107,7 +107,7 @@ export class AdminDetailsComponent implements OnInit {
     if (confirm("Are you sure you want to close the judging? This will declare the winner of the hackathon!") == true) {
       this.httpService.getObs(`/hackathons/${this.hackathonId}/closeJudging`).subscribe(
         data => {
-          console.log("got close judging", data);
+         
           this.shutDown = true;
           this.winnerId = data['winnerId'];
           this.hackathonDone = true;

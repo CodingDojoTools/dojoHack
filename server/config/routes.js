@@ -98,6 +98,7 @@ module.exports = function(app) {
     app.get('/logout',                  (req, res) => { users.logout(req, res); }),
     
     app.get('/isLoggedIn',              (req, res) => { users.isLoggedIn(req, res); }),
+
     
     // =============================================================
     //                          Teams

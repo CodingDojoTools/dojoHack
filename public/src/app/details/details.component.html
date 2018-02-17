@@ -66,7 +66,7 @@
               <!-- someone else's project -->
               <td *ngIf="sub.title && sub.teamId!=session.team.id">{{sub.title}}</td>
               <!-- logged team's project -->
-              <td *ngIf="sub.title && sub.teamId==session.team.id"><button [routerLink]="['/hackathon', 'update', sub.projectId]" class="button updateBtn">{{sub.title}}</button></td>
+              <td *ngIf="sub.title && sub.teamId==session.team.id"><button [routerLink]="['/hackathon', 'update', sub.id]" class="button updateBtn">{{sub.title}}</button></td>
               <!-- waiting for someone else -->
               <td *ngIf="!sub.title && sub.teamId!=session.team.id && (hackathon.timeLeft && hackathon.timeLeft != 0)" class="pending">Pending</td>
               <!-- submit button for logged team -->

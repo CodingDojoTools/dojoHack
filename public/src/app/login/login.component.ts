@@ -69,11 +69,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       if(this.admin){
         this.httpService.postObs('/login/admin', login).subscribe(
           data => {
-            console.log("Loggin in admin", data)
+           
             this._router.navigate(['/dashboard', 'admin'])
           },
           err => {
-            console.log("logging in admin error", err)
+           
             if(err.status == 409){
               this.loginError = true;
             }
@@ -87,11 +87,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.httpService.postObs('/login', login).subscribe(
           data => {
-            console.log("navigating to team dashboard")
+           
             this._router.navigate(['/dashboard'])
           },
           err => {
-            console.log("error", err);
+           
             if(err.status == 409){
               this.loginError = true;
             }

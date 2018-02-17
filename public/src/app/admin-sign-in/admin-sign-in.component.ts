@@ -105,14 +105,14 @@ export class AdminSignInComponent implements OnInit {
       this.newAdmin.location = model.location;
       this.newAdmin.mattermost = model.mattermost;
       this.newAdmin.permission = model.permission;
-      console.log(this.newAdmin);
+      
       this.httpService.postObs('/register/admin', this.newAdmin).subscribe(
         data => {
-          console.log("got data from registering admin", data);
+          
           this._router.navigate(['/dashboard/admin'])
         },
         err => {
-          console.log("Error registering admin", err)
+        
           let knownError = false;
           if (err.message.name) {
             this.nameMessage = err.message.name;
@@ -227,36 +227,6 @@ export class AdminSignInComponent implements OnInit {
 
 }
 
-  // cancel(){
-  //   this.regForm.reset();
-  // }
 
 
-
-
-  // get teamName() {
-  //   let newTeam = this.regForm.get('teamName');
-  //   this.TError = newTeam.errors ? newTeam.errors : {};
-  //   return newTeam;
-  // }
-
-  //
-
-  // get locReq(){
-  //   let loc = this.regForm.get('location');
-  //   let control = <FormArray>this.regForm.controls['members'];
-  //   let locError = loc.errors ? loc.errors : {};
-  //   if(locError["required"] && control["dirty"]){
-  //     return true;
-  //   }
-  //   return false;
-  // }
-  // get confirmPassword(){
-  //   return this.passGroup.get('confirmPassword');
-  // }
-
-  // get CPDanger(){
-  //   let cp = this.confirmPassword;
-  //   return this.passGroup.invalid && cp.touched
-  // }
 

@@ -14,13 +14,13 @@ export class QuickJoinComponent implements OnInit {
   ngOnInit() {
   }
   joinHackathon(){
-    console.log("We'll join this hackathon", this.hackathonId)
+   
     this.httpService.getObs(`/hackathons/${this.hackathonId}/join`).subscribe(
       body => {
-        console.log("We joined!", body);
+        
         this.markAsJoined.emit(this.hackathonId);
       },
-      err => console.log("We have an error while joining the hackathon", err)
+      err => console.log(err)
     )
   }
 

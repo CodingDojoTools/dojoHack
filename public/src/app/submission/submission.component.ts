@@ -131,7 +131,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           }
         }
       },
-      err => console.log("Seems to be an error with forkjoin", err)
+      err => console.log(err)
     )
 
    
@@ -151,7 +151,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         });
         this.getJoinedHackathon(this.project.hackathonId);
       },
-      error => console.log("Can get a hackathon", error)
+      error => console.log(error)
     )
   }
 
@@ -161,12 +161,12 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       body => {
        
         this.hackathon = body['hackathon'];
-        // this.hackathon.deadline = this.count.convertToLocalTime(this.hackathon.deadline);
+      
         this.count.getTimeLeft(this.hackathon);
         if(this.hackathon['secondsLeft']){
           this.timerSub = this.hackathon['secondsLeft'].subscribe(
             data => {
-              console.log("getting stuff from timeleft", data)
+            
               if(data < 1){
                 this.hackOver = true;
               }
@@ -182,7 +182,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         this.notJoinedMessage = null;
       },
       err => {
-        console.log("Got an error fetching one hackathon", err);
+        console.log(err);
 
         this.getUnjoinedHackathon(id);
         this.canSubmit = false;
@@ -192,16 +192,16 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   getUnjoinedHackathon(id) {
-    console.log("Going to find this hackathon that we haven't joined yet");
+   
     this.httpService.getObs(`/hackathons/${this.hackathonId}`).subscribe(
       body => {
-        console.log("Got the body from get unjoined", body)
+        
         this.notJoinedMessage = "You haven't joined this hackathon yet!";
         this.hackathon = body['hackathon'];
         this.canJoin = true;
       },
       err => {
-        console.log("Error here", err)
+       
         if(err.message){
           this.unfoundMessage = err.message.over ? err.message.over : err.message.dne ? err.message.dne : null
         
@@ -231,7 +231,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           this._router.navigate(['/details', this.hackathon.id]);
         },
         err => {
-          console.log("handle the error on failed submission", err)
+          
           if(err.message){
             if(err.message.title) this.titleMsg = err.message.title;
             if(err.message.git) this.gitMsg = err.message.git;
@@ -285,7 +285,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.paramSub.unsubscribe();
+   
     this.allSubs.unsubscribe();
     if(this.timerSub){
 

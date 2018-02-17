@@ -38,10 +38,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     this.sessionSub = this.httpService.session.subscribe(
       session => {
-        console.log("Receiving from behavior subject", session)
+        
         this.session = session;
       },
-      err => console.log("Error with subscribing to behavior subject",err)
+      err => console.log(err)
     )
   }
   ngOnDestroy(){
@@ -57,7 +57,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.httpService.getObs(`/hackathons/${this.hackathonId}/submissions`).subscribe(
       body => {
         this.submissions = body['submissions'];
-        console.log("sumbjidsisons", this.submissions);
         
         for(var i=0; i<this.submissions.length; i++){
           if(this.submissions[i].teamId == this.session.team.id){
@@ -69,14 +68,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
           }
         }
       },
-      error => console.log("Can't seem to get submissions", error)
+      error => console.log(error)
     )
   }
 
   getHackathon(){
     this.httpService.getObs(`hackathons/any/${this.hackathonId}`).subscribe(
       body => {
-        console.log("getting hackathon for details page", body)
+        
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
         if(this.hackathon['secondsLeft']){
@@ -89,7 +88,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
                 this.hackOver = false;
               }
             },
-            err => console.log("getting error from timeleft", err)
+            err => console.log(err)
           )}
         else {
           this.hackOver = true;
@@ -97,7 +96,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       },
       error => {
         this._router.navigate(['/dashboard']); 
-        console.log("Can't get a hackathon", error)
+        
       }
     )
   }

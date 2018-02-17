@@ -29,16 +29,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.updateTeamMsg = this.count.updateTeamMsg;
     this.sessionSub = this.httpService.session.subscribe(
       session => {
-        console.log("Receiving from behavior subject", session)
+        
         this.session = session;
         this.getJoined();
         this.getPosted();
         this.getPast();
       },
-      err => console.log("Error with subscribing to behavior subject",err)
+      err => console.log(err)
     )
-    let now = moment().format('LLLL');
-    console.log("Moment's now", now)
+   
+   
     
   }
   getJoined(){
@@ -46,8 +46,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       body => {
         this.joinedHackathons = body['hackathons'];
         for(let hack of this.joinedHackathons){
-          // hack.deadline = this.count.convertToLocalTime(hack.deadline);
-          
+         
           this.count.getTimeLeft(hack);
           if(hack['secondsLeft']){
             this.timerSub.push(hack['secondsLeft'].subscribe(
@@ -63,7 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
               },
               err => {
-                console.log("Error with subscribing to timer");
+                console.log(err);
               }
             ))
           }
@@ -71,25 +70,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
         
       },
-      err => console.log("Could not get joined Hackathons")
+      err => console.log(err)
     )
   }
   getPosted(){
     this.httpService.getObs('/hackathons/current').subscribe(
       body => {
         this.postedHackathons = body['hackathons'];
-        // for(let hack of this.postedHackathons){
-          // hack.deadline = this.count.convertToLocalTime(hack.deadline);
-        // }
+       
       },
-      err => console.log("Could not get posted Hackathons")
+      err => console.log(err)
     )
   }
 
   getPast(){
     this.httpService.getObs('/hackathons/past').subscribe(
       body => this.pastHackathons = body['hackathons'],
-      err => console.log("Could not get past hackathons")
+      err => console.log(err)
     )
   }
 

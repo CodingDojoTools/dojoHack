@@ -39,17 +39,17 @@ export class WatchComponent implements OnInit, OnDestroy {
 
     this.sessionSub = this.httpService.session.subscribe(
       session => {
-        console.log("Receiving from behavior subject", session)
+       
         this.session = session;
       },
-      err => console.log("Error with subscribing to behavior subject",err)
+      err => console.log(err)
     )
 
     this.paramSub = this._route.params.subscribe(param => {
       this.hackathonId = param.id;
       this.getHackathon();
       
-      // this.getSubmissions();
+     
     })
     
 
@@ -96,7 +96,7 @@ export class WatchComponent implements OnInit, OnDestroy {
         
       },
       error => {
-        console.log("Can't get a hackathon", error)
+        console.log(error)
       }
     )
   }
@@ -106,17 +106,17 @@ export class WatchComponent implements OnInit, OnDestroy {
     this.httpService.getObs(`/hackathons/${this.hackathonId}/allprojects`).subscribe(
       body => {
         this.projects = body['projects'];
-        // console.log(this.projects.length, "Project to watch");
+     
         if(this.projects.length < 1){
           this.noneMessage = "Oops, no one submitted to this hackathon!"
         }
         for(let project of this.projects){
           project['safeurl'] = project.vidUrl.replace("youtu.be", "www.youtube.com/embed")+"?rel=0&enablejsapi=1";
-          // console.log("scrubbed youtube url", project['safeurl']);
+         
         }
       
       },
-      error => console.log("Can't seem to get submissions", error)
+      error => console.log(error)
     )
   }
 

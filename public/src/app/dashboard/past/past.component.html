@@ -13,9 +13,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let hack of pastHackathons">
+          
             <td>{{hack.name}}</td>
-            <td>iOS</td>
-            <td>{{hack.winner}}</td>
+            <td>{{hack.theme}}</td>
+            <td>{{hack.title}}</td>
             <td><button class="button is-dark" [routerLink]="['/watch', hack.id]"> Watch</button></td>
           </tr>
         </tbody>

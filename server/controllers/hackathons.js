@@ -113,7 +113,7 @@ module.exports = {
     
     current: (req, res) => {
         let query = `
-            SELECT h.id, h.name, h.deadline FROM hackathons AS h 
+            SELECT h.id, h.name, h.deadline, h.theme FROM hackathons AS h 
             LEFT JOIN submissions AS s 
             ON (h.id = s.hackathonId and s.teamId = ?)
             WHERE deadline > NOW()
@@ -128,7 +128,10 @@ module.exports = {
     },
     
     past: (req, res) => {
-        let query = 'SELECT * FROM hackathons WHERE deadline < NOW()';
+        let query = `SELECT hackathons.id, hackathons.name, hackathons.winner, hackathons.theme, hackathons.info, projects.title AS title
+        FROM hackathons
+        LEFT JOIN projects ON hackathons.winner = projects.id
+        WHERE deadline < NOW();`;
         db.query(query, (err, hackathons) => {
             if (err) sendServerError(err, res);
             else res.json({'hackathons': hackathons});
@@ -233,8 +236,8 @@ module.exports = {
             LEFT JOIN scores on scores.projectId = projects.id
             LEFT JOIN users on users.id = scores.userId
             LEFT JOIN locations on users.location = locations.id
-            WHERE projects.id = 19
-            group by uiux, pres, idea, impl, extra;
+            WHERE projects.id = ?
+            group by uiux, pres, idea, impl, extra, comment, users.name, locations.name;
         `;
         let data = [req.params.projectId, req.session.userId];
         db.query(query, data, (err, scores) => {
@@ -314,7 +317,7 @@ module.exports = {
             LEFT JOIN projects ON sub.projectId = projects.id
             LEFT JOIN scores AS s ON projects.id = s.projectId
             WHERE sub.hackathonId = ?
-            GROUP BY teams.id
+            GROUP BY sub.teamId, projects.id, projects.title
             ORDER BY total DESC;
         `;
         db.query(query, req.params.hackId, (err, submissions) => {

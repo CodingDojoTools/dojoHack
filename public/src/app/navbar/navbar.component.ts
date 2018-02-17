@@ -22,11 +22,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.sessionSub = this.httpService.session.subscribe(
       session => {
-        console.log("Receiving from behavior subject", session)
+        
         this.session = session;
         if(this.session.isLoggedIn == false){
           this.httpService.requestSession().subscribe(
-            success => console.log("request session success", this.session),
+            success => console.log("session success"),
             err =>console.log("request session error", err)
           )
         }
@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
     
     this.httpService.getObs('/logout').subscribe(
       body => {
-        console.log("logout body", body)
+        
         this.httpService.loggedSession = new Session();
         this.httpService.updateSession(new Session());
         this._router.navigate(['/register'])

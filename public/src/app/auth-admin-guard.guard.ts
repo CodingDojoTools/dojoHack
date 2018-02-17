@@ -17,13 +17,13 @@ export class AuthAdminGuardGuard implements CanActivate {
   }
 
   checkLogin(url: string): boolean {
-    console.log("checking in admin auth guard");
+  
     if(this.httpService.loggedSession.admin){
       return true;
     }
     this.httpService.requestSession().subscribe(
       success => {
-        console.log("Success in admin auth guard", success);
+       
         if(success.admin == true){
           this.router.navigate([url]);
           return true;
@@ -33,7 +33,7 @@ export class AuthAdminGuardGuard implements CanActivate {
         
       },
       err => {
-        console.log("Failure in the admin auth guard");
+        
         this.router.navigate(['/register'])
         return false;
         

@@ -34,7 +34,7 @@ export class ProjectScoresComponent implements OnInit {
         this.getMembers();
         this.getScores();
       },
-      err => console.log("got an error fetching one project", err)
+      err => console.log(err)
     )
   }
 
@@ -44,7 +44,7 @@ export class ProjectScoresComponent implements OnInit {
         this.hackathon = data['hackathon']
       },
       err => {
-        console.log("got an error fetching hackathon", err);
+        console.log(err);
       }
     )
   }
@@ -56,7 +56,7 @@ export class ProjectScoresComponent implements OnInit {
         this.members = data["members"];
       },
       err => {
-        console.log("got an error with members", err)
+        console.log(err)
       }
     )
   }
@@ -67,7 +67,7 @@ export class ProjectScoresComponent implements OnInit {
         
         this.scores = data["scores"];
       },
-      err => console.log("got an error getting scores", err)
+      err => console.log(err)
     )
   }
 

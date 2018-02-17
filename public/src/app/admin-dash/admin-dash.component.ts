@@ -23,7 +23,7 @@ export class AdminDashComponent implements OnInit {
   getHackathons(){
     this.httpService.getObs('/hackathons/all').subscribe(
       data => {
-        console.log("got all hackathons", data)
+       
         this.hackathons = data['hackathons']
       },
       err => console.log("Got an error trying to get hackathons", err)

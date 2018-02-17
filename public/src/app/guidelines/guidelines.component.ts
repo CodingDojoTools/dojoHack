@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../http.service';
+
 @Component({
   selector: 'app-guidelines',
   templateUrl: './guidelines.component.html',
@@ -7,13 +7,8 @@ import { HttpService } from '../http.service';
 })
 export class GuidelinesComponent implements OnInit {
 
-  constructor(private httpService: HttpService) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.httpService.getObs('/locations').subscribe(
-      body => console.log("got locations, GUIDELINES", body),
-      err => console.log("Got errors on locations, GUIDELINES")
-    )
-  }
+  ngOnInit() {}
 
 }

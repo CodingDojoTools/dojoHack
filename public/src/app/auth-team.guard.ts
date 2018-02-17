@@ -19,7 +19,7 @@ export class AuthTeamGuard implements CanActivate {
     }
     this.httpService.requestSession().subscribe(
       success => {
-        console.log("Success in the team guard", success);
+      
         if(success.admin == true){
           this.router.navigate(['/register', 'admin']);
           return false;
@@ -30,7 +30,7 @@ export class AuthTeamGuard implements CanActivate {
         }
       },
       err => {
-        console.log("Failure in the team auth guard");
+       
         this.router.navigate(['/register'])
         return false;
       }
