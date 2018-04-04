@@ -68,7 +68,8 @@ VALUES
 	(6,'DC'),
 	(7,'Tulsa'),
 	(8,'Berkeley'),
-	(9,'OC');
+	(9,'OC'),
+  (10, 'Online');
 
 /*!40000 ALTER TABLE `locations` ENABLE KEYS */;
 UNLOCK TABLES;

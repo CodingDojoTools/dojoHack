@@ -1,14 +1,12 @@
 <app-navbar></app-navbar>
 <div id="watch">
-  
+
   <div id="background">
 
-  <ngx-carousel *ngIf="!noneMessage"
-  [inputs]="carouselBanner" 
-  [inputsLength]="carouselBannerItems.length">
-  
+    <ngx-carousel *ngIf="!noneMessage" [inputs]="carouselBanner">
+
       <ngx-item class="bannerStyle" *ngFor="let project of projects; let i=index">
-        
+
         <div id="vidBox">
           <iframe width="100%" id="ytVid{{i}}" color="white" [src]="project.safeurl | safe" frameborder="0" allowfullscreen></iframe>
         </div>
@@ -19,9 +17,13 @@
             <div class="column ">
 
               <div class="column">
-                
-                <h1  class="title">{{hackathon.name}}: {{project.location}}</h1>
-                <h1 class="subtitle">By {{project.teamName}}   <a [href]="project.gitUrl"> <i class="fa fa-github git" aria-hidden="true"></i></a></h1>
+
+                <h1 class="title">{{hackathon.name}}: {{project.location}}</h1>
+                <h1 class="subtitle">By {{project.teamName}}
+                  <a [href]="project.gitUrl">
+                    <i class="fa fa-github git" aria-hidden="true"></i>
+                  </a>
+                </h1>
               </div>
             </div>
 
@@ -35,19 +37,23 @@
 
       </ngx-item>
 
-    <button id="prev" class='leftRs button'><i class="fa fa-chevron-left fa-2x" aria-hidden="true"></i></button>
+      <button id="prev" class='leftRs button'>
+        <i class="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
+      </button>
 
-    <button id="next" class='rightRs button'><i class="fa fa-chevron-right fa-2x" aria-hidden="true"></i></button>
-  </ngx-carousel>
+      <button id="next" class='rightRs button'>
+        <i class="fa fa-chevron-right fa-2x" aria-hidden="true"></i>
+      </button>
+    </ngx-carousel>
 
-  <section *ngIf="noneMessage" class="oops">
-    <h1 class="title">{{noneMessage}}</h1>
-    <button class="button boring" (click)="goback()">Let's go, nothing to see here.</button>
+    <section *ngIf="noneMessage" class="oops">
+      <h1 class="title">{{noneMessage}}</h1>
+      <button class="button boring" (click)="goback()">Let's go, nothing to see here.</button>
 
-  </section>
+    </section>
   </div>
 </div>
 
 
 
-  <!-- (carouselLoad)="carouselTileLoad($event)" -->
+<!-- (carouselLoad)="carouselTileLoad($event)" -->

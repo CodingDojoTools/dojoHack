@@ -1,38 +1,38 @@
 require('dotenv').config();
 
-var express = require('express');
-var app = express();
+const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const flash = require('express-flash');
+const express = require('express');
+const logger = require('morgan');
+const path = require('path');
 
-var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json());
+const app = express();
+const port = process.env.PORT || 8000;
 
-var path = require('path');
-// app.use(express.static(path.join(__dirname)+"/static"));
-app.use(express.static(__dirname + '/public/dist'));
+app
+  .use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  )
+  .use(bodyParser.json())
+  .use(express.static(path.resolve('public/dist')))
+  .use(cookieParser())
+  .use(
+    cookieSession({
+      name: 'session',
+      keys: [process.env.SESSIONKEY],
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    })
+  )
+  .use(logger('dev'))
+  .use(flash())
 
-// *** flash *** //
-var flash = require('express-flash');
-var cookieParser = require('cookie-parser')
-app.use(cookieParser())
-var cookieSession = require('cookie-session')
-app.use(cookieSession({
-	name: 'session',
-	keys: [process.env.SESSIONKEY],	
-	maxAge: 24 * 60 * 60 * 1000 // 24 hours 
-}));
-app.use(flash());
+  // *** routes *** /
+  .use(require('./server/routes'));
 
-
-// *** routes *** /
-var routes = require('./server/config/routes.js')(app);
-
-var port = 8000;
-var server = app.listen(port, () => {
-	console.log('[HackDojo] listening at: localhost:'+port);
-});
-
-
-
+const server = app.listen(port, () =>
+  console.log(`[HackDojo] listening at: localhost: ${port}`)
+);
