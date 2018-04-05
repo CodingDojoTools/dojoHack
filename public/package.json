@@ -28,7 +28,7 @@
     "moment-timezone": "^0.5.13",
     "ngx-carousel": "^1.1.2",
     "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.25"
   },
   "devDependencies": {
     "@angular/cli": "1.0.2",
