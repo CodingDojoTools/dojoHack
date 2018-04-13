@@ -25,7 +25,7 @@ function setSessionRole(req, role, userId) {
 }
 
 module.exports = {
-  registerAdmin: (req, res, role = 'users') => {
+  registerAdmin: (req, res, next, role = 'users') => {
     const {
       name,
       password,
@@ -48,7 +48,11 @@ module.exports = {
     if (Object.keys(errors).length) {
       return res.status(409).json({ errors });
     }
-    const query = 'SELECT id FROM ' + role + ' WHERE name = ?';
+
+    console.log("role",role);
+    
+    const query = `SELECT id FROM ${role} WHERE name = ?`;
+    console.log("The query", query);
     db.query(query, req.body.name, (err, users) => {
       if (err) return sendServerError(err, res);
       if (users.length > 0) errors.name = name + ' is already taken';
@@ -57,6 +61,7 @@ module.exports = {
     });
 
     function createUser(user) {
+      console.log("the user", user)
       bcrypt.hash(user.password, ROUNDS, (err, hash) => {
         const query =
           'INSERT INTO users (name, password, location, mattermost) VALUES (?, ?, ?, ?)';
@@ -111,7 +116,7 @@ module.exports = {
     }
   },
 
-  login: (req, res, role = 'users') => {
+  login: (req, res, next, role = 'users') => {
     let query = 'SELECT * FROM ' + role + ' WHERE name = ?';
     db.query(query, req.body.name, (err, users) => {
       if (err) return sendServerError(err, res);
