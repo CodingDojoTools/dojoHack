@@ -3,10 +3,10 @@
 
 <section class="hero is-dark is-bold">
   <div class="hero-body">
-    <div *ngIf="hackathon" class="container hackTop">
-      <h1 class="title">{{hackathon.name}}</h1>
+    <div *ngIf="hackathon as hack" class="container hackTop">
+      <h1 class="title">{{hack.name}}</h1>
       <h1 *ngIf="!hackOver && joined" class="realbig is-pulled-right timer">
-        {{hackathon.timeLeft | async}}
+        {{hack.timeLeft | async}}
       </h1>
       <h1 *ngIf="hackOver" class="realbig is-pulled-right timer">
         Done!
@@ -21,8 +21,6 @@
 
   </div>
 </section>
-
-
 <app-quick-join [hackathonId]="hackathonId" (markAsJoined)="getSubmissions()" *ngIf="!hackOver && !joined"></app-quick-join>
 
 <section [ngClass]="{'section': (joined || hackOver), 'sidePad': (!joined && !hackOver)}">
@@ -49,7 +47,7 @@
         <p class="subtitle is-success">{{submissionMessage}}</p>
       </div>
 
-      <div *ngIf="submissions" class="box">
+      <div *ngIf="hackathon && submissions" class="box">
 
         <table class="table is-striped is-fullwidth">
           <thead>
