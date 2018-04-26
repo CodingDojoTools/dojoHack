@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   hackathon: Hackathon;
   hackathonId: number;
   hackOver: boolean;
-  joined: boolean;
+  joined: boolean = false;
   paramSub: Subscription;
   session: Session;
   sessionSub: Subscription;
@@ -75,7 +75,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   getHackathon(){
     this.httpService.getObs(`hackathons/any/${this.hackathonId}`).subscribe(
       body => {
-        
         this.hackathon = body['hackathon'];
         this.count.getTimeLeft(this.hackathon);
         if(this.hackathon['secondsLeft']){

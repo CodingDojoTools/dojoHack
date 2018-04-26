@@ -25,7 +25,6 @@ export class CountdownService {
 
 
   getTimeLeft(hackathon) {
-
     const due = new Date(hackathon.deadline).getTime();
     const now = new Date().getTime();
     const left = Math.trunc((due - now) / 1000);
@@ -34,18 +33,17 @@ export class CountdownService {
       hackathon['over'] = true;
     }
     else {
-      hackathon["timeLeft"] = this.countdown(left);
-      hackathon["secondsLeft"] = this.countdownInt(left);
+      hackathon["timeLeft"] = this.countdown(due);
+      hackathon["secondsLeft"] = this.countdownInt(due);
     }
   }
 
-  countdownInt(deadline) {
-
+  countdownInt(due) {
     return Observable.timer(0, 1000)
-      .take(deadline)
+      .take(due)
       .map(() => {
-        deadline--;
-        return deadline;
+        const now = new Date().getTime();
+        return Math.trunc((due - now) / 1000);
       })
   }
 
@@ -55,11 +53,12 @@ export class CountdownService {
     return pad + num;
   }
 
-  countdown(deadline) {
+  countdown(due) {
     return Observable.timer(0, 1000)
-      .take(deadline)
+      .take(due)
       .map(() => {
-        deadline--;
+        const now = new Date().getTime();
+        var calcdeadline = Math.trunc((due - now) / 1000);
         // 60 seconds in a minute
         // 60 minutes in an hour, 3600 seconds in an hour
         // 24 hours in a day, 1440 minutes in a day, 86400 seconds in a day
@@ -70,7 +69,6 @@ export class CountdownService {
         var hours = 0;
         var minutes = 0;
         var seconds = 0;
-        var calcdeadline = deadline;
 
         weeks = Math.floor(calcdeadline / 604800);
         calcdeadline %= 604800;
