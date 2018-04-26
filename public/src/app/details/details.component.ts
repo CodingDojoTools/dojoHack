@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from '../http.service';
@@ -27,7 +26,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   timerSub: Subscription;
 
 
-  constructor(private _ngZone: NgZone, private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) { }
+  constructor(private httpService: HttpService, private _router: Router, private _route: ActivatedRoute, private count: CountdownService) { }
 
   ngOnInit() {
     this.paramSub = this._route.params.subscribe(param => {
@@ -61,8 +60,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         
         for(var i=0; i<this.submissions.length; i++){
           if(this.submissions[i].teamId == this.session.team.id){
-	    this._ngZone.run(() => this.joined = true)
-            //this.joined = true;
+            this.joined = true;
             let temp = this.submissions[i];
             this.submissions[i] = this.submissions[0];
             this.submissions[0] = temp;
