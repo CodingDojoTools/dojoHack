@@ -3,7 +3,7 @@
 
 <section class="hero is-dark is-bold">
   <div class="hero-body">
-    <div *ngIf="hackathon" class="container hackTop">
+    <div *ngIf="hackathon as hack" class="container hackTop">
       <h1 class="title">{{hackathon.name}}</h1>
       <h1 *ngIf="!hackOver && joined" class="realbig is-pulled-right timer">
         {{hackathon.timeLeft | async}}
@@ -49,7 +49,7 @@
         <p class="subtitle is-success">{{submissionMessage}}</p>
       </div>
 
-      <div *ngIf="submissions" class="box">
+      <div *ngIf="hackathon && submissions" class="box">
 
         <table class="table is-striped is-fullwidth">
           <thead>
