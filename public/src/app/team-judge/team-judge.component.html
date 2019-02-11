@@ -1,0 +1,49 @@
+<div [formGroup]="teamForm">
+  <input type="hidden" formControlName="projectId">
+ 
+  <div class="field is-grouped columns">
+      <div class="column">
+          <div class="control">
+              <p><b>{{teamForm.get('teamName').value}}:</b> {{teamForm.get('projectTitle').value}}</p>
+          </div>
+        </div>
+    <!-- UI -->
+    <div class="column">
+      <div class="control">
+        <input type="number" min="1" max="5" class="input" formControlName="ui">
+      </div>
+    </div>
+    <!-- PRESENTATION -->
+    <div class="column">
+      <div class="control">
+        <input type="number" min="1" max="5" class="input" formControlName="presentation">
+      </div>
+    </div>
+    <!-- IDEA -->
+    <div class="column">
+      <div class="control">
+        <input type="number" min="1" max="5" class="input" formControlName="idea">
+      </div>
+    </div>
+    <!-- IMPLEMENTATION -->
+    <div class="column">
+      <div class="control">
+        <input type="number" min="1" max="5" class="input" formControlName="implementation">
+      </div>
+    </div>
+    <!-- EXTRA -->
+    <div class="column">
+      <div class="control">
+        <input type="number" min="0" max="5" class="input" formControlName="extra">
+      </div>
+    </div>
+    <!-- COMMENT -->
+    <div class="column">
+      <div class="control">
+        <input type="text" class="input" formControlName="comment">
+      </div>
+    </div>
+  </div>
+
+
+</div>

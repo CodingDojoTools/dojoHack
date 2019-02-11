@@ -1,0 +1,34 @@
+
+
+form {
+    width: 50%;
+    margin: 0 auto;
+}
+
+
+.timer {
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
+
+.hackTop h1{
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+button {
+    background-color: #06AAE2;
+    color: white;
+}
+button:disabled {
+    background-color: #C9C9C9;
+}
+button:hover {
+    color: white;
+}
+.realbig {
+    font-size: 3rem;
+}
+#submission {
+    margin-top: 3rem;
+}

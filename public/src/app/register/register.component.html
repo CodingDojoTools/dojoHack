@@ -1,0 +1,154 @@
+
+<app-login></app-login>
+<section class="container bottom">
+  <div class="columns">
+    <div class="column logos center">
+
+      <!-- <img src="../assets/images/logo.png" class="dojoLogo">
+      <img src="../assets/images/versus.png" class="vs">
+      <img src="../assets/images/logo.png" class="dojoLogo two"> -->
+
+      <img src="../assets/images/dojovdojo.png" class="dojovdojo">
+      <h1>Hackathons</h1>
+
+    </div>
+    <div class="column">
+      <h2 class="title">Register here</h2>
+      <p *ngIf="serverRegError" [@errorAnimation] class="help is-danger">{{serverRegError}}</p>
+      <p *ngIf="invalidMsg" [@errorAnimation] class="help is-danger">{{invalidMsg}}</p>
+
+      <form [formGroup] = "regForm" (submit)="register()"> 
+      <div class="field">
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger':((TError.minlength || TError.required)&& teamName.touched) || TError.maxlength || nameMsg }" type="text" formControlName="teamName" placeholder="Team Name" id="teamName">
+          <span class="icon is-small is-left">
+            <i class="fa fa-users"></i>
+          </span>
+          <span *ngIf="teamName.valid" class="icon is-small is-right">
+            <i class="fa fa-check"></i>
+          </span>
+          <p *ngIf="nameMsg" [@errorAnimation] class="help is-danger">{{nameMsg}}</p>
+          <p *ngIf="TError.required && teamName.touched" [@errorAnimation] class="help is-danger">A team name is required</p>
+          <p *ngIf="TError.minlength && teamName.touched" [@errorAnimation] class="help is-danger">Team names must consist of at least five characters</p>
+          <p *ngIf="TError.maxlength" [@errorAnimation] class="help is-danger">Team names must not contain more than 32 characters</p>
+        </div>
+      </div>
+
+
+      <div class="field" formGroupName = 'passGroup'>
+          <div class="field">
+              <div class="control has-icons-left has-icons-right">
+                
+                <input class="input" [ngClass]="{'is-success': password.valid, 'is-danger': pDanger || pwdMsg }" type="password" formControlName="password" id="password" placeholder="Password">
+                <span class="icon is-small is-left">
+                  <i class="fa fa-key"></i>
+                </span>
+                <span *ngIf="password.valid" class="icon is-small is-right">
+                  <i class="fa fa-check"></i>
+                </span>
+                <span *ngIf="pDanger" class="icon is-small is-right">
+                    <i class="fa fa-warning"></i>
+                  </span>
+              </div>
+              <p *ngIf="pR" [@errorAnimation] class="help is-danger">Password is required</p>
+      
+              <p *ngIf="pLen" [@errorAnimation] class="help is-danger">Password must have at least 8 characters</p>
+
+
+              <p *ngIf="pwdMsg" [@errorAnimation] class="help is-danger">{{pwdMsg}}</p>
+              
+            </div>
+            
+            <div class="field">
+              <div class="control has-icons-left has-icons-right" >
+
+                <input *ngIf="password.invalid" disabled type="password" class="input" placeholder="Confirm Password" value="{{confirmPassword.value}}">
+
+                <input *ngIf="password.valid" class="input" [ngClass]="{'is-success': passGroup.valid, 'is-danger': CPDanger }" type="password" formControlName="confirmPassword" placeholder="Confirm Password" >
+
+                <span class="icon is-small is-left">
+                  <i class="fa fa-key"></i>
+                </span>
+                <span *ngIf="passGroup.valid" class="icon is-small is-right">
+                    <i class="fa fa-check"></i>
+                  </span>
+                <span *ngIf="CPDanger" class="icon is-small is-right">
+                  <i class="fa fa-warning"></i>
+                </span>
+              </div>
+              <p  *ngIf="CPDanger" [@errorAnimation] class="help is-danger">Passwords do not match</p>
+            
+      
+            </div>
+
+      </div>
+      
+      <div class="field">
+        <div class="control has-icons-left">
+          <div class="select">
+            <select formControlName="location">
+                <option value="" disabled="true">Location</option>
+                <option *ngFor="let loc of locations" value="{{loc.id}}">{{loc.name}}</option>
+            </select>
+          </div>
+          <span class="icon is-small is-left">
+            <i class="fa fa-map-marker"></i>
+          </span>
+          <p  *ngIf="locReq" [@errorAnimation] class="help is-danger">A location is required</p>
+        </div>
+      </div>
+      <p *ngIf="memberValidationError" class="help is-danger">At least one of your members is not passing our validations. All members must have a first and a last name.</p>
+      <!-- list of members -->
+      <div formArrayName="members" class="field">
+        <div>
+          <div *ngFor="let member of regForm.controls.members.controls; let i=index" class="field">
+            <div>
+              <span class="member">Member {{i+1}}</span>
+              <span *ngIf="regForm.controls.members.controls.length > 1" class="remove" (click)="removeMember(i)"><i class="fa fa-minus-circle"></i> Remove member</span>
+            </div>
+            <div [formGroupName]="i">
+              <app-register-members [group]="regForm.controls.members.controls[i]"></app-register-members>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf = "regForm.controls.members.controls.length < 5" id="addMemberWrapper">
+      <div class="field addMember" (click)="addMember()">
+          <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+          <p>Add a member</p>
+      </div>
+      </div>
+      
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-medium is-dark" [disabled]="!regForm.valid">Register team</button>
+  
+        </div>
+        
+        <div class="control">
+          <button class="button is-medium" type="button" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
+      
+      </form>
+      
+      
+
+
+    </div>
+
+  </div>
+  
+
+</section>
+
+<footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          Read the guidelines <a [routerLink]="['/guide']">here</a>
+        </p>
+      </div>
+    </div>
+  </footer>

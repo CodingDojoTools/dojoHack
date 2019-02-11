@@ -1,0 +1,42 @@
+
+.topTitle img, .topTitle h2 {
+    display: inline-block;
+    vertical-align: bottom;
+    
+}
+table a {
+    color: black;
+}
+#ninjaimg {
+   width: 8%;
+}
+table {
+    margin: 0 auto;
+}
+.topTitle {
+    padding-bottom: 1.5rem;
+}
+
+
+.timer {
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
+table td {
+    vertical-align: inherit;
+}
+i {
+    color: #06AAE2;
+}
+.close {
+    background-color: #e23e06;
+    color: white;
+}
+.far {
+    background-color: #0585b0;
+    color: white;
+}
+.over {
+    background-color: gray;
+    
+}

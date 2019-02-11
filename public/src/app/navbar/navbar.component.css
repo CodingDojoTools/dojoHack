@@ -1,0 +1,12 @@
+.navbar {
+    background-color:#06AAE2; 
+    position: fixed;
+    width: 100%;
+    z-index: 200;
+    top: 0;
+
+    
+}
+.navbar a, .navbar p {
+    color: #4a4a4a;
+}

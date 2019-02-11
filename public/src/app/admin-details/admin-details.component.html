@@ -1,0 +1,74 @@
+<app-navbar></app-navbar>
+<div id="adminDetails">
+<section class="hero is-dark is-bold">
+    <div class="hero-body"  *ngIf="hackathon">
+      <div *ngIf="hackathon" class="heroblock">
+
+        <h1 class="title">{{hackathon.name}}</h1>
+        <h1 class="subtitle">{{hackathon.deadline | date: 'medium'}}</h1>
+      </div>
+      <div class="options is-pulled-right heroblock">
+
+        <button *ngIf="readyToComplete && !hackathonDone" class="button black blue" (click)="closeJudging()" >Close judging</button>
+        <button class="button present" [routerLink]="['/watch', hackathon.id]" [disabled]="!presentable">View presentations</button>
+        <button *ngIf="!hackathonDone" class="button is-success black" [routerLink]="['/judge',hackathon.id,'admin']" [disabled]="!judgable">Judge this hackathon</button>
+        
+      </div>
+    </div>
+</section>
+
+<section *ngIf="shutDown" class="section shut">
+  <p [@errorAnimation]>You just closed the judging!</p>
+</section>
+
+<section class="section">
+    
+     <div class = "columns">
+
+       <div class="column">
+
+          <div class = "column theme">
+              <div class = "columns">
+                <div class="column">
+                    <p>Theme</p>
+                </div>
+                  
+                <div class="column is-three-quarters">
+                    <p *ngIf="hackathon">{{hackathon.theme}}</p>
+                </div>
+              </div>
+          </div>
+         
+         <p *ngIf="hackathon">{{hackathon.info}}</p>
+       </div>
+
+       <div class="column is-three-quarters">
+          <div *ngIf="submissions" class="box">
+          
+           <table class="table is-striped is-fullwidth">
+             <thead>
+               <th>Team</th>
+               <th>Project</th>
+               <th>Location</th>      
+               <th>Judged by</th>
+               <th>Points</th>
+             </thead>
+             <tbody>
+               <tr *ngFor="let sub of submissions" [ngClass]="{'highlight':sub.id==winnerId}">
+
+                 <td>{{sub.teamName}}</td>
+                 <td *ngIf="sub.title"><a [routerLink]="['/score', sub.id, 'admin']"> {{sub.title}}</a></td>
+                 <td *ngIf="!sub.title">Pending</td>
+                 <td>{{sub.location}}</td>
+                 <td>{{sub.judgedBy}}</td>
+                 <td>{{sub.total}}</td>
+               </tr>
+
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+   
+   </section>
+  </div>

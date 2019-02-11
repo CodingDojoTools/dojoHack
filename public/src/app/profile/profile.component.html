@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+<div id="profile">
+
+<section class="hero is-dark is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+         Profile Page
+        </h1>
+        <h2 class="subtitle">
+          Make edits to your team here
+        </h2>
+      </div>
+    </div>
+  </section>
+
+<section class="section">
+<form [formGroup]="proForm" (submit)="updateTeam()">
+  <div class="columns">
+  <div class="field column is-three-quarters">
+          
+    <div class="control has-icons-left has-icons-right">
+      <input class="input" type="text" formControlName="teamName" placeholder="Team Name">
+      <span class="icon is-small is-left">
+        <i class="fa fa-users"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field column">
+    <div class="control has-icons-left">
+      <div class="select">
+        <select *ngIf = "locations" formControlName="location">
+          <option value="" disabled="true">Location</option>
+          <option *ngFor="let loc of locations" value="{{loc.id}}">{{loc.name}}</option>
+        </select>
+      </div>
+      <span class="icon is-small is-left">
+        <i class="fa fa-map-marker"></i>
+      </span>
+    </div>
+  </div>
+  </div>
+    <!-- list of members  -->
+  <div formArrayName="members" class="field">
+    <div>
+      <div *ngFor="let member of proForm.controls.members.controls; let i=index" class="field">
+        <div>
+          <span class="member">Member {{i+1}}</span>
+         
+        </div>
+        <div [formGroupName]="i">
+          <app-register-members [group]="proForm.controls.members.controls[i]"></app-register-members>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <button class="button is-medium is-dark" [disabled]="!proForm.valid || proForm.pristine">Update team</button>
+  
+    </div>
+      
+    <div class="control">
+      <button class="button is-medium" type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</form>  
+</section>
+</div>  

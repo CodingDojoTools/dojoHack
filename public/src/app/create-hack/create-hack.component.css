@@ -1,0 +1,13 @@
+
+form {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.createbtn {
+    background-color: #06AAE2;
+    color: white;
+}
+#adminCreate{
+    margin-top: 3rem;
+}

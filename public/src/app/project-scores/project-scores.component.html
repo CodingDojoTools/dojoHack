@@ -1,0 +1,63 @@
+<app-navbar></app-navbar>
+<div id="score">
+<section class="hero is-dark is-bold">
+    <div class="hero-body">
+      <h1 class="title">Scorecard</h1>
+      <h1 *ngIf="hackathon" class="subtitle">{{hackathon.name}} on {{hackathon.deadline | date: 'medium'}}</h1>
+      
+    </div>
+</section>
+<section *ngIf="project" class="section container">
+  <div class="columns">
+    <div class="column">
+      <h1 class="title">{{project.title}}</h1>
+      <h2 id="teamName">{{project.teamName}}</h2>
+      
+      <a [href]="project.gitUrl"><i class="fa fa-github fa-3x" aria-hidden="true"></i></a>      
+      <a [href]="project.vidUrl"><i class="fa fa-youtube fa-3x" aria-hidden="true"></i></a>
+      
+    </div>
+    <div class="column is-two-thirds desc" >
+      <p class="subtitle">{{project.description}}</p>
+      <div class="members">
+        <p *ngFor="let member of members">{{member.firstName}} {{member.lastName}}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="box">
+
+      <table class="table is-striped is-fullwidth">
+          <thead>
+            <th>Judge</th>
+            <th>Location</th>      
+            <th>UI/UX</th>
+            <th>Presentation</th>
+            <th>Idea</th>
+            <th>Implementation</th>
+            <th>Extra</th>
+            <th>Total</th>
+            <th>Comments</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let score of scores">
+              <td>{{score.judge}}</td>
+              <td>{{score.locations}}</td>
+              <td>{{score.uiux}}</td>
+              <td>{{score.pres}}</td>
+              <td>{{score.idea}}</td>
+              <td>{{score.impl}}</td>
+              <td>{{score.extra}}</td>
+              <td>{{score.total}}</td>
+              <td>{{score.comment}}</td>              
+            </tr>    
+
+          </tbody>
+        </table>
+
+  </div>
+
+</section>
+</div>

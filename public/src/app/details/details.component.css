@@ -1,0 +1,64 @@
+.is-success {
+    border-radius: 4px;
+    padding: 15px;
+    background: #75c575;
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.timer {
+    font-family: "Lucida Console", Monaco, monospace;
+}
+.pending {
+    color: gray;
+    font-style: italic;
+}
+
+.sidePad {
+    padding: 0 1.5rem;
+}
+
+
+.hackTop h1{
+    display: inline-block;
+    vertical-align: bottom;
+}
+.updateBtn {
+    background-color: #06AAE2;
+    color: white;
+}
+.realbig {
+    font-size: 3rem;
+}
+.submitbtn {
+    background-color: #FF9B42;
+    color: white;
+}
+
+table td {
+    vertical-align: inherit;
+}
+
+.theme {
+    -webkit-box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    border-radius: 5px; 
+    margin-bottom: 1rem;
+}
+
+.theme .column:first-child {
+    text-align: center;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    background: #97e4ff;
+    color: #3f3f3f;
+    font-weight: bold;
+}
+
+.blue {
+    background-color: #06AAE2;
+}
+#details {
+    margin-top: 3rem;
+}

@@ -1,0 +1,31 @@
+<app-navbar></app-navbar>
+<div id="adminDash">
+<section class="hero is-dark is-bold">
+    <div class="hero-body">
+      <h1  class="title">Dashboard</h1>
+      <button class="button is-pulled-right is-success black" [routerLink]="['/create', 'admin']">Create a new hackathon</button>
+    </div>
+</section>
+<section class="section">
+
+<div class="box">
+  <table class="table table-striped is-fullwidth">
+    <thead>
+      <th>Hackathon</th>
+      <th>Winning project</th>
+      <th>Project</th>
+      <th>Deadline</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hack of hackathons">
+
+        <td><a [routerLink]="['/details', hack.id, 'admin']">{{hack.hackathon}}</a></td>
+        <td>{{hack.team}}</td>
+        <td>{{hack.title}}</td>
+        <td>{{hack.deadline | date: 'medium' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+</div>

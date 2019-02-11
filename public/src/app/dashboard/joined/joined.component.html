@@ -1,0 +1,38 @@
+<section class="section">
+  <div class="container">
+    <div class="topTitle">
+      <img id="ninjaimg" src="./assets/images/ninjaComp.png" alt="Hacking ninja">
+      <h2 class="title">Joined hackathons</h2>
+    </div>
+    <div class="box">
+  
+    <table *ngIf="joinedHackathons.length > 0" class="table is-striped is-fullwidth">
+        <thead>
+          <th>Name</th>
+          <th>Deadline</th>      
+          <th>Time left</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hack of joinedHackathons">
+            <td><a [routerLink]="['/details', hack.id]">{{hack.name}} &nbsp; <i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+            <td>{{hack.deadline | date: 'medium'}}</td>
+            <td class="timer">{{hack.timeLeft | async}}</td>
+
+
+
+            <td *ngIf="!hack.projectId"><button [routerLink]="['/hackathon', 'submit', hack.id]" class="submitbtn button" [ngClass]="{'close': hack.status == 2, 'far': hack.status == 1, 'over': hack.status == 3}" [disabled]="hack.status == 3" >Submit</button></td>
+
+
+            <td *ngIf="hack.projectId"><button class="button is-outlined" [routerLink]="['/hackathon', 'update', hack.projectId]" [disabled]="hack.status == 3">Update</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="joinedHackathons.length < 1">
+        <h2 class="subtitle">You are not competing in any hackathons at the moment.</h2>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  

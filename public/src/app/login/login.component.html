@@ -1,0 +1,35 @@
+<section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns">
+          <div class="column banner">
+            <img src="../assets/images/logo_banner.png">
+            <!-- <h1 class="title">Coding Dojo Hackathons</h1> -->
+          </div>
+          <div class="column login">
+            <form [formGroup]="logForm" (submit)="loggingIn()" class="field is-horizontal">
+              <div class="field-body">
+                <div class="field">
+                  <input class="input" [ngClass]="{'is-success': teamName.valid, 'is-danger': tDanger}" formControlName="teamName" type="text" [placeholder]="placeholderText">
+                  <!-- <p *ngIf="tReq" class="help is-danger">A name is required</p> -->
+                  <p *ngIf="tLen || tReq" class="help is-danger">Name must be at least 5 characters!</p>
+                  <p *ngIf="tLenMax" class="help is-danger">Hint: names contain at most 32 characters</p>
+                </div>
+
+                <div class="field"> 
+                  <input class="input" formControlName="password" type="password" placeholder="Password">
+                </div>
+                <div class="field">
+                  <button [disabled]="!logForm.valid" class="button is-dark">Login</button>
+                </div>
+              </div>
+              
+            </form>
+            <p *ngIf="loginError" class="help is-danger">Sorry, invalid login! Try again?</p>
+            <p *ngIf="serverError" class="help is-danger">Sorry, we're having trouble connecting to our database. Try again?</p>
+            <p *ngIf="logoutMsg && !tDanger">{{logoutMsg}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,86 @@
+<app-navbar></app-navbar>
+<div id="adminCreate">
+<section class="hero is-dark is-bold">
+    <div class="hero-body">
+      <h1  class="title">Create a new hackathon</h1>
+    </div>
+</section>
+
+<section class="section">
+
+    <form [formGroup] = "hackForm" (submit)="create()"> 
+      <!-- Name -->
+      <div class="field">
+        <div class="control has-icons-left has-icons-right">
+          <input class="input" [ngClass]="{'is-success':name.valid, 'is-danger': nameDanger}"   type="text" formControlName="name" placeholder="Hackathon Name">
+          <span class="icon is-small is-left">
+              <i class="fa fa-laptop" aria-hidden="true"></i>
+          </span>
+          <span *ngIf="name.valid" class="icon is-small is-right">
+            <i class="fa fa-check"></i>
+          </span>
+          <span *ngIf="nameDanger" class="icon is-small is-right">
+              <i class="fa fa-warning"></i>
+          </span>
+    
+          <p *ngIf="nameDanger" [@errorAnimation] class="help is-danger">Hackathon names must consist of 7 - 32 characters</p>
+        </div>
+      </div>
+<!-- Theme -->
+      <div class="field">
+          <div class="control has-icons-left has-icons-right">
+            <input class="input" [ngClass]="{'is-success':theme.valid, 'is-danger': themeDanger}"   type="text" formControlName="theme" placeholder="Hackathon Theme">
+            <span class="icon is-small is-left">
+                <i class="fa fa-tags" aria-hidden="true"></i>
+            </span>
+            <span *ngIf="theme.valid" class="icon is-small is-right">
+              <i class="fa fa-check"></i>
+            </span>
+            <span *ngIf="themeDanger" class="icon is-small is-right">
+                <i class="fa fa-warning"></i>
+            </span>
+      
+            <p *ngIf="themeDanger" [@errorAnimation] class="help is-danger">Hackathon themes must consist of 3 - 32 characters</p>
+          </div>
+        </div>
+<!-- Date -->
+        
+        <div class="field">
+            <div class="control has-icons-left has-icons-right">
+              <input class="input" [ngClass]="{'is-success':date.valid, 'is-danger': dateDanger}"   type="datetime-local" formControlName="date" placeholder="Optional details about the hackathon">
+              <span class="icon is-small is-left">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+              </span>
+              <span *ngIf="date.valid" class="icon is-small is-right">
+                <i class="fa fa-check"></i>
+              </span>
+              <span *ngIf="dateDanger" class="icon is-small is-right">
+                  <i class="fa fa-warning"></i>
+              </span>
+              <p *ngIf="dateDanger" [@errorAnimation] class="help is-danger">Hackathon deadlines must be valid dates and in the future</p>
+            </div>
+          </div>
+<!-- Details -->
+        <div class="field">
+            <div class="control has-icons-left has-icons-right">
+              <textarea class="textarea" type="text" formControlName="info" placeholder="Optional details about the hackathon"></textarea>
+             
+              
+            </div>
+          </div>
+
+
+  <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-medium createbtn" [disabled]="hackForm.invalid">Create</button>
+  
+      </div>
+      
+      <div class="control">
+        <button class="button is-medium is-dark" type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+
+    </form>
+</section>
+</div>

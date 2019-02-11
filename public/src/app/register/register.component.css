@@ -1,0 +1,70 @@
+
+
+.bottom {
+    margin-top: 4em;
+}
+#addMemberWrapper {
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    height: 55px;
+}
+
+.addMember {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    width: 150px;
+    height: 40px;
+    display: block;
+}
+.addMember p {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+.addMember i {
+   margin-right: 5px;
+}
+.member {
+    color: #06AAE2;
+}
+.remove {
+    margin-left: 2em;
+    cursor: pointer;
+}
+
+.vs {
+    width: 25%;
+    margin: 0 -9%;
+    z-index: 2;
+}
+.dojoLogo {
+    width: 41%;
+    z-index: 1;
+}
+a {
+    color:  #06AAE2;
+}
+footer {
+    margin-top: 2rem;
+}
+
+
+.dojovdojo {
+    margin-top: 2rem;
+    width: 75%;
+}
+
+.center {
+    text-align: center;
+}
+
+.logos h1 {
+    margin-top: 0rem;
+    position: relative;
+    top: -2rem;
+    font-size: 5rem;
+    color: #222;
+    color: transparent;
+    text-shadow: 0 0 .5px rgba(0,0,0,1);
+}
